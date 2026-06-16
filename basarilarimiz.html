@@ -295,6 +295,56 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
   .footer-top{grid-template-columns:1fr;}
   .btn-login{display:none;}
 }
+
+/* ── PROGRAMLAR AÇILIR LİSTE */
+.prog-dropdown { position:relative; }
+.prog-dropdown-btn {
+  font-size:13.5px; font-weight:600; color:#6e6e73;
+  padding:7px 12px; border-radius:9px;
+  cursor:pointer; transition:.2s;
+  display:flex; align-items:center; gap:5px;
+  background:none; border:none; font-family:inherit;
+  white-space:nowrap;
+}
+.prog-dropdown-btn:hover { color:#1a1f36; background:#f5f5f7; }
+.prog-dropdown-btn.open { color:#1a3fad; background:#f0f5ff; }
+.prog-list {
+  position:absolute; top:calc(100% + 6px); left:0;
+  background:#fff; border:1px solid #e5e5e7;
+  border-radius:14px; padding:8px;
+  min-width:240px;
+  box-shadow:0 8px 32px rgba(0,0,0,.1);
+  z-index:500; display:none;
+}
+.prog-list.open { display:block; }
+.prog-list a {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 12px; border-radius:9px;
+  font-size:13px; font-weight:600; color:#1a1f36;
+  text-decoration:none; transition:.15s;
+  white-space:nowrap;
+}
+.prog-list a:hover { background:#f5f5f7; color:#1a3fad; }
+.prog-list-icon { font-size:16px; width:22px; text-align:center; flex-shrink:0; }
+.prog-list-info { display:flex; flex-direction:column; }
+.prog-list-name { font-size:13px; font-weight:700; color:#1a1f36; line-height:1.2; }
+.prog-list-price { font-size:11px; color:#6e6e73; margin-top:1px; }
+.prog-list a:hover .prog-list-name { color:#1a3fad; }
+.prog-list-divider { height:1px; background:#f0f0f0; margin:6px 4px; }
+.prog-list-footer {
+  display:flex; align-items:center; justify-content:center;
+  padding:8px 12px 4px;
+}
+.prog-list-footer a {
+  font-size:12px; font-weight:700; color:#e8232a;
+  text-decoration:none; display:flex; align-items:center; gap:4px;
+  padding:7px 16px;
+  background:rgba(232,35,42,.06);
+  border-radius:8px; width:100%;
+  justify-content:center;
+}
+.prog-list-footer a:hover { background:rgba(232,35,42,.12); color:#c8191f; }
+
 </style>
 
 <style>
@@ -326,7 +376,54 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
     <div class="nav-links" id="navLinks">
       <a href="/" class="">Ana Sayfa</a>
-<a href="/programlar/" class="">Programlar</a>
+    <div class="prog-dropdown" id="progDropdown">
+      <button class="prog-dropdown-btn" id="progBtn" onclick="toggleProgList()" onmouseenter="openProgList()">
+        Programlar <span id="progArrow" style="font-size:10px;transition:.2s;">▾</span>
+      </button>
+      <div class="prog-list" id="progList" onmouseleave="closeProgList()">
+        <a href="/programlar/lgs.html">
+          <span class="prog-list-icon">🏆</span>
+          <span class="prog-list-info"><span class="prog-list-name">LGS Hazırlık</span><span class="prog-list-price">96.000₺ / yıl · 8. Sınıf</span></span>
+        </a>
+        <a href="/programlar/yks.html">
+          <span class="prog-list-icon">🎯</span>
+          <span class="prog-list-info"><span class="prog-list-name">YKS TYT-AYT</span><span class="prog-list-price">104.000₺ / yıl · Üniversite</span></span>
+        </a>
+        <a href="/programlar/ortaokul.html">
+          <span class="prog-list-icon">📘</span>
+          <span class="prog-list-info"><span class="prog-list-name">5-6-7. Sınıf VIP</span><span class="prog-list-price">88.000₺ / yıl · Ortaokul</span></span>
+        </a>
+        <a href="/programlar/lise.html">
+          <span class="prog-list-icon">📗</span>
+          <span class="prog-list-info"><span class="prog-list-name">9-10-11. Sınıf</span><span class="prog-list-price">96.000₺ / yıl · Lise</span></span>
+        </a>
+        <a href="/programlar/ilkokul.html">
+          <span class="prog-list-icon">📕</span>
+          <span class="prog-list-info"><span class="prog-list-name">3-4. Sınıf İlkokul</span><span class="prog-list-price">72.000₺ / yıl · İlkokul</span></span>
+        </a>
+        <div class="prog-list-divider"></div>
+        <a href="/programlar/kamplar.html">
+          <span class="prog-list-icon">🏕️</span>
+          <span class="prog-list-info"><span class="prog-list-name">Yaz Kampları</span><span class="prog-list-price">24.000₺'den · Temmuz-Ağustos</span></span>
+        </a>
+        <a href="/programlar/yazili.html">
+          <span class="prog-list-icon">✍️</span>
+          <span class="prog-list-info"><span class="prog-list-name">Yazılıya Hazırlık</span><span class="prog-list-price">2.500₺ · 27 Saat Program</span></span>
+        </a>
+        <a href="/programlar/kitap.html">
+          <span class="prog-list-icon">📖</span>
+          <span class="prog-list-info"><span class="prog-list-name">Kitap Atölyesi</span><span class="prog-list-price">12.000₺ · 8 Haftalık</span></span>
+        </a>
+        <a href="/programlar/start.html">
+          <span class="prog-list-icon">🚀</span>
+          <span class="prog-list-info"><span class="prog-list-name">VIP Start Paketi</span><span class="prog-list-price">28.000₺ · Yıl Boyu Tam Entegre</span></span>
+        </a>
+        <div class="prog-list-divider"></div>
+        <div class="prog-list-footer">
+          <a href="/kayit.html">📋 Hemen Kayıt Ol →</a>
+        </div>
+      </div>
+    </div>
 <a href="/blog.html" class="">Blog</a>
 <a href="/basarilarimiz.html" class="active">Başarılarımız</a>
 <a href="/iletisim.html" class="">İletişim</a>
@@ -468,5 +565,33 @@ waf.onmouseover=function(){this.style.transform='scale(1.1)';this.style.boxShado
 waf.onmouseout=function(){this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(37,211,102,.4)';}
 document.body.appendChild(waf);
 </script>
+
+<script>
+(function(){
+  function openProgList(){
+    var l=document.getElementById('progList'),b=document.getElementById('progBtn'),a=document.getElementById('progArrow');
+    if(!l)return; l.classList.add('open'); if(b)b.classList.add('open'); if(a)a.style.transform='rotate(180deg)';
+  }
+  function closeProgList(){
+    setTimeout(function(){
+      var l=document.getElementById('progList'),b=document.getElementById('progBtn'),a=document.getElementById('progArrow');
+      if(!l)return; l.classList.remove('open'); if(b)b.classList.remove('open'); if(a)a.style.transform='';
+    },150);
+  }
+  window.toggleProgList=function(){
+    var l=document.getElementById('progList');
+    if(!l)return; if(l.classList.contains('open')) closeProgList(); else openProgList();
+  };
+  window.openProgList=openProgList;
+  window.closeProgList=closeProgList;
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#progDropdown')){
+      var l=document.getElementById('progList'),b=document.getElementById('progBtn'),a=document.getElementById('progArrow');
+      if(l) l.classList.remove('open'); if(b) b.classList.remove('open'); if(a) a.style.transform='';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
