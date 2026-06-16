@@ -1,15 +1,1 @@
-{
-  "version": 2,
-  "builds": [
-    { "src": "**/*.html", "use": "@vercel/static" },
-    { "src": "*.xml", "use": "@vercel/static" },
-    { "src": "*.txt", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/programlar/(.*)", "dest": "/programlar/$1" },
-    { "src": "/(.*)\\.html", "dest": "/$1.html" },
-    { "src": "/sitemap.xml", "dest": "/sitemap.xml" },
-    { "src": "/robots.txt", "dest": "/robots.txt" },
-    { "src": "/(.*)", "dest": "/$1.html" }
-  ]
-}
+{}
