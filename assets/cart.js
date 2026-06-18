@@ -256,5 +256,8 @@
     enhanceProgramPage();
     enhanceHomeCards();
     handleQueryAdd();
+    if (window.OVD_ICONS && window.OVD_ICONS.hydrate) {
+      window.OVD_ICONS.hydrate();
+    }
   });
 })();

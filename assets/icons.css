@@ -1,0 +1,83 @@
+.prog-icon,
+.why-icon,
+.prog-list-icon,
+.ovd-icon-inline,
+.feat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.prog-icon svg,
+.why-icon svg,
+.prog-list-icon svg,
+.ovd-icon-inline svg {
+  stroke: currentColor;
+  fill: none;
+}
+
+.prog-icon {
+  color: var(--navy, #1a3fad);
+  background: #f0f5ff;
+}
+
+.prog-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.why-icon {
+  color: #fff;
+}
+
+.why-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.prog-list-icon {
+  width: 22px;
+  color: var(--navy, #1a3fad);
+}
+
+.prog-list-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ovd-icon-inline {
+  color: var(--navy, #1a3fad);
+}
+
+.ovd-icon-inline svg {
+  width: 14px;
+  height: 14px;
+}
+
+.prog-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prog-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prog-tag .ovd-icon-inline svg {
+  width: 16px;
+  height: 16px;
+}
+
+.feat-icon {
+  color: var(--navy, #1a3fad);
+  margin-bottom: 10px;
+}
+
+.feat-icon svg {
+  width: 32px;
+  height: 32px;
+}

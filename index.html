@@ -64,6 +64,7 @@ src="https://www.facebook.com/tr?id=2470509843418190&ev=PageView&noscript=1"
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/cart.css">
+<link rel="stylesheet" href="assets/icons.css">
 <style>
 :root {
   --navy:   #1a3fad;
@@ -537,7 +538,7 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 .prog-card{
   background:#ffffff;border:1.5px solid #e5e5e7;
   border-radius:16px;padding:24px;
-  transition:.3s;display:block;
+  transition:.3s;display:flex;align-items:center;justify-content:center;
   position:relative;overflow:hidden;
 }
 .prog-card::before{
@@ -710,40 +711,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </button>
       <div class="prog-list" id="progList" onmouseleave="closeProgList()">
         <a href="/programlar/lgs.html">
-          <span class="prog-list-icon">🏆</span>
+          <span class="prog-list-icon" data-icon="trophy"></span>
           <span class="prog-list-info"><span class="prog-list-name">LGS Hazırlık</span><span class="prog-list-price">96.000₺ / yıl · 8. Sınıf</span></span>
         </a>
         <a href="/programlar/yks.html">
-          <span class="prog-list-icon">🎯</span>
+          <span class="prog-list-icon" data-icon="target"></span>
           <span class="prog-list-info"><span class="prog-list-name">YKS TYT-AYT</span><span class="prog-list-price">104.000₺ / yıl · Üniversite</span></span>
         </a>
         <a href="/programlar/ortaokul.html">
-          <span class="prog-list-icon">📘</span>
+          <span class="prog-list-icon" data-icon="book-open"></span>
           <span class="prog-list-info"><span class="prog-list-name">5-6-7. Sınıf VIP</span><span class="prog-list-price">88.000₺ / yıl · Ortaokul</span></span>
         </a>
         <a href="/programlar/lise.html">
-          <span class="prog-list-icon">📗</span>
+          <span class="prog-list-icon" data-icon="book"></span>
           <span class="prog-list-info"><span class="prog-list-name">9-10-11. Sınıf</span><span class="prog-list-price">96.000₺ / yıl · Lise</span></span>
         </a>
         <a href="/programlar/ilkokul.html">
-          <span class="prog-list-icon">📕</span>
+          <span class="prog-list-icon" data-icon="book-open"></span>
           <span class="prog-list-info"><span class="prog-list-name">3-4. Sınıf İlkokul</span><span class="prog-list-price">72.000₺ / yıl · İlkokul</span></span>
         </a>
         <div class="prog-list-divider"></div>
         <a href="/programlar/kamplar.html">
-          <span class="prog-list-icon">🏕️</span>
+          <span class="prog-list-icon" data-icon="tent"></span>
           <span class="prog-list-info"><span class="prog-list-name">Yaz Kampları</span><span class="prog-list-price">24.000₺'den · Temmuz-Ağustos</span></span>
         </a>
         <a href="/programlar/yazili.html">
-          <span class="prog-list-icon">✍️</span>
+          <span class="prog-list-icon" data-icon="pen"></span>
           <span class="prog-list-info"><span class="prog-list-name">Yazılıya Hazırlık</span><span class="prog-list-price">2.500₺ · 27 Saat Program</span></span>
         </a>
         <a href="/programlar/kitap.html">
-          <span class="prog-list-icon">📖</span>
+          <span class="prog-list-icon" data-icon="book"></span>
           <span class="prog-list-info"><span class="prog-list-name">Kitap Atölyesi</span><span class="prog-list-price">12.000₺ · 8 Haftalık</span></span>
         </a>
         <a href="/programlar/start.html">
-          <span class="prog-list-icon">🚀</span>
+          <span class="prog-list-icon" data-icon="rocket"></span>
           <span class="prog-list-info"><span class="prog-list-name">VIP Start Paketi</span><span class="prog-list-price">28.000₺ · Yıl Boyu Tam Entegre</span></span>
         </a>
         <div class="prog-list-divider"></div>
@@ -869,63 +870,63 @@ buildHeroDots();resetTimer();
     <div class="programs-grid">
 
       <a href="/programlar/lgs.html" class="prog-card">
-        <div class="prog-icon">🏆</div>
+        <div class="prog-icon" data-icon="trophy"></div>
         <h3>LGS Hazırlık</h3>
         <p>8. Sınıf yoğun hazırlık. Maarif Modeli uyumlu, haftalık deneme sistemi.</p>
         <div class="prog-price">96.000₺ <span>/ yıllık</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/yks.html" class="prog-card">
-        <div class="prog-icon">🎯</div>
+        <div class="prog-icon" data-icon="target"></div>
         <h3>YKS TYT-AYT Hazırlık</h3>
         <p>Üniversite hazırlığı. TYT + AYT kapsamlı program, birebir koçluk.</p>
         <div class="prog-price">104.000₺ <span>/ yıllık</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/ortaokul.html" class="prog-card">
-        <div class="prog-icon">📘</div>
+        <div class="prog-icon" data-icon="book-open"></div>
         <h3>5-6-7. Sınıf VIP Paketi</h3>
         <p>Ortaokul kapsamlı akademik destek. Ders başarısı ve alışkanlık sistemi.</p>
         <div class="prog-price">88.000₺ <span>/ yıllık</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/lise.html" class="prog-card">
-        <div class="prog-icon">📗</div>
+        <div class="prog-icon" data-icon="book"></div>
         <h3>9-10-11. Sınıf Programı</h3>
         <p>Lise müfredatı + üniversiteye hazırlık. YZ destekli çalışma sistemi.</p>
         <div class="prog-price">96.000₺ <span>/ yıllık</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/ilkokul.html" class="prog-card">
-        <div class="prog-icon">📕</div>
+        <div class="prog-icon" data-icon="book-open"></div>
         <h3>3-4. Sınıf Programı</h3>
         <p>Temel beceriler, sayısal düşünme, okuma alışkanlığı.</p>
         <div class="prog-price">72.000₺ <span>/ yıllık</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/kamplar.html" class="prog-card">
-        <div class="prog-icon">🏕️</div>
+        <div class="prog-icon" data-icon="tent"></div>
         <h3>Yaz Kampları</h3>
         <p>LGS Yaz Kampı ve okul geçiş kampları. Sınırlı kontenjan.</p>
         <div class="prog-price">24.000₺ <span>/ kamp</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/yazili.html" class="prog-card">
-        <div class="prog-icon">✍️</div>
+        <div class="prog-icon" data-icon="pen"></div>
         <h3>Yazılıya Hazırlık</h3>
         <p>3 etap yoğun program. 23-24 Mayıs · 30-31 Mayıs · 6-7 Haziran.</p>
         <div class="prog-price">2.500₺ <span>/ program</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/kitap.html" class="prog-card">
-        <div class="prog-icon">📖</div>
+        <div class="prog-icon" data-icon="book"></div>
         <h3>Kitap Okuma Atölyesi</h3>
         <p>8 haftalık okuma alışkanlığı ve yorumlama becerisi programı.</p>
         <div class="prog-price">12.000₺ <span>/ program</span></div>
         <span class="prog-arrow">→</span>
       </a>
       <a href="/programlar/start.html" class="prog-card">
-        <div class="prog-icon">🚀</div>
+        <div class="prog-icon" data-icon="rocket"></div>
         <h3>VIP Start Paketi</h3>
         <p>Yıl boyu tam entegre sistem. Yazılı + deneme + koçluk + soru havuzu.</p>
         <div class="prog-price">28.000₺ <span>/ yıllık</span></div>
@@ -944,32 +945,32 @@ buildHeroDots();resetTimer();
     </div>
     <div class="why-grid">
       <div class="why-card">
-        <div class="why-icon">👥</div>
+        <div class="why-icon" data-icon="users"></div>
         <h3>Maks. 10 Kişilik VIP Gruplar</h3>
         <p>Kalabalık sınıf yok. Öğretmen her öğrenciyi tanır, soru anında yanıt bulur.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">🤖</div>
+        <div class="why-icon" data-icon="cpu"></div>
         <h3>YZ Destekli Kişisel Analiz</h3>
         <p>Yapay zeka soru çözme verilerini analiz eder, kişiye özel soru bankası oluşturur.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">📞</div>
+        <div class="why-icon" data-icon="phone"></div>
         <h3>7/24 Soru Çözüm Desteği</h3>
         <p>Gece 23:00'da takıldığınız soruyu WhatsApp'a gönderin, anında video çözüm.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">🎓</div>
+        <div class="why-icon" data-icon="graduation-cap"></div>
         <h3>Birebir Haftalık Koçluk</h3>
         <p>Her öğrenci haftada bir kez eğitim koçuyla görüşür, veli raporları hazırlanır.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">📹</div>
+        <div class="why-icon" data-icon="video"></div>
         <h3>Ders Kayıtlarına Sınırsız Erişim</h3>
         <p>Kaçırdığınız ders yok. Tüm canlı dersler kaydedilir, 7/24 izlenebilir.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon">🏠</div>
+        <div class="why-icon" data-icon="home"></div>
         <h3>Tam Uzaktan Çalışma</h3>
         <p>Türkiye'nin her şehrinden katılım. Ulaşım, zaman ve para tasarrufu.</p>
       </div>
@@ -1246,6 +1247,7 @@ document.addEventListener('click',function(e){
   });
 })();
 </script>
+<script src="assets/icons.js"></script>
 <script src="assets/products.js"></script>
 <script src="assets/cart.js"></script>
 
