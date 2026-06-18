@@ -63,17 +63,6 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 .cta-box h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:8px;}
 .cta-box p{opacity:.85;margin-bottom:16px;font-size:14px;}
 .footer{text-align:center;padding:32px 5%;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
-.modal-overlay{position:fixed;inset:0;background:rgba(10,20,50,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.show{display:flex;}
-.modal{background:#fff;border-radius:18px;max-width:480px;width:100%;padding:32px 28px;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:modalIn .3s ease;}
-@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.98);}to{opacity:1;transform:none;}}
-.modal-icon{width:56px;height:56px;border-radius:14px;background:#f0f5ff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;}
-.modal h2{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:10px;line-height:1.25;}
-.modal p{color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.7;}
-.modal-actions{display:flex;flex-direction:column;gap:10px;}
-.modal-skip{margin-top:14px;text-align:center;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;width:100%;}
-.modal-check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted);cursor:pointer;}
-.modal-check input{accent-color:var(--navy);}
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;}
   .video-grid{grid-template-columns:1fr 1fr;}
@@ -86,19 +75,6 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 </style>
 </head>
 <body>
-
-<div class="modal-overlay" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal">
-    <div class="modal-icon">▶</div>
-    <h2 id="modalTitle">Dershanemizin işleyişi hakkında bilgi almak ister misiniz?</h2>
-    <p>Online VIP Dershane'nin canlı ders sistemi, VIP gruplar ve koçluk modelini anlatan kısa tanıtım videosunu izleyebilirsiniz.</p>
-    <div class="modal-actions">
-      <button type="button" class="btn-primary" id="modalWatch">Evet, tanıtım videosunu izle</button>
-      <button type="button" class="btn-outline" id="modalSkip">Hayır, örnek ders videolarına göz at</button>
-    </div>
-    <label class="modal-check"><input type="checkbox" id="modalNever"> Bir daha gösterme</label>
-  </div>
-</div>
 
 <nav class="nav">
   <div class="nav-in">
@@ -212,31 +188,6 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
   });
 
   renderVideos();
-
-  var modal = document.getElementById('welcomeModal');
-  var storageKey = 'ovd_video_welcome_dismissed';
-
-  function closeModal(scrollToIntro){
-    modal.classList.remove('show');
-    document.body.style.overflow = '';
-    if(document.getElementById('modalNever').checked){
-      try{ localStorage.setItem(storageKey, '1'); }catch(err){}
-    }
-    if(scrollToIntro){
-      document.getElementById('intro-video').scrollIntoView({ behavior:'smooth', block:'start' });
-    }
-  }
-
-  if(!localStorage.getItem(storageKey)){
-    setTimeout(function(){
-      modal.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }, 600);
-  }
-
-  document.getElementById('modalWatch').addEventListener('click', function(){ closeModal(true); });
-  document.getElementById('modalSkip').addEventListener('click', function(){ closeModal(false); });
-  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(false); });
 })();
 </script>
 </body>
