@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ders Videoları — Online VIP Dershane</title>
+<meta name="description" content="Online VIP Dershane tanıtım videosu ve LGS, YKS örnek canlı ders kayıtları. Dershanemizin işleyişini videolarla keşfedin.">
+<link rel="canonical" href="https://onlinevipdershane1.vercel.app/videolar.html">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/cart.css">
+<link rel="stylesheet" href="assets/icons.css">
+<style>
+:root{--navy:#1a3fad;--accent:#e8232a;--accent2:#c8191f;--text:#1a1f36;--muted:#6e6e73;--border:#e5e5e7;--light:#f5f5f7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:var(--text);line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:var(--navy);}
+.nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.nav-links a{font-size:13.5px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:9px;transition:.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--navy);background:var(--light);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.btn-link{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;border:1.5px solid var(--border);}
+.btn-cta{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;background:var(--accent);color:#fff;border:none;}
+.container{max-width:1100px;margin:0 auto;padding:0 5%;}
+.hero{padding:48px 0 32px;}
+.hero-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;align-items:center;}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:10px;}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:12px;}
+.lead{color:var(--muted);font-size:15px;margin-bottom:20px;max-width:520px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:11px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.btn-primary:hover{background:var(--accent2);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:11px;border:2px solid var(--navy);color:var(--navy);font-size:14px;font-weight:700;background:#fff;cursor:pointer;font-family:inherit;}
+.video-shell{background:#000;border-radius:16px;overflow:hidden;box-shadow:0 12px 40px rgba(26,63,173,.15);}
+.video-shell iframe{display:block;width:100%;border:0;}
+.video-shell--portrait iframe{aspect-ratio:482/857;max-height:520px;margin:0 auto;}
+.video-shell--landscape iframe{aspect-ratio:16/9;}
+.section{padding:40px 0 64px;}
+.section-head{margin-bottom:24px;}
+.section-head h2{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,3vw,28px);margin-bottom:6px;}
+.section-head p{color:var(--muted);font-size:14px;}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.filter-btn{padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--navy);color:var(--navy);background:#f0f5ff;}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.video-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.25s;cursor:pointer;}
+.video-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,63,173,.1);border-color:rgba(26,63,173,.25);}
+.video-card-thumb{position:relative;background:#0a1a4e;max-width:280px;margin:0 auto;}
+.video-card-thumb iframe{width:100%;aspect-ratio:482/857;border:0;display:block;pointer-events:none;}
+.play-badge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);pointer-events:none;}
+.play-badge span{width:52px;height:52px;border-radius:50%;background:rgba(232,35,42,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;padding-left:3px;}
+.video-card-body{padding:16px;}
+.video-card-cat{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+.video-card-body h3{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.35;}
+.video-card-body p{font-size:13px;color:var(--muted);line-height:1.6;}
+.video-card-meta{display:flex;gap:10px;margin-top:10px;font-size:11.5px;color:var(--muted);font-weight:600;}
+.cta-box{margin-top:40px;padding:28px;border-radius:16px;background:linear-gradient(135deg,#1a3fad,#0f2a7a);color:#fff;text-align:center;}
+.cta-box h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:8px;}
+.cta-box p{opacity:.85;margin-bottom:16px;font-size:14px;}
+.footer{text-align:center;padding:32px 5%;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,20,50,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.show{display:flex;}
+.modal{background:#fff;border-radius:18px;max-width:480px;width:100%;padding:32px 28px;box-shadow:0 24px 64px rgba(0,0,0,.2);animation:modalIn .3s ease;}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(.98);}to{opacity:1;transform:none;}}
+.modal-icon{width:56px;height:56px;border-radius:14px;background:#f0f5ff;color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:16px;}
+.modal h2{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:10px;line-height:1.25;}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:20px;line-height:1.7;}
+.modal-actions{display:flex;flex-direction:column;gap:10px;}
+.modal-skip{margin-top:14px;text-align:center;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;font-family:inherit;width:100%;}
+.modal-check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted);cursor:pointer;}
+.modal-check input{accent-color:var(--navy);}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;}
+  .video-grid{grid-template-columns:1fr 1fr;}
+  .video-shell--portrait iframe{max-height:420px;}
+}
+@media(max-width:600px){
+  .nav-links{display:none;}
+  .video-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="modal-overlay" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-icon">▶</div>
+    <h2 id="modalTitle">Dershanemizin işleyişi hakkında bilgi almak ister misiniz?</h2>
+    <p>Online VIP Dershane'nin canlı ders sistemi, VIP gruplar ve koçluk modelini anlatan kısa tanıtım videosunu izleyebilirsiniz.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="modalWatch">Evet, tanıtım videosunu izle</button>
+      <button type="button" class="btn-outline" id="modalSkip">Hayır, örnek ders videolarına göz at</button>
+    </div>
+    <label class="modal-check"><input type="checkbox" id="modalNever"> Bir daha gösterme</label>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">Online VIP Dershane</a>
+    <div class="nav-links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="programlar/index.html">Programlar</a>
+      <a href="videolar.html" class="active">Videolar</a>
+      <a href="blog.html">Blog</a>
+      <a href="basarilarimiz.html">Başarılarımız</a>
+      <a href="iletisim.html">İletişim</a>
+    </div>
+    <div class="nav-right">
+      <a href="programlar/index.html" class="btn-link">Programlar</a>
+      <a href="kayit.html" class="btn-cta">Kayıt Ol</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="intro-video">
+  <div class="container hero-grid">
+    <div>
+      <div class="sec-label">Tanıtım Videosu</div>
+      <h1>Online VIP Dershane Nasıl Çalışır?</h1>
+      <p class="lead">Canlı dersler, maksimum 10 kişilik VIP gruplar, birebir koçluk ve 7/24 soru desteği — sistemimizi tanıtım videosuyla keşfedin.</p>
+      <div class="hero-btns">
+        <a href="kayit.html" class="btn-primary">Ücretsiz Tanışma Dersi Al</a>
+        <a href="#ornek-dersler" class="btn-outline">Örnek Ders Videoları ↓</a>
+      </div>
+    </div>
+    <div class="video-shell video-shell--portrait">
+      <iframe src="https://www.youtube.com/embed/P4kRnS3Kscc" title="Online VIP Dershane Tanıtım — 14 Ocak 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="ornek-dersler" style="background:var(--light);">
+  <div class="container">
+    <div class="section-head">
+      <div class="sec-label">Video Galerisi</div>
+      <h2>Yaz Kampları & Veli Rehberleri</h2>
+      <p>Yaz kampı programlarımız ve veliler için hazırladığımız motivasyon ve çalışma alışkanlığı videoları.</p>
+    </div>
+    <div class="filters" id="videoFilters">
+      <button type="button" class="filter-btn active" data-filter="all">Tümü</button>
+      <button type="button" class="filter-btn" data-filter="kamplar">Yaz Kampları</button>
+      <button type="button" class="filter-btn" data-filter="veli">Veli & Motivasyon</button>
+    </div>
+    <div class="video-grid" id="videoGrid"></div>
+    <div class="cta-box">
+      <h3>Canlı dersleri bizzat deneyimlemek ister misiniz?</h3>
+      <p>Ücretsiz tanışma dersiyle sistemi hiçbir ödeme yapmadan test edin.</p>
+      <a href="kayit.html" class="btn-primary" style="display:inline-flex;">Ücretsiz Tanışma Dersi Al</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 Online VIP Dershane · <a href="index.html" style="color:var(--navy);font-weight:700;">Ana Sayfa</a> · <a href="iletisim.html" style="color:var(--navy);font-weight:700;">İletişim</a></p>
+</footer>
+
+<script src="assets/videos.js"></script>
+<script src="assets/products.js"></script>
+<script src="assets/icons.js"></script>
+<script src="assets/cart.js"></script>
+<script>
+(function(){
+  var CAT_LABELS = { intro:'Tanıtım', kamplar:'Yaz Kampı', veli:'Veli & Motivasyon' };
+  var grid = document.getElementById('videoGrid');
+  var filters = document.getElementById('videoFilters');
+  var activeFilter = 'all';
+
+  function thumb(id){
+    return 'https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1';
+  }
+
+  function renderVideos(){
+    var list = OVD_VIDEOS.samples.slice();
+    if(activeFilter !== 'all'){
+      list = list.filter(function(v){ return v.category === activeFilter; });
+    }
+    grid.innerHTML = list.map(function(v){
+      return '<article class="video-card" data-youtube="' + v.id + '" data-title="' + v.title.replace(/"/g,'&quot;') + '">'
+        + '<div class="video-card-thumb">'
+        + '<iframe src="' + thumb(v.id) + '" title="' + v.title.replace(/"/g,'&quot;') + '" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>'
+        + '<div class="play-badge"><span>▶</span></div></div>'
+        + '<div class="video-card-body">'
+        + '<div class="video-card-cat">' + (CAT_LABELS[v.category] || v.category) + '</div>'
+        + '<h3>' + v.title + '</h3>'
+        + '<p>' + v.desc + '</p>'
+        + '<div class="video-card-meta"><span>▶ YouTube\'da izle</span></div>'
+        + '</div></article>';
+    }).join('');
+  }
+
+  filters.addEventListener('click', function(e){
+    var btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    filters.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderVideos();
+  });
+
+  grid.addEventListener('click', function(e){
+    var card = e.target.closest('.video-card');
+    if(!card) return;
+    var id = card.dataset.youtube;
+    var title = card.dataset.title;
+    window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
+  });
+
+  renderVideos();
+
+  var modal = document.getElementById('welcomeModal');
+  var storageKey = 'ovd_video_welcome_dismissed';
+
+  function closeModal(scrollToIntro){
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+    if(document.getElementById('modalNever').checked){
+      try{ localStorage.setItem(storageKey, '1'); }catch(err){}
+    }
+    if(scrollToIntro){
+      document.getElementById('intro-video').scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }
+
+  if(!localStorage.getItem(storageKey)){
+    setTimeout(function(){
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }, 600);
+  }
+
+  document.getElementById('modalWatch').addEventListener('click', function(){ closeModal(true); });
+  document.getElementById('modalSkip').addEventListener('click', function(){ closeModal(false); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(false); });
+})();
+</script>
+</body>
+</html>
