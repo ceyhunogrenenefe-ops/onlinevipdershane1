@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ödeme — Online VIP Dershane</title>
+<meta name="robots" content="noindex,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/cart.css">
+<style>
+:root{--navy:#1a3fad;--accent:#e8232a;--accent2:#c8191f;--text:#1a1f36;--muted:#6e6e73;--border:#e5e5e7;--light:#f5f5f7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:var(--text);line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:var(--navy);}
+.container{max-width:960px;margin:0 auto;padding:40px 5% 80px;}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);margin-bottom:8px;}
+.lead{color:var(--muted);margin-bottom:28px;}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start;}
+@media(max-width:800px){.grid{grid-template-columns:1fr;}}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;}
+.card h2{font-size:18px;margin-bottom:16px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;}
+.field input,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:14px;}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,63,173,.12);}
+.field small{display:block;margin-top:4px;color:var(--muted);font-size:12px;}
+.order-line{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.order-line:last-child{border-bottom:none;}
+.order-total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid var(--border);}
+.order-total strong{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;color:var(--navy);}
+.btn-pay{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border-radius:12px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;margin-top:16px;}
+.btn-pay:hover{background:var(--accent2);}
+.btn-pay:disabled{opacity:.65;cursor:not-allowed;}
+.secure{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;}
+.error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;}
+.back-link{display:inline-block;margin-bottom:20px;color:var(--navy);font-weight:700;font-size:14px;}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">Online VIP Dershane</a>
+    <a href="sepet.html" class="back-link">← Sepete Dön</a>
+  </div>
+</nav>
+<main class="container">
+  <a href="sepet.html" class="back-link">← Sepete Dön</a>
+  <h1>💳 Ödeme</h1>
+  <p class="lead">Veli bilgilerinizi girin; kredi kartı ödemesi için güvenli Stripe sayfasına yönlendirileceksiniz.</p>
+  <div class="grid">
+    <form class="card" id="checkout-form">
+      <h2>Veli Bilgileri</h2>
+      <div class="error" id="form-error"></div>
+      <div class="field">
+        <label for="parentName">Veli Adı Soyadı *</label>
+        <input id="parentName" name="parentName" required autocomplete="name" placeholder="Örn. Ayşe Yılmaz">
+      </div>
+      <div class="field">
+        <label for="phone">Telefon *</label>
+        <input id="phone" name="phone" required type="tel" autocomplete="tel" placeholder="05xx xxx xx xx">
+      </div>
+      <div class="field">
+        <label for="email">E-posta *</label>
+        <input id="email" name="email" required type="email" autocomplete="email" placeholder="ornek@email.com">
+        <small>Ödeme makbuzu bu adrese gönderilir.</small>
+      </div>
+      <div class="field">
+        <label for="studentInfo">Öğrenci Bilgisi (isteğe bağlı)</label>
+        <textarea id="studentInfo" name="studentInfo" rows="3" placeholder="Öğrenci adı, sınıf seviyesi vb."></textarea>
+      </div>
+      <button type="submit" class="btn-pay" id="pay-btn">🔒 Kredi Kartı ile Öde</button>
+      <p class="secure">256-bit SSL · Stripe güvenli ödeme · Visa, Mastercard, Troy</p>
+    </form>
+    <aside class="card">
+      <h2>Sipariş Özeti</h2>
+      <div id="order-summary"></div>
+    </aside>
+  </div>
+</main>
+<script src="assets/products.js"></script>
+<script src="assets/cart.js"></script>
+<script>
+(function(){
+  function renderSummary(){
+    var box=document.getElementById('order-summary');
+    var items=OVD_CART.read();
+    if(!items.length){
+      location.href='sepet.html';
+      return;
+    }
+    var html='';
+    items.forEach(function(item){
+      var p=VIP_getProduct(item.id);
+      if(!p)return;
+      html+='<div class="order-line"><span>'+p.name+' × '+item.qty+'</span><strong>'+VIP_formatPrice(p.price*item.qty)+'</strong></div>';
+    });
+    html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(OVD_CART.total())+'</strong></div>';
+    box.innerHTML=html;
+  }
+
+  function showError(msg){
+    var el=document.getElementById('form-error');
+    el.textContent=msg;
+    el.style.display='block';
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    renderSummary();
+    document.getElementById('checkout-form').addEventListener('submit',async function(e){
+      e.preventDefault();
+      var btn=document.getElementById('pay-btn');
+      var err=document.getElementById('form-error');
+      err.style.display='none';
+      btn.disabled=true;
+      btn.textContent='Yönlendiriliyor...';
+      try{
+        var res=await fetch('/api/create-checkout-session',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            items:OVD_CART.read(),
+            customer:{
+              parentName:document.getElementById('parentName').value.trim(),
+              phone:document.getElementById('phone').value.trim(),
+              email:document.getElementById('email').value.trim(),
+              studentInfo:document.getElementById('studentInfo').value.trim(),
+            }
+          })
+        });
+        var data=await res.json();
+        if(!res.ok) throw new Error(data.error||'Ödeme başlatılamadı');
+        if(data.url) window.location.href=data.url;
+        else throw new Error('Ödeme bağlantısı alınamadı');
+      }catch(ex){
+        showError(ex.message||'Bir hata oluştu. Lütfen tekrar deneyin.');
+        btn.disabled=false;
+        btn.textContent='🔒 Kredi Kartı ile Öde';
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

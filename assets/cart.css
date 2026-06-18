@@ -1,0 +1,162 @@
+.cart-nav-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e5e7;
+  background: #fff;
+  color: #1a1f36;
+  text-decoration: none;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+.cart-nav-btn:hover {
+  border-color: #1a3fad;
+  color: #1a3fad;
+  background: #f0f5ff;
+}
+.cart-nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 100px;
+  background: #e8232a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(232, 35, 42, 0.35);
+}
+.cart-nav-badge.show {
+  display: inline-flex;
+}
+
+.btn-education-al {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: #e8232a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Nunito', sans-serif;
+  text-decoration: none;
+  border: none;
+}
+.btn-education-al:hover {
+  background: #c8191f;
+  color: #fff;
+}
+
+.btn-add-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 11px;
+  border: 2px solid #1a3fad;
+  background: #fff;
+  color: #1a3fad;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Nunito', sans-serif;
+  text-decoration: none;
+  width: 100%;
+}
+.btn-add-cart:hover {
+  background: #1a3fad;
+  color: #fff;
+}
+.btn-add-cart.btn-add-cart--inline {
+  width: auto;
+}
+
+.prog-card-wrap {
+  position: relative;
+  display: block;
+}
+.prog-card-wrap .prog-arrow {
+  display: none;
+}
+.prog-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.prog-card-actions .btn-detail {
+  flex: 1;
+  min-width: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 11px;
+  border: 1.5px solid #e5e5e7;
+  background: #fff;
+  color: #1a1f36;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.prog-card-actions .btn-detail:hover {
+  border-color: #1a3fad;
+  color: #1a3fad;
+}
+.prog-card-actions .btn-add-cart,
+.prog-card-actions .btn-education-al {
+  flex: 1;
+  min-width: 130px;
+}
+
+.price-box .btn-add-cart,
+.price-box .btn-education-al {
+  margin-bottom: 8px;
+  width: 100%;
+  display: flex;
+}
+
+#cart-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #1a3fad;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  z-index: 99999;
+  box-shadow: 0 8px 28px rgba(26, 63, 173, 0.35);
+  display: none;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+#cart-toast.show {
+  display: flex;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
