@@ -1,0 +1,109 @@
+@media (min-width: 961px) {
+  .nav-links {
+    flex-wrap: nowrap !important;
+    gap: 1px;
+  }
+  .nav-links > a,
+  .prog-dropdown-btn,
+  .contact-dropdown-btn {
+    white-space: nowrap;
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+}
+
+.contact-dropdown {
+  position: relative;
+}
+
+.contact-dropdown-btn {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted, #6e6e73);
+  padding: 7px 12px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.contact-dropdown-btn:hover,
+.contact-dropdown-btn.active {
+  color: var(--navy, #1a3fad);
+  background: #f0f5ff;
+  font-weight: 700;
+}
+
+.contact-arrow {
+  font-size: 10px;
+  line-height: 1;
+}
+
+.contact-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #fff;
+  border: 1px solid #e5e5e7;
+  border-radius: 14px;
+  padding: 8px;
+  min-width: 170px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 500;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-dropdown:hover .contact-list,
+.contact-dropdown:focus-within .contact-list {
+  display: flex;
+}
+
+.contact-list a {
+  display: block !important;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1a1f36 !important;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  background: #f5f5f7 !important;
+  color: #1a3fad !important;
+}
+
+.contact-list a.active {
+  color: #1a3fad !important;
+  background: #f0f5ff !important;
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+  .nav-links.open .contact-dropdown {
+    width: 100%;
+  }
+  .nav-links.open .contact-dropdown-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 14px;
+  }
+  .nav-links.open .contact-list {
+    position: static;
+    display: flex !important;
+    box-shadow: none;
+    border: none;
+    padding: 0 0 4px 12px;
+    background: transparent;
+    min-width: 0;
+  }
+}

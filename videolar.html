@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/cart.css">
+<link rel="stylesheet" href="assets/nav-contact.css">
 <link rel="stylesheet" href="assets/icons.css">
 <style>
 :root{--navy:#1a3fad;--accent:#e8232a;--accent2:#c8191f;--text:#1a1f36;--muted:#6e6e73;--border:#e5e5e7;--light:#f5f5f7;}
@@ -86,7 +87,13 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
       <a href="videolar.html" class="active">Videolar</a>
       <a href="blog.html">Blog</a>
       <a href="basarilarimiz.html">Başarılarımız</a>
-      <a href="iletisim.html">İletişim</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="iletisim.html">İletişim</a>
+          <a href="kariyer.html">Kariyer</a>
+        </div>
+      </div>
     </div>
     <div class="nav-right">
       <a href="programlar/index.html" class="btn-link">Programlar</a>

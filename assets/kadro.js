@@ -22,7 +22,7 @@
     },
     {
       slug: 'tayyibe-ogrenenefe',
-      name: 'Tayyibe Örenenefe',
+      name: 'Tayyibe Öğrenenefe',
       role: 'Biyoloji Öğretmeni',
       photo: 'assets/img/kadro/tayyibe-ogrenenefe.jpg',
       short:
