@@ -67,6 +67,7 @@ src="https://www.facebook.com/tr?id=2470509843418190&ev=PageView&noscript=1"
 <link rel="stylesheet" href="assets/nav-contact.css">
 <link rel="stylesheet" href="assets/icons.css">
 <link rel="stylesheet" href="assets/kadro.css">
+<link rel="stylesheet" href="assets/testimonials.css">
 <link rel="stylesheet" href="assets/welcome-modal.css">
 <style>
 :root {
@@ -1092,32 +1093,18 @@ buildHeroDots();resetTimer();
 <section class="section section-light" id="yorumlar">
   <div class="container">
     <div class="sec-head">
-      <div class="sec-label">Veli ve öğrenci görüşleri</div>
-      <h2 class="sec-title">Onların <span>sözü</span></h2>
+      <div class="sec-label">Hakkımızda ne dediler?</div>
+      <h2 class="sec-title">Velilerimizin <span>sözü</span></h2>
+      <p class="sec-sub">Sizlerden gelen değerli düşünceler ve yorumlar.</p>
     </div>
-    <div class="placeholder-note">Bu bölüm gerçek yorumlarınız için hazır. Lütfen izin aldığınız öğrenci/veli adı, okul bilgisi ve kısa alıntı gönderin — kartları sizin metninizle güncelleyeceğiz.</div>
-    <div class="testimonials-grid">
-      <div class="tcard tcard-placeholder">
-        <p class="tcard-quote">[Öğrenci yorumu — örn. hangi program, ne değişti, 2–3 cümle kendi cümleleriyle]</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">?</div>
-          <div><div class="tcard-name">[Ad Soyad veya Ad + soyad baş harfi]</div><div class="tcard-role">[Program — yerleştiği okul veya hedef]</div></div>
-        </div>
+    <div class="testimonials-carousel" id="testimonialsCarousel">
+      <div class="testimonials-track"></div>
+      <div class="testimonials-nav">
+        <button type="button" class="testimonials-arrow testimonials-prev" aria-label="Önceki yorumlar">‹</button>
+        <div class="testimonials-dots"></div>
+        <button type="button" class="testimonials-arrow testimonials-next" aria-label="Sonraki yorumlar">›</button>
       </div>
-      <div class="tcard tcard-placeholder">
-        <p class="tcard-quote">[Veli yorumu — çocuğun sınıfı, sizin gözleminiz, iletişimden memnuniyet]</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">?</div>
-          <div><div class="tcard-name">[Veli adı]</div><div class="tcard-role">[Öğrencinin programı]</div></div>
-        </div>
-      </div>
-      <div class="tcard tcard-placeholder">
-        <p class="tcard-quote">[Üçüncü yorum — farklı programdan veya farklı şehirden]</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">?</div>
-          <div><div class="tcard-name">[Ad]</div><div class="tcard-role">[Program / sonuç]</div></div>
-        </div>
-      </div>
+      <p class="testimonials-meta">36 veli yorumu</p>
     </div>
   </div>
 </section>
@@ -1310,6 +1297,7 @@ document.addEventListener('click',function(e){
 </script>
 <script src="assets/icons.js"></script>
 <script src="assets/kadro.js"></script>
+<script src="assets/testimonials.js"></script>
 <script src="assets/products.js"></script>
 <script src="assets/cart.js"></script>
 <script src="assets/welcome-modal.js"></script>
