@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kadromuz — Online VIP Dershane</title>
+<meta name="description" content="Online VIP Dershane öğretmen ve uzman kadrosu. Matematik, biyoloji, sosyal bilgiler, psikoterapi ve eğitim koçluğu.">
+<link rel="canonical" href="https://onlinevipdershane1.vercel.app/kadromuz.html">
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/kadro.css">
+<link rel="stylesheet" href="assets/cart.css">
+<style>
+:root{--navy:#1a3fad;--accent:#e8232a;--text:#1a1f36;--muted:#64748b;--border:#e2e8f4;--light:#f4f7ff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#fff;color:var(--text);line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);}
+.nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;}
+.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:var(--navy);}
+.nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.nav-links a{font-size:13.5px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:9px;}
+.nav-links a:hover,.nav-links a.active{color:var(--navy);background:var(--light);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.btn-link{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;border:1.5px solid var(--border);}
+.btn-cta{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;background:var(--accent);color:#fff;}
+.container{max-width:1100px;margin:0 auto;padding:0 5%;}
+.hero{padding:48px 0 24px;}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:10px;}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);line-height:1.15;margin-bottom:12px;}
+.lead{color:var(--muted);font-size:15px;max-width:640px;margin-bottom:8px;}
+.section{padding:24px 0 64px;}
+.cta-box{margin-top:40px;padding:28px;border-radius:16px;background:linear-gradient(135deg,#1a3fad,#0f2a7a);color:#fff;text-align:center;}
+.cta-box h2{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:8px;}
+.cta-box p{opacity:.9;margin-bottom:16px;font-size:14px;}
+.btn-primary{display:inline-flex;padding:12px 20px;border-radius:11px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;}
+.footer{text-align:center;padding:32px 5%;color:var(--muted);font-size:13px;border-top:1px solid var(--border);}
+@media(max-width:600px){.nav-links{display:none;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">Online VIP Dershane</a>
+    <div class="nav-links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="programlar/index.html">Programlar</a>
+      <a href="kadromuz.html" class="active">Kadromuz</a>
+      <a href="videolar.html">Videolar</a>
+      <a href="blog.html">Blog</a>
+      <a href="basarilarimiz.html">Başarılarımız</a>
+      <a href="iletisim.html">İletişim</a>
+    </div>
+    <div class="nav-right">
+      <a href="programlar/index.html" class="btn-link">Programlar</a>
+      <a href="kayit.html" class="btn-cta">Kayıt Ol</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="sec-label">Eğitim kadromuz</div>
+    <h1>Dersi veren insanlar</h1>
+    <p class="lead">Online VIP Dershane'de öğrencilerimiz; matematik, fen, sosyal bilgiler ve rehberlik alanında deneyimli öğretmen ve uzmanlarla çalışır.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="team-grid" id="teamGridFull"></div>
+    <div class="cta-box">
+      <h2>Ekibimizle tanışmak ister misiniz?</h2>
+      <p>Ücretsiz tanışma dersinde programları ve öğretmenlerimizi yakından tanıyabilirsiniz.</p>
+      <a href="iletisim.html" class="btn-primary">Tanışma Dersi Talep Et</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 Online VIP Dershane · <a href="index.html" style="color:var(--navy);font-weight:700;">Ana Sayfa</a> · <a href="iletisim.html" style="color:var(--navy);font-weight:700;">İletişim</a></p>
+</footer>
+
+<script src="assets/kadro.js"></script>
+<script src="assets/products.js"></script>
+<script src="assets/cart.js"></script>
+</body>
+</html>
