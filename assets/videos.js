@@ -44,6 +44,14 @@
         category: 'veli',
         portrait: true,
       },
+      {
+        platform: 'instagram',
+        permalink: 'https://www.instagram.com/reel/DA3QXKaBSgi/',
+        title: 'Veli Memnuniyet',
+        desc: 'Online VIP Dershane velilerimizin deneyimlerinden bir paylaşım.',
+        category: 'veli-memnuniyet',
+        portrait: true,
+      },
     ],
   };
 

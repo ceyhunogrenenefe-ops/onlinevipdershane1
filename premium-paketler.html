@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Premium Özel Ders Paketleri — Online VIP Dershane</title>
+<meta name="description" content="Premium özel ders paketleri: 1, 3, 5 ve 10 ders. Güvenli PayTR ödeme ile hemen satın alın. En avantajlı 10 ders paketi 8.500 TL.">
+<link rel="canonical" href="https://onlinevipdershane.com/premium-paketler">
+<meta property="og:title" content="Premium Özel Ders Paketleri">
+<meta property="og:url" content="https://onlinevipdershane.com/premium-paketler">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1f5c">
+<link rel="icon" type="image/png" href="assets/img/ovd-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{navy:{DEFAULT:'#1a3fad',2:'#0f2a7a',3:'#0d1f5c'},accent:{DEFAULT:'#e8232a',2:'#c8191f'},ink:'#1a1f36',mute:'#64748b',soft:'#f4f7ff'},fontFamily:{display:['Bricolage Grotesque','system-ui','sans-serif'],sans:['Nunito','system-ui','sans-serif']},boxShadow:{soft:'0 10px 32px rgba(26,63,173,.10)',lift:'0 20px 50px rgba(13,31,92,.16)'}}}}
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  .card-enter{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+  .card-enter.in{opacity:1;transform:none}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
+<script src="assets/analytics-config.js"></script>
+<script src="assets/gtag-init.js"></script>
+</head>
+<body class="font-sans text-ink bg-soft antialiased">
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header class="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5 lg:px-6">
+    <a href="/"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" class="h-8 w-auto sm:h-9" decoding="async"></a>
+    <nav class="hidden items-center gap-1 md:flex">
+      <a href="ozel-ders.html" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Özel Ders</a>
+      <a href="ogretmenler.html" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Öğretmenler</a>
+      <a href="premium-paketler.html" class="rounded-lg bg-soft px-3 py-2 text-sm font-bold text-navy">Paketler</a>
+    </nav>
+    <a href="iletisim.html" class="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-navy hover:border-navy">Destek</a>
+  </div>
+</header>
+
+<section class="bg-navy-3 text-white">
+  <div class="mx-auto max-w-6xl px-4 py-12 sm:px-5 lg:px-6 lg:py-16">
+    <p class="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-red-200/90">Premium Paketler</p>
+    <h1 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Özel ders paketini seç, PayTR ile öde</h1>
+    <p class="mt-3 max-w-2xl text-sm text-slate-300 sm:text-base">Paket seçiminden sonra güvenli PayTR ödeme sayfasına yönlendirilirsiniz. Visa, Mastercard, Troy.</p>
+    <p id="teacherNote" class="mt-4 hidden rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-slate-200"></p>
+  </div>
+</section>
+
+<main class="mx-auto max-w-6xl px-4 py-10 sm:px-5 lg:px-6 lg:py-14">
+  <div id="premiumPackageGrid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch"></div>
+  <p class="mt-8 text-center text-xs text-mute">Ödeme PayTR güvenli ödeme altyapısı üzerinden alınır. Sipariş tamamlandığında sistem otomatik bildirim alır.</p>
+</main>
+
+<footer class="border-t border-slate-200 bg-white py-8 text-center text-sm text-mute">
+  <a href="ozel-ders.html" class="font-semibold text-navy hover:text-accent">← Özel Ders sayfasına dön</a>
+</footer>
+
+<script src="assets/products.js?v=20260716b"></script>
+<script src="assets/cart.js?v=20260716b"></script>
+<script src="assets/premium-packages-ui.js?v=20260716b"></script>
+<script>
+(function(){
+  var teacher=new URLSearchParams(location.search).get('ogretmen')||'';
+  if(teacher){
+    var note=document.getElementById('teacherNote');
+    note.textContent='Seçili öğretmen: '+teacher.replace(/-/g,' ')+' — ödeme sonrası eşleştirme için not düşülecektir.';
+    note.classList.remove('hidden');
+  }
+  OVD_PREMIUM_PACKAGES.init({ source:'premium-paketler' });
+})();
+</script>
+<script src="assets/perf-analytics.js" defer></script>
+</body>
+</html>

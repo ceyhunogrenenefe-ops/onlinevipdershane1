@@ -1,0 +1,21 @@
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.nav-logo img {
+  display: block;
+  height: 52px;
+  width: auto;
+  max-width: min(220px, 42vw);
+  object-fit: contain;
+}
+
+@media (min-width: 961px) {
+  .nav-logo img {
+    height: 68px;
+    max-width: 280px;
+  }
+}

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Ders Videoları — Online VIP Dershane</title>
 <meta name="description" content="Online VIP Dershane tanıtım videosu ve LGS, YKS örnek canlı ders kayıtları. Dershanemizin işleyişini videolarla keşfedin.">
-<link rel="canonical" href="https://onlinevipdershane1.vercel.app/videolar.html">
+<link rel="canonical" href="https://onlinevipdershane.com/videolar.html">
 <meta name="robots" content="index,follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:var(--text);line-heig
 a{text-decoration:none;color:inherit;}
 .nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
 .nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px;}
-.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:var(--navy);}
+.nav-logo{display:inline-flex;align-items:center;flex-shrink:0;line-height:0;}
 .nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
 .nav-links a{font-size:13.5px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:9px;transition:.2s;}
 .nav-links a:hover,.nav-links a.active{color:var(--navy);background:var(--light);}
@@ -60,6 +60,9 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 .video-card-body h3{font-size:15px;font-weight:700;margin-bottom:6px;line-height:1.35;}
 .video-card-body p{font-size:13px;color:var(--muted);line-height:1.6;}
 .video-card-meta{display:flex;gap:10px;margin-top:10px;font-size:11.5px;color:var(--muted);font-weight:600;}
+.video-card--inline{cursor:default;}
+.video-card--inline:hover{transform:none;}
+.video-card--inline .video-card-thumb iframe{pointer-events:auto;}
 .cta-box{margin-top:40px;padding:28px;border-radius:16px;background:linear-gradient(135deg,#1a3fad,#0f2a7a);color:#fff;text-align:center;}
 .cta-box h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:8px;}
 .cta-box p{opacity:.85;margin-bottom:16px;font-size:14px;}
@@ -74,12 +77,23 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
   .video-grid{grid-template-columns:1fr;}
 }
 </style>
+  <link rel="stylesheet" href="assets/nav-logo.css">
+  <link rel="stylesheet" href="assets/welcome-modal.css">
+  <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
+<script src="assets/analytics-config.js"></script>
+<script src="assets/gtag-init.js"></script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <nav class="nav">
   <div class="nav-in">
-    <a href="index.html" class="nav-logo">Online VIP Dershane</a>
+    <a href="index.html" class="nav-logo"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68" decoding="async"></a>
     <div class="nav-links">
       <a href="index.html">Ana Sayfa</a>
       <a href="programlar/index.html">Programlar</a>
@@ -88,7 +102,7 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
       <a href="blog.html">Blog</a>
       <a href="basarilarimiz.html">Başarılarımız</a>
       <div class="contact-dropdown">
-        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">?</span></button>
         <div class="contact-list">
           <a href="iletisim.html">İletişim</a>
           <a href="kariyer.html">Kariyer</a>
@@ -110,7 +124,7 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
       <p class="lead">Canlı dersler, maksimum 10 kişilik VIP gruplar, birebir koçluk ve 7/24 soru desteği — sistemimizi tanıtım videosuyla keşfedin.</p>
       <div class="hero-btns">
         <a href="kayit.html" class="btn-primary">Ücretsiz Tanışma Dersi Al</a>
-        <a href="#ornek-dersler" class="btn-outline">Örnek Ders Videoları ↓</a>
+        <a href="#ornek-dersler" class="btn-outline">Örnek Ders Videoları v</a>
       </div>
     </div>
     <div class="video-shell video-shell--portrait">
@@ -123,13 +137,14 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
   <div class="container">
     <div class="section-head">
       <div class="sec-label">Video Galerisi</div>
-      <h2>Yaz Kampları & Veli Rehberleri</h2>
-      <p>Yaz kampı programlarımız ve veliler için hazırladığımız motivasyon ve çalışma alışkanlığı videoları.</p>
+      <h2>Yaz Kampları, Veli Rehberleri & Memnuniyet</h2>
+      <p>Yaz kampı programlarımız, veli rehberleri ve velilerimizin deneyim paylaşımları.</p>
     </div>
     <div class="filters" id="videoFilters">
       <button type="button" class="filter-btn active" data-filter="all">Tümü</button>
       <button type="button" class="filter-btn" data-filter="kamplar">Yaz Kampları</button>
       <button type="button" class="filter-btn" data-filter="veli">Veli & Motivasyon</button>
+      <button type="button" class="filter-btn" data-filter="veli-memnuniyet">Veli Memnuniyet</button>
     </div>
     <div class="video-grid" id="videoGrid"></div>
     <div class="cta-box">
@@ -150,7 +165,12 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 <script src="assets/cart.js"></script>
 <script>
 (function(){
-  var CAT_LABELS = { intro:'Tanıtım', kamplar:'Yaz Kampı', veli:'Veli & Motivasyon' };
+  var CAT_LABELS = {
+    intro: 'Tanıtım',
+    kamplar: 'Yaz Kampı',
+    veli: 'Veli & Motivasyon',
+    'veli-memnuniyet': 'Veli Memnuniyet'
+  };
   var grid = document.getElementById('videoGrid');
   var filters = document.getElementById('videoFilters');
   var activeFilter = 'all';
@@ -159,12 +179,29 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
     return 'https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1';
   }
 
+  function instagramEmbed(url){
+    var m = String(url || '').match(/\/reel\/([^/?#]+)/);
+    return m ? 'https://www.instagram.com/reel/' + m[1] + '/embed' : url;
+  }
+
   function renderVideos(){
     var list = OVD_VIDEOS.samples.slice();
     if(activeFilter !== 'all'){
       list = list.filter(function(v){ return v.category === activeFilter; });
     }
     grid.innerHTML = list.map(function(v){
+      if(v.platform === 'instagram'){
+        return '<article class="video-card video-card--inline">'
+          + '<div class="video-card-thumb">'
+          + '<iframe src="' + instagramEmbed(v.permalink) + '" title="' + v.title.replace(/"/g,'&quot;') + '" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" scrolling="no"></iframe>'
+          + '</div>'
+          + '<div class="video-card-body">'
+          + '<div class="video-card-cat">' + (CAT_LABELS[v.category] || v.category) + '</div>'
+          + '<h3>' + v.title + '</h3>'
+          + '<p>' + v.desc + '</p>'
+          + '<div class="video-card-meta"><span>▶ Sayfada izle</span></div>'
+          + '</div></article>';
+      }
       return '<article class="video-card" data-youtube="' + v.id + '" data-title="' + v.title.replace(/"/g,'&quot;') + '">'
         + '<div class="video-card-thumb">'
         + '<iframe src="' + thumb(v.id) + '" title="' + v.title.replace(/"/g,'&quot;') + '" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>'
@@ -189,14 +226,16 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 
   grid.addEventListener('click', function(e){
     var card = e.target.closest('.video-card');
-    if(!card) return;
+    if(!card || card.classList.contains('video-card--inline')) return;
     var id = card.dataset.youtube;
-    var title = card.dataset.title;
+    if(!id) return;
     window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
   });
 
   renderVideos();
 })();
 </script>
+  <script src="assets/welcome-modal.js"></script>
+<script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

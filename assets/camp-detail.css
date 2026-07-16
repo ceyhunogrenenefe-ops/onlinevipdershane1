@@ -1,0 +1,145 @@
+.camp-page .prog-tag {
+  background: color-mix(in srgb, var(--camp-accent) 10%, white);
+  border-color: color-mix(in srgb, var(--camp-accent) 25%, white);
+  color: var(--camp-accent);
+}
+
+.camp-page .price-box .price {
+  color: var(--camp-accent);
+}
+
+.camp-page .content-sec h2 {
+  border-bottom-color: color-mix(in srgb, var(--camp-accent) 20%, #e5e5e7);
+}
+
+.camp-page .feat-item::before {
+  color: var(--camp-accent);
+}
+
+.camp-page .link-item {
+  color: var(--camp-accent);
+  background: color-mix(in srgb, var(--camp-accent) 8%, white);
+  border-color: color-mix(in srgb, var(--camp-accent) 18%, white);
+}
+
+.camp-page .link-item:hover {
+  background: var(--camp-accent);
+  color: #fff;
+}
+
+.camp-page .btn-kayit {
+  background: var(--camp-accent);
+}
+
+.camp-page .btn-kayit:hover {
+  filter: brightness(0.9);
+}
+
+.camp-schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.camp-schedule-item {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--camp-accent) 8%, white);
+  border: 1px solid color-mix(in srgb, var(--camp-accent) 16%, white);
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1f36;
+}
+
+.camp-faq-item {
+  border: 1px solid #e5e5e7;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.camp-faq-item summary {
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.camp-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.camp-faq-item summary::after {
+  content: '+';
+  font-size: 18px;
+  color: var(--camp-accent);
+  flex-shrink: 0;
+}
+
+.camp-faq-item[open] summary::after {
+  content: '−';
+}
+
+.camp-faq-item p {
+  padding: 0 16px 14px;
+  font-size: 13.5px;
+  color: #6e6e73;
+  line-height: 1.7;
+}
+
+.camp-page--kampLgs {
+  --camp-accent: #1a3fad;
+}
+
+.camp-page--kamp56 {
+  --camp-accent: #ff6b35;
+}
+
+.camp-page--kampDgs {
+  --camp-accent: #7c3aed;
+}
+
+.camp-page--kamp910 {
+  --camp-accent: #1a3fad;
+}
+
+.camp-page--kampMaarifTyt {
+  --camp-accent: #e8232a;
+}
+
+.camp-page--kampTyt {
+  --camp-accent: #0d9488;
+}
+
+.camp-hero-poster--placeholder {
+  width: min(320px, 100%);
+  aspect-ratio: 4/5;
+  border-radius: 16px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--camp-accent) 18%, #0a1a4e), #0a1a4e);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.camp-hero-poster--placeholder span {
+  font-size: 48px;
+}
+
+.camp-hero-poster--placeholder p {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 220px;
+}

@@ -48,6 +48,46 @@
       period: 'kamp',
       slug: 'programlar/kamplar.html',
     },
+    kampLgs: {
+      id: 'kampLgs',
+      name: 'LGS Yaz Kampı',
+      subtitle: '8. Sınıf · 9 haftalık kamp',
+      price: 24000,
+      period: 'kamp',
+      slug: 'programlar/kamp-lgs.html',
+    },
+    kamp56: {
+      id: 'kamp56',
+      name: "5'ten 6. Sınıfa Geçenler Yaz Kampı",
+      subtitle: '5-6. Sınıf · 9 haftalık kamp',
+      price: 24000,
+      period: 'kamp',
+      slug: 'programlar/kamp-56.html',
+    },
+    kamp910: {
+      id: 'kamp910',
+      name: "9'dan 10'a Geçenler Yaz Kampı",
+      subtitle: 'Lise geçiş · 9 haftalık kamp',
+      price: 24000,
+      period: 'kamp',
+      slug: 'programlar/kamp-910.html',
+    },
+    kampMaarifTyt: {
+      id: 'kampMaarifTyt',
+      name: "Maarif Model TYT Yaz Kampı",
+      subtitle: '10-11. sınıf · 9 haftalık kamp',
+      price: 24000,
+      period: 'kamp',
+      slug: 'programlar/kamp-maarif-tyt.html',
+    },
+    kampTyt: {
+      id: 'kampTyt',
+      name: "11'den 12'ye TYT Yaz Kampı",
+      subtitle: 'TYT hızlandırma · 9 haftalık kamp',
+      price: 24000,
+      period: 'kamp',
+      slug: 'programlar/kamp-tyt.html',
+    },
     yazili: {
       id: 'yazili',
       name: 'Yazılıya Hazırlık',
@@ -72,6 +112,38 @@
       period: 'paket',
       slug: 'programlar/start.html',
     },
+    'ders-1': {
+      id: 'ders-1',
+      name: 'Premium Özel Ders — 1 Ders',
+      subtitle: 'Birebir canlı özel ders',
+      price: 1100,
+      period: 'paket',
+      slug: 'premium-paketler.html',
+    },
+    'ders-3': {
+      id: 'ders-3',
+      name: 'Premium Özel Ders — 3 Ders',
+      subtitle: 'Birebir canlı özel ders paketi',
+      price: 3000,
+      period: 'paket',
+      slug: 'premium-paketler.html',
+    },
+    'ders-5': {
+      id: 'ders-5',
+      name: 'Premium Özel Ders — 5 Ders',
+      subtitle: 'Birebir canlı özel ders paketi',
+      price: 4500,
+      period: 'paket',
+      slug: 'premium-paketler.html',
+    },
+    'ders-10': {
+      id: 'ders-10',
+      name: 'Premium Özel Ders — 10 Ders',
+      subtitle: 'En avantajlı birebir paket',
+      price: 8500,
+      period: 'paket',
+      slug: 'premium-paketler.html',
+    },
   };
 
   var PATH_TO_ID = {
@@ -81,9 +153,32 @@
     'lise.html': 'lise',
     'ilkokul.html': 'ilkokul',
     'kamplar.html': 'kamplar',
+    'kamp-lgs.html': 'kampLgs',
+    'kamp-56.html': 'kamp56',
+    'kamp-910.html': 'kamp910',
+    'kamp-maarif-tyt.html': 'kampMaarifTyt',
+    'kamp-tyt.html': 'kampTyt',
     'yazili.html': 'yazili',
     'kitap.html': 'kitap',
     'start.html': 'start',
+  };
+
+  /** Sepetteki urunlere gore onerilecek ilgili programlar */
+  var RELATED = {
+    lgs: ['kampLgs', 'yazili', 'kitap'],
+    kampLgs: ['lgs', 'yazili', 'kamplar'],
+    yks: ['kampTyt', 'kampMaarifTyt', 'yazili'],
+    kampTyt: ['yks', 'kampMaarifTyt', 'lise'],
+    kampMaarifTyt: ['yks', 'kampTyt', 'lise'],
+    ortaokul: ['kamp56', 'yazili', 'ilkokul'],
+    kamp56: ['ortaokul', 'kampLgs', 'yazili'],
+    lise: ['kamp910', 'kampMaarifTyt', 'yazili'],
+    kamp910: ['lise', 'kampTyt', 'kampMaarifTyt'],
+    ilkokul: ['ortaokul', 'kamp56'],
+    yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
+    kitap: ['yazili', 'start', 'lgs'],
+    start: ['yks', 'lgs', 'lise'],
+    kamplar: ['kampLgs', 'kamp56', 'kamp910', 'kampTyt'],
   };
 
   function formatPrice(amount) {
@@ -100,8 +195,33 @@
     return id ? PRODUCTS[id] : null;
   }
 
+  function getRelatedProducts(cartIds, limit) {
+    limit = limit || 4;
+    var inCart = {};
+    (cartIds || []).forEach(function (id) {
+      inCart[id] = true;
+    });
+    var scores = {};
+    (cartIds || []).forEach(function (id) {
+      var related = RELATED[id] || [];
+      related.forEach(function (relId, index) {
+        if (inCart[relId] || !PRODUCTS[relId]) return;
+        scores[relId] = (scores[relId] || 0) + (related.length - index);
+      });
+    });
+    return Object.keys(scores)
+      .sort(function (a, b) {
+        return scores[b] - scores[a];
+      })
+      .slice(0, limit)
+      .map(function (id) {
+        return PRODUCTS[id];
+      });
+  }
+
   global.VIP_PRODUCTS = PRODUCTS;
   global.VIP_getProduct = getProduct;
   global.VIP_getProductByPath = getProductByPath;
+  global.VIP_getRelatedProducts = getRelatedProducts;
   global.VIP_formatPrice = formatPrice;
 })(typeof window !== 'undefined' ? window : global);

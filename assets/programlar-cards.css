@@ -1,0 +1,138 @@
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.prog-card {
+  background: #ffffff;
+  border: 1.5px solid #e5e5e7;
+  border-radius: 16px;
+  padding: 0;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+.prog-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--navy, #1a3fad);
+  transition: 0.3s;
+  z-index: 1;
+}
+
+.prog-card:hover {
+  border-color: var(--navy, #1a3fad);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(26, 63, 173, 0.12);
+}
+
+.prog-card:hover::before {
+  background: var(--accent, #e8232a);
+}
+
+.prog-thumb {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: #f0f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.prog-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.prog-thumb--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prog-thumb--icon .prog-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  margin-bottom: 0;
+}
+
+.prog-card-body {
+  padding: 20px 24px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.prog-card h3 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text, #1a1f36);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.prog-card p {
+  font-size: 13.5px;
+  color: var(--muted, #6e6e73);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.prog-price {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy, #1a3fad);
+  margin-top: auto;
+}
+
+.prog-price span {
+  font-size: 12px;
+  color: var(--muted, #6e6e73);
+  font-weight: 400;
+  font-family: 'Nunito', sans-serif;
+}
+
+.prog-arrow {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  color: var(--navy, #1a3fad);
+  font-size: 18px;
+  opacity: 0.4;
+  transition: 0.2s;
+}
+
+.prog-card:hover .prog-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+@media (max-width: 960px) {
+  .programs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+}

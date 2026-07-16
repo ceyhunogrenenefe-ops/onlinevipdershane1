@@ -5,9 +5,18 @@ const PRODUCTS = {
   lise: { id: 'lise', name: '9-10-11. Sınıf Programı', price: 96000 },
   ilkokul: { id: 'ilkokul', name: '3-4. Sınıf Programı', price: 72000 },
   kamplar: { id: 'kamplar', name: 'Yaz Kampları', price: 24000 },
+  kampLgs: { id: 'kampLgs', name: 'LGS Yaz Kampı', price: 24000 },
+  kamp56: { id: 'kamp56', name: "5'ten 6. Sınıfa Geçenler Yaz Kampı", price: 24000 },
+  kamp910: { id: 'kamp910', name: "9'dan 10'a Geçenler Yaz Kampı", price: 24000 },
+  kampMaarifTyt: { id: 'kampMaarifTyt', name: 'Maarif Model TYT Yaz Kampı', price: 24000 },
+  kampTyt: { id: 'kampTyt', name: "11'den 12'ye TYT Yaz Kampı", price: 24000 },
   yazili: { id: 'yazili', name: 'Yazılıya Hazırlık', price: 2500 },
   kitap: { id: 'kitap', name: 'Kitap Atölyesi', price: 12000 },
   start: { id: 'start', name: 'VIP Start Paketi', price: 28000 },
+  'ders-1': { id: 'ders-1', name: 'Premium Özel Ders — 1 Ders', price: 1100 },
+  'ders-3': { id: 'ders-3', name: 'Premium Özel Ders — 3 Ders', price: 3000 },
+  'ders-5': { id: 'ders-5', name: 'Premium Özel Ders — 5 Ders', price: 4500 },
+  'ders-10': { id: 'ders-10', name: 'Premium Özel Ders — 10 Ders', price: 8500 },
 };
 
 function resolveLineItems(items) {

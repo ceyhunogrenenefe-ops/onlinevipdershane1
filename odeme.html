@@ -16,7 +16,7 @@ body{font-family:'Nunito',sans-serif;background:#fff;color:var(--text);line-heig
 a{text-decoration:none;color:inherit;}
 .nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);}
 .nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;}
-.nav-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;color:var(--navy);}
+.nav-logo{display:inline-flex;align-items:center;flex-shrink:0;line-height:0;}
 .container{max-width:960px;margin:0 auto;padding:40px 5% 80px;}
 h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);margin-bottom:8px;}
 .lead{color:var(--muted);margin-bottom:28px;}
@@ -40,19 +40,30 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
 .error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;}
 .back-link{display:inline-block;margin-bottom:20px;color:var(--navy);font-weight:700;font-size:14px;}
 </style>
+  <link rel="stylesheet" href="assets/nav-logo.css">
+  <link rel="stylesheet" href="assets/welcome-modal.css">
+  <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
+<script src="assets/analytics-config.js"></script>
+<script src="assets/gtag-init.js"></script>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <nav class="nav">
   <div class="nav-in">
-    <a href="index.html" class="nav-logo">Online VIP Dershane</a>
+    <a href="index.html" class="nav-logo"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68" decoding="async"></a>
     <a href="sepet.html" class="back-link">← Sepete Dön</a>
   </div>
 </nav>
 <main class="container">
   <a href="sepet.html" class="back-link">← Sepete Dön</a>
   <h1>💳 Ödeme</h1>
-  <p class="lead">Veli bilgilerinizi girin; kredi kartı ödemesi için güvenli Stripe sayfasına yönlendirileceksiniz.</p>
-  <div class="grid">
+  <p class="lead" id="pay-lead">Veli bilgilerinizi girin; güvenli ödeme ekranına yönlendirileceksiniz.</p>
+  <div class="grid" id="checkout-grid">
     <form class="card" id="checkout-form">
       <h2>Veli Bilgileri</h2>
       <div class="error" id="form-error"></div>
@@ -74,7 +85,7 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
         <textarea id="studentInfo" name="studentInfo" rows="3" placeholder="Öğrenci adı, sınıf seviyesi vb."></textarea>
       </div>
       <button type="submit" class="btn-pay" id="pay-btn">🔒 Kredi Kartı ile Öde</button>
-      <p class="secure">256-bit SSL · Stripe güvenli ödeme · Visa, Mastercard, Troy</p>
+      <p class="secure" id="pay-secure">256-bit SSL · Güvenli ödeme · Visa, Mastercard, Troy</p>
     </form>
     <aside class="card">
       <h2>Sipariş Özeti</h2>
@@ -82,10 +93,40 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
     </aside>
   </div>
 </main>
-<script src="assets/products.js"></script>
-<script src="assets/cart.js"></script>
+<script src="assets/products.js?v=20260716b"></script>
+<script src="assets/cart.js?v=20260716b"></script>
 <script>
 (function(){
+  var provider='none';
+
+  function ensurePackageFromQuery(){
+    var paket=new URLSearchParams(location.search).get('paket')||'';
+    var teacher=new URLSearchParams(location.search).get('ogretmen')||'';
+    if(!teacher){
+      try{ teacher=sessionStorage.getItem('ovd_premium_teacher')||''; }catch(e){}
+    }
+    if(paket && VIP_getProduct(paket)){
+      var items=OVD_CART.read();
+      var has=items.some(function(it){ return it.id===paket; });
+      if(!has || items.length!==1){
+        OVD_CART.write([{ id:paket, qty:1 }]);
+      }
+    }
+    if(teacher){
+      var tip=document.getElementById('studentInfo');
+      if(tip && !tip.value){
+        tip.value='Premium özel ders · Öğretmen: '+teacher.replace(/-/g,' ');
+      }
+    }
+    var isPremium=!!(paket && String(paket).indexOf('ders-')===0);
+    if(isPremium){
+      document.querySelectorAll('.back-link').forEach(function(a){
+        a.href='premium-paketler.html';
+        a.textContent='← Paketlere Dön';
+      });
+    }
+  }
+
   function renderSummary(){
     var box=document.getElementById('order-summary');
     var items=OVD_CART.read();
@@ -109,8 +150,55 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
     el.style.display='block';
   }
 
-  document.addEventListener('DOMContentLoaded',function(){
+  function customerPayload(){
+    return {
+      parentName:document.getElementById('parentName').value.trim(),
+      phone:document.getElementById('phone').value.trim(),
+      email:document.getElementById('email').value.trim(),
+      studentInfo:document.getElementById('studentInfo').value.trim(),
+    };
+  }
+
+  async function startPaytr(btn){
+    var res=await fetch('/api/paytr-token',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+    });
+    var data=await res.json();
+    if(!res.ok) throw new Error(data.error||'PayTR ödeme başlatılamadı');
+    btn.textContent='PayTR sayfasına yönlendiriliyorsunuz…';
+    window.location.assign('https://www.paytr.com/odeme/guvenli/'+encodeURIComponent(data.token));
+  }
+
+  async function startStripe(btn){
+    var res=await fetch('/api/create-checkout-session',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+    });
+    var data=await res.json();
+    if(!res.ok) throw new Error(data.error||'Ödeme başlatılamadı');
+    if(data.url) window.location.href=data.url;
+    else throw new Error('Ödeme bağlantısı alınamadı');
+  }
+
+  document.addEventListener('DOMContentLoaded',async function(){
+    ensurePackageFromQuery();
     renderSummary();
+    try{
+      var cfg=await fetch('/api/payment-provider').then(function(r){return r.json();});
+      provider=cfg.provider||'none';
+      if(provider==='paytr'){
+        document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; PayTR güvenli ödeme sayfasına yönlendirileceksiniz.';
+        document.getElementById('pay-secure').textContent='PayTR güvenli ödeme · Visa, Mastercard, Troy';
+      }else if(provider==='stripe'){
+        document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; Stripe güvenli ödeme sayfasına yönlendirileceksiniz.';
+      }else if(cfg.paytr && cfg.paytr.missingEnv && cfg.paytr.missingEnv.length){
+        showError('Ödeme sistemi henüz tam yapılandırılmamış. PayTR mağaza bilgileri Vercel ortam değişkenlerine girilmeli. (Eksik: '+cfg.paytr.missingEnv.join(', ')+')');
+      }
+    }catch(e){}
+
     document.getElementById('checkout-form').addEventListener('submit',async function(e){
       e.preventDefault();
       var btn=document.getElementById('pay-btn');
@@ -119,23 +207,9 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
       btn.disabled=true;
       btn.textContent='Yönlendiriliyor...';
       try{
-        var res=await fetch('/api/create-checkout-session',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            items:OVD_CART.read(),
-            customer:{
-              parentName:document.getElementById('parentName').value.trim(),
-              phone:document.getElementById('phone').value.trim(),
-              email:document.getElementById('email').value.trim(),
-              studentInfo:document.getElementById('studentInfo').value.trim(),
-            }
-          })
-        });
-        var data=await res.json();
-        if(!res.ok) throw new Error(data.error||'Ödeme başlatılamadı');
-        if(data.url) window.location.href=data.url;
-        else throw new Error('Ödeme bağlantısı alınamadı');
+        if(provider==='paytr') await startPaytr(btn);
+        else if(provider==='stripe') await startStripe(btn);
+        else throw new Error('Ödeme sistemi yapılandırılmamış. Lütfen bizimle iletişime geçin.');
       }catch(ex){
         showError(ex.message||'Bir hata oluştu. Lütfen tekrar deneyin.');
         btn.disabled=false;
@@ -145,5 +219,7 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
   });
 })();
 </script>
+  <script src="assets/welcome-modal.js"></script>
+<script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

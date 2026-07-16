@@ -13,11 +13,9 @@
   }
 
   function pageBase() {
-    var base = assetBase();
-    if (base.indexOf('../') === 0 || /programlar\//.test(location.pathname)) {
-      return '../';
-    }
-    return base === '/' ? '' : base;
+    var path = String(location.pathname || '').replace(/\\/g, '/');
+    if (path.indexOf('/programlar/') !== -1) return '../';
+    return '';
   }
 
   function readCart() {
@@ -183,6 +181,11 @@
       'lise.html': 'lise',
       'ilkokul.html': 'ilkokul',
       'kamplar.html': 'kamplar',
+      'kamp-lgs.html': 'kampLgs',
+      'kamp-56.html': 'kamp56',
+      'kamp-910.html': 'kamp910',
+      'kamp-maarif-tyt.html': 'kampMaarifTyt',
+      'kamp-tyt.html': 'kampTyt',
       'yazili.html': 'yazili',
       'kitap.html': 'kitap',
       'start.html': 'start',
@@ -237,6 +240,159 @@
     history.replaceState({}, '', next);
   }
 
+  function escHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderCartPage() {
+    var root = document.getElementById('cart-root');
+    if (!root) return;
+
+    try {
+      var items = readCart();
+      if (!items.length) {
+        root.innerHTML =
+          '<div class="cart-empty">' +
+          '<p class="cart-empty-text">Sepetiniz \u015fu an bo\u015f.</p>' +
+          '<a href="' +
+          pageBase() +
+          'programlar/index.html" class="btn-education-al cart-empty-cta">Programlar\u0131 \u0130ncele</a>' +
+          '</div>';
+        return;
+      }
+
+      var cartIds = items.map(function (item) {
+        return item.id;
+      });
+      var related =
+        window.VIP_getRelatedProducts && window.VIP_getRelatedProducts(cartIds, 4);
+
+      var html = '<div class="cart-layout">';
+      html += '<div class="cart-main">';
+      html += '<div class="cart-list">';
+
+      items.forEach(function (item) {
+        var p = window.VIP_getProduct && window.VIP_getProduct(item.id);
+        if (!p) return;
+        var line = p.price * (item.qty || 1);
+        html += '<article class="cart-item" data-id="' + escHtml(p.id) + '">';
+        html += '<div class="cart-item-info">';
+        html += '<div class="cart-item-name">' + escHtml(p.name) + '</div>';
+        html += '<div class="cart-item-sub">' + escHtml(p.subtitle) + '</div>';
+        html +=
+          '<button type="button" class="btn-remove" data-remove="' +
+          escHtml(p.id) +
+          '">Kald\u0131r</button>';
+        html += '</div>';
+        html += '<div class="qty-wrap">';
+        html +=
+          '<button type="button" class="qty-btn" data-qty="' +
+          escHtml(p.id) +
+          '" data-delta="-1" aria-label="Azalt">\u2212</button>';
+        html += '<span class="qty-val">' + (item.qty || 1) + '</span>';
+        html +=
+          '<button type="button" class="qty-btn" data-qty="' +
+          escHtml(p.id) +
+          '" data-delta="1" aria-label="Artir">+</button>';
+        html += '</div>';
+        html += '<div class="cart-item-price">' + window.VIP_formatPrice(line) + '</div>';
+        html += '</article>';
+      });
+
+      html += '</div>';
+
+      if (related && related.length) {
+        html += '<section class="cart-related" aria-label="Ilgili programlar">';
+        html += '<h2 class="cart-related-title">Size \u00f6zel \u00f6neriler</h2>';
+        html +=
+          '<p class="cart-related-lead">Sepetinizdeki programlarla uyumlu di\u011fer kurslar</p>';
+        html += '<div class="cart-related-grid">';
+        related.forEach(function (p) {
+          html += '<article class="cart-related-card">';
+          html += '<h3>' + escHtml(p.name) + '</h3>';
+          html += '<p>' + escHtml(p.subtitle) + '</p>';
+          html += '<div class="cart-related-footer">';
+          html +=
+            '<span class="cart-related-price">' + window.VIP_formatPrice(p.price) + '</span>';
+          html += '<div class="cart-related-actions">';
+          html +=
+            '<a class="btn-related-detail" href="' +
+            pageBase() +
+            escHtml(p.slug) +
+            '">Detay</a>';
+          html +=
+            '<button type="button" class="btn-related-add" data-add-related="' +
+            escHtml(p.id) +
+            '">Sepete Ekle</button>';
+          html += '</div></div></article>';
+        });
+        html += '</div></section>';
+      }
+
+      html += '</div>';
+
+      html += '<aside class="cart-summary">';
+      html += '<div class="summary">';
+      html += '<h2 class="summary-title">Sipari\u015f \u00d6zeti</h2>';
+      html +=
+        '<div class="summary-row"><span>Ara Toplam</span><strong>' +
+        window.VIP_formatPrice(cartTotal(items)) +
+        '</strong></div>';
+      html +=
+        '<div class="summary-row summary-row-total"><span>Toplam</span><span class="summary-total">' +
+        window.VIP_formatPrice(cartTotal(items)) +
+        '</span></div>';
+      html +=
+        '<a href="' +
+        pageBase() +
+        'odeme.html" class="btn-checkout">\u00d6demeye Ge\u00e7</a>';
+      html +=
+        '<p class="note">\u00d6deme Stripe g\u00fcvenli \u00f6deme altyap\u0131s\u0131 ile kredi/banka kart\u0131 \u00fczerinden al\u0131n\u0131r.</p>';
+      html += '</div></aside></div>';
+
+      root.innerHTML = html;
+    } catch (err) {
+      root.innerHTML =
+        '<div class="cart-empty"><p class="cart-empty-text">Sepet y\u00fcklenemedi. Sayfay\u0131 yenileyin.</p></div>';
+      if (typeof console !== 'undefined' && console.error) console.error(err);
+    }
+  }
+
+  function bindCartPage() {
+    var root = document.getElementById('cart-root');
+    if (!root || root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    root.addEventListener('click', function (e) {
+      var t = e.target;
+      if (t.dataset.remove) {
+        removeFromCart(t.dataset.remove);
+        renderCartPage();
+        return;
+      }
+      if (t.dataset.qty) {
+        var id = t.dataset.qty;
+        var delta = parseInt(t.dataset.delta, 10);
+        var cur = readCart().find(function (x) {
+          return x.id === id;
+        });
+        if (cur) setQty(id, Math.max(1, Math.min(5, (cur.qty || 1) + delta)));
+        renderCartPage();
+        return;
+      }
+      if (t.dataset.addRelated) {
+        addToCart(t.dataset.addRelated, 1);
+        renderCartPage();
+      }
+    });
+
+    window.addEventListener('ovd-cart-updated', renderCartPage);
+  }
+
   window.OVD_CART = {
     read: readCart,
     write: writeCart,
@@ -249,15 +405,26 @@
     pageBase: pageBase,
     assetBase: assetBase,
     showToast: showToast,
+    renderPage: renderCartPage,
   };
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function bootCart() {
     injectNavCart();
     enhanceProgramPage();
     enhanceHomeCards();
     handleQueryAdd();
+    if (document.getElementById('cart-root')) {
+      bindCartPage();
+      renderCartPage();
+    }
     if (window.OVD_ICONS && window.OVD_ICONS.hydrate) {
       window.OVD_ICONS.hydrate();
     }
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootCart);
+  } else {
+    bootCart();
+  }
 })();

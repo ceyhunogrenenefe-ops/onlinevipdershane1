@@ -1,7 +1,40 @@
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.team-grid--kadro {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Ana sayfa: 4 kart yan yana görünür, yatay kaydırma */
+#ekip .team-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 60px) / 4);
+  grid-template-columns: none;
   gap: 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(26, 63, 173, 0.35) transparent;
+}
+
+#ekip .team-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+#ekip .team-grid::-webkit-scrollbar-thumb {
+  background: rgba(26, 63, 173, 0.35);
+  border-radius: 999px;
+}
+
+#ekip .team-card {
+  scroll-snap-align: start;
+  min-width: 0;
 }
 
 .team-card {
@@ -51,19 +84,71 @@
   text-align: left;
 }
 
+.team-excerpt {
+  margin-bottom: 0;
+}
+
+.team-bio-full {
+  margin-top: 10px;
+}
+
+.team-read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--navy, #1a3fad);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+}
+
+.team-read-more:hover {
+  text-decoration: underline;
+}
+
 .team-more {
   text-align: center;
   margin-top: 28px;
 }
 
 @media (max-width: 960px) {
-  .team-grid {
+  .team-grid,
+  .team-grid--kadro {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  #ekip .team-grid {
+    grid-auto-columns: calc((100% - 20px) / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  #ekip .team-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: 88%;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #ekip .team-card {
+    scroll-snap-align: start;
+    min-width: 0;
   }
 }
 
 @media (max-width: 600px) {
-  .team-grid {
+  .team-grid,
+  .team-grid--kadro {
     grid-template-columns: 1fr;
   }
 }

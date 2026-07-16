@@ -1,25 +1,42 @@
 (function () {
+  var SESSION_KEY = 'ovd_welcome_session';
   var STORAGE_KEY = 'ovd_welcome_dismissed';
 
-  function isHomePage() {
-    var path = location.pathname.replace(/\/+$/, '') || '/';
-    return path === '' || path === '/' || path.endsWith('/index.html') || path.endsWith('index.html');
+  function logoPrefix() {
+    var path = location.pathname.replace(/\\/g, '/');
+    if (path.indexOf('/programlar/') !== -1) return '../';
+    return '';
   }
 
   function videoPage() {
-    var base = location.pathname.replace(/\/+$/, '');
-    if (base.indexOf('programlar') !== -1) return '../videolar.html#intro-video';
-    return 'videolar.html#intro-video';
+    return logoPrefix() + 'videolar.html#intro-video';
+  }
+
+  function shouldShow() {
+    try {
+      if (localStorage.getItem(STORAGE_KEY) || localStorage.getItem('ovd_video_welcome_dismissed')) {
+        return false;
+      }
+      if (sessionStorage.getItem(SESSION_KEY)) {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  function markSeen(never) {
+    try {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      if (never) {
+        localStorage.setItem(STORAGE_KEY, '1');
+      }
+    } catch (e) {}
   }
 
   function init() {
-    if (!isHomePage()) return;
-
-    try {
-      if (localStorage.getItem(STORAGE_KEY) || localStorage.getItem('ovd_video_welcome_dismissed')) return;
-    } catch (e) {
-      return;
-    }
+    if (!shouldShow()) return;
 
     var overlay = document.createElement('div');
     overlay.className = 'welcome-overlay';
@@ -45,11 +62,7 @@
       overlay.classList.remove('show');
       document.body.style.overflow = '';
       var never = document.getElementById('welcomeNever');
-      if (never && never.checked) {
-        try {
-          localStorage.setItem(STORAGE_KEY, '1');
-        } catch (err) {}
-      }
+      markSeen(!!(never && never.checked));
       if (goToVideo) {
         location.href = videoPage();
       }
@@ -65,10 +78,10 @@
       if (e.target === overlay) close(false);
     });
 
-    setTimeout(function () {
+    requestAnimationFrame(function () {
       overlay.classList.add('show');
       document.body.style.overflow = 'hidden';
-    }, 800);
+    });
   }
 
   if (document.readyState === 'loading') {
