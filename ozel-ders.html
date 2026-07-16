@@ -61,6 +61,10 @@ tailwind.config={
   .faq-a.open{grid-template-rows:1fr}
   .faq-a>div{overflow:hidden}
   details summary::-webkit-details-marker{display:none}
+  .teacher-photo-box{aspect-ratio:4/5;overflow:hidden;background:#eef2fb}
+  .teacher-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;transition:transform .5s ease}
+  .group:hover .teacher-photo{transform:scale(1.03)}
+  #premiumPackageGrid{overflow:visible}
 </style>
 <script type="application/ld+json">
 {
@@ -200,13 +204,13 @@ tailwind.config={
       </div>
       <div class="flex flex-wrap gap-3">
         <a href="kadromuz.html" class="text-sm font-bold text-navy hover:text-accent">Tüm kadroyu gör →</a>
-        <a href="ogretmenler.html" class="text-sm font-bold text-accent hover:text-accent-2">Filtrele & Ders Al →</a>
+        <a href="ogretmenler.html" class="text-sm font-bold text-accent hover:text-accent-2">Filtrele & Eğitimi Al →</a>
       </div>
     </div>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/dogan-akturk.jpg" alt="Doğan Aktürk — Matematik öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/dogan-akturk.jpg" alt="Doğan Aktürk — Matematik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 18%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Doğan Aktürk</h3>
@@ -215,8 +219,8 @@ tailwind.config={
         </div>
       </article>
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/merve-matematik.jpg" alt="Merve — Matematik öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/merve-matematik.jpg" alt="Merve — Matematik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 32%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Merve</h3>
@@ -225,8 +229,8 @@ tailwind.config={
         </div>
       </article>
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/gonul-cavusoglu.png" alt="Gönül Çavuşoğlu — Fen ve Biyoloji öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/gonul-cavusoglu.png" alt="Gönül Çavuşoğlu — Fen ve Biyoloji öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 22%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Gönül Çavuşoğlu</h3>
@@ -235,8 +239,8 @@ tailwind.config={
         </div>
       </article>
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/sultan-kurt.jpg" alt="Sultan Kurt — Türkçe öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/sultan-kurt.jpg" alt="Sultan Kurt — Türkçe öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 20%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Sultan Kurt</h3>
@@ -245,8 +249,8 @@ tailwind.config={
         </div>
       </article>
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/ali-aktas.jpg" alt="Ali Aktaş — Fizik öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/ali-aktas.jpg" alt="Ali Aktaş — Fizik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 18%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Ali Aktaş</h3>
@@ -255,8 +259,8 @@ tailwind.config={
         </div>
       </article>
       <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="aspect-[4/3] overflow-hidden bg-soft">
-          <img src="assets/img/kadro/merve-yetkin.png" alt="Merve Yetkin — Türkçe öğretmeni" width="640" height="480" loading="lazy" decoding="async" class="h-full w-full object-cover object-top transition duration-500 group-hover:scale-[1.03]">
+        <div class="teacher-photo-box">
+          <img src="assets/img/kadro/merve-yetkin.png" alt="Merve Yetkin — Türkçe öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 20%">
         </div>
         <div class="p-5">
           <h3 class="font-display text-lg font-bold text-ink">Merve Yetkin</h3>
@@ -274,9 +278,9 @@ tailwind.config={
     <div class="reveal mx-auto max-w-2xl text-center">
       <p class="mb-3 text-sm font-bold uppercase tracking-wider text-red-300">Paketler</p>
       <h2 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Premium özel ders paketleri</h2>
-      <p class="mt-4 text-slate-300">Paket seçin; PayTR güvenli ödeme sayfasına yönlendirilirsiniz.</p>
+      <p class="mt-4 text-slate-300">Size uygun paketi seçin, güvenli ödemeyle hemen başlayın.</p>
     </div>
-    <div id="premiumPackageGrid" class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch"></div>
+    <div id="premiumPackageGrid" class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch lg:gap-5"></div>
     <p class="reveal mt-8 text-center">
       <a href="premium-paketler.html" class="text-sm font-bold text-red-200 hover:text-white">Tüm paket detayları →</a>
     </p>
@@ -455,9 +459,9 @@ document.getElementById('y').textContent=new Date().getFullYear();
   nodes.forEach(function(n){io.observe(n);});
 })();
 </script>
-<script src="assets/products.js?v=20260716b"></script>
-<script src="assets/cart.js?v=20260716b"></script>
-<script src="assets/premium-packages-ui.js?v=20260716b"></script>
+<script src="assets/products.js?v=20260716c"></script>
+<script src="assets/cart.js?v=20260716c"></script>
+<script src="assets/premium-packages-ui.js?v=20260716c"></script>
 <script>OVD_PREMIUM_PACKAGES.init({ source:'ozel-ders' });</script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>

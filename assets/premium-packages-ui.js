@@ -71,13 +71,13 @@
   function cardHtml(pkg) {
     var featured = pkg.featured;
     var wrap =
-      'group relative flex flex-col overflow-hidden rounded-2xl p-6 sm:p-7 transition duration-300 ' +
+      'group relative flex h-full flex-col rounded-2xl p-6 sm:p-7 transition duration-300 ' +
       (featured
-        ? 'border-2 border-accent bg-white text-ink shadow-lift scale-[1.02] lg:-translate-y-2 z-[1]'
-        : 'border border-slate-200/80 bg-white/90 text-ink shadow-soft hover:-translate-y-1 hover:shadow-lift');
+        ? 'border-2 border-accent bg-white text-ink shadow-lift ring-2 ring-accent/15'
+        : 'border border-slate-200/80 bg-white text-ink shadow-soft hover:-translate-y-1 hover:shadow-lift');
 
     var badge = pkg.badge
-      ? '<span class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-accent px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white">' +
+      ? '<span class="absolute left-1/2 top-0 z-[1] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-accent px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-white shadow-sm">' +
         escapeHtml(pkg.badge) +
         '</span>'
       : '';
@@ -114,7 +114,9 @@
       escapeHtml(pkg.id) +
       '">' +
       badge +
-      '<div class="flex items-start justify-between gap-3">' +
+      '<div class="flex items-start justify-between gap-3' +
+      (featured ? ' pt-2' : '') +
+      '">' +
       '<div>' +
       '<p class="text-xs font-bold uppercase tracking-wider text-navy">' +
       pkg.lessons +
@@ -137,7 +139,7 @@
       btnClass +
       '" data-package="' +
       escapeHtml(pkg.id) +
-      '">Paketi Seç → PayTR ile Öde</button>' +
+      '">Eğitimi Al</button>' +
       '</article>'
     );
   }

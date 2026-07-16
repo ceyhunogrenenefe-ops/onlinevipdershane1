@@ -1,6 +1,7 @@
 /**
  * Premium özel ders öğretmen kataloğu
  * Filtre alanları: branş, sınıf, fiyat, müsaitlik, deneyim
+ * photoPos: object-position — yüzü kart içinde ortalar
  */
 (function (global) {
   var TEACHERS = [
@@ -17,6 +18,7 @@
       price: 850,
       grades: ['ortaokul', 'lise', 'lgs', 'yks'],
       photo: 'assets/img/kadro/dogan-akturk.jpg',
+      photoPos: 'center 18%',
       role: 'Matematik · LGS / YKS / KPSS',
     },
     {
@@ -32,6 +34,7 @@
       price: 750,
       grades: ['ortaokul', 'lise', 'lgs', 'yks'],
       photo: 'assets/img/kadro/merve-matematik.jpg',
+      photoPos: 'center 32%',
       role: 'Matematik · LGS / TYT · Koç',
     },
     {
@@ -47,6 +50,7 @@
       price: 800,
       grades: ['ortaokul', 'lise', 'lgs', 'yks'],
       photo: 'assets/img/kadro/gonul-cavusoglu.png',
+      photoPos: 'center 22%',
       role: 'Fen / Biyoloji · LGS / TYT / AYT',
     },
     {
@@ -62,6 +66,7 @@
       price: 700,
       grades: ['ortaokul', 'lise', 'lgs', 'yks'],
       photo: 'assets/img/kadro/sultan-kurt.jpg',
+      photoPos: 'center 20%',
       role: 'Türkçe / Edebiyat · LGS / YKS',
     },
     {
@@ -77,6 +82,7 @@
       price: 900,
       grades: ['lise', 'lgs', 'yks'],
       photo: 'assets/img/kadro/ali-aktas.jpg',
+      photoPos: 'center 18%',
       role: 'Fizik · TYT / AYT',
     },
     {
@@ -92,6 +98,7 @@
       price: 650,
       grades: ['ilkokul', 'ortaokul'],
       photo: 'assets/img/kadro/merve-yetkin.png',
+      photoPos: 'center 20%',
       role: 'Türkçe · Çocuk edebiyatı',
     },
     {
@@ -107,6 +114,7 @@
       price: 600,
       grades: ['ilkokul', 'ortaokul'],
       photo: 'assets/img/kadro/demet.jpg',
+      photoPos: 'center 18%',
       role: 'İlköğretim Matematik',
     },
     {
@@ -122,6 +130,7 @@
       price: 750,
       grades: ['ortaokul', 'lise', 'yks'],
       photo: 'assets/img/kadro/tayyibe-ogrenenefe.jpg',
+      photoPos: 'center 12%',
       role: 'Biyoloji',
     },
     {
@@ -137,6 +146,7 @@
       price: 650,
       grades: ['ortaokul', 'lgs'],
       photo: 'assets/img/kadro/nadide-akturk.jpg',
+      photoPos: 'center 18%',
       role: 'Sosyal Bilgiler · Çocuk Gelişimi',
     },
     {
@@ -152,6 +162,7 @@
       price: 600,
       grades: ['ortaokul', 'lgs'],
       photo: 'assets/img/kadro/mustafa-kozan.jpg',
+      photoPos: 'center 16%',
       role: 'Sosyal Bilgiler',
     },
     {
@@ -167,6 +178,7 @@
       price: 700,
       grades: ['ilkokul', 'ortaokul', 'lise'],
       photo: 'assets/img/kadro/mustafa-ozturk.jpg',
+      photoPos: 'center 18%',
       role: 'İngilizce',
     },
     {
@@ -182,6 +194,7 @@
       price: 650,
       grades: ['ortaokul', 'lgs', 'lise'],
       photo: 'assets/img/kadro/turgut-usul.jpg',
+      photoPos: 'center 16%',
       role: 'Türkçe',
     },
     {
@@ -197,6 +210,7 @@
       price: 950,
       grades: ['ilkokul', 'ortaokul', 'lise', 'yks'],
       photo: 'assets/img/kadro/eda-akturk.jpg',
+      photoPos: 'center 18%',
       role: 'Psikoterapist',
     },
   ];

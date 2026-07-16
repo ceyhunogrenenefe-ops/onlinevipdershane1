@@ -44,6 +44,9 @@ tailwind.config={
   .card-enter.in{opacity:1;transform:none}
   .skel{background:linear-gradient(90deg,#eef2fb 25%,#f8fafc 50%,#eef2fb 75%);background-size:200% 100%;animation:shimmer 1.2s infinite}
   @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .teacher-photo-box{aspect-ratio:4/5;overflow:hidden;background:#eef2fb}
+  .teacher-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+  #teacherGrid{overflow:visible}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
 <script src="assets/analytics-config.js"></script>
@@ -64,7 +67,7 @@ tailwind.config={
     </nav>
     <div class="flex items-center gap-2">
       <a href="ozel-ders.html" class="hidden rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-ink hover:border-navy sm:inline-flex">Paketler</a>
-      <a href="kayit.html" class="inline-flex rounded-xl bg-accent px-3.5 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Ders Al</a>
+      <a href="kayit.html" class="inline-flex rounded-xl bg-accent px-3.5 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Eğitimi Al</a>
     </div>
   </div>
 </header>
@@ -162,7 +165,7 @@ tailwind.config={
   </div>
 </footer>
 
-<script src="assets/premium-teachers.js"></script>
+<script src="assets/premium-teachers.js?v=20260716c"></script>
 <script>
 (function () {
   var PAGE_SIZE = 6;
@@ -277,13 +280,13 @@ tailwind.config={
     var availBadge = t.available
       ? '<span class="inline-flex rounded-full bg-navy/10 px-2.5 py-1 text-[11px] font-bold text-navy">Müsait</span>'
       : '<span class="inline-flex rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">Dolu</span>';
+    var pos = t.photoPos || 'center 20%';
 
     return (
-      '<article class="card-enter flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">' +
-        '<div class="relative aspect-[5/4] overflow-hidden bg-slate-100">' +
-          '<img data-src="' + escapeHtml(t.photo) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="384" class="lazy-img h-full w-full object-cover object-top" decoding="async">' +
+      '<article class="card-enter flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">' +
+        '<div class="teacher-photo-box relative">' +
+          '<img data-src="' + escapeHtml(t.photo) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async">' +
           '<div class="absolute left-3 top-3 flex flex-wrap gap-1.5">' + liveBadge + availBadge + '</div>' +
-          '<div class="absolute bottom-3 right-3 rounded-lg bg-white/95 px-2.5 py-1 text-xs font-bold text-navy shadow-sm">' + t.price + ' ₺/ders</div>' +
         '</div>' +
         '<div class="flex flex-1 flex-col p-4 sm:p-5">' +
           '<h2 class="font-display text-lg font-bold text-ink">' + escapeHtml(t.name) + '</h2>' +
@@ -294,9 +297,9 @@ tailwind.config={
             '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">★ ' + t.rating.toFixed(1) + '</dd></div>' +
             '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Ders</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + t.lessons.toLocaleString('tr-TR') + '</dd></div>' +
           '</dl>' +
-          '<div class="mt-4 flex gap-2">' +
+          '<div class="mt-auto flex gap-2 pt-4">' +
             '<a href="kadromuz.html#kadro-' + escapeHtml(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold text-navy hover:border-navy hover:bg-soft">Profil</a>' +
-            '<a href="premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Ders Al</a>' +
+            '<a href="premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Eğitimi Al</a>' +
           '</div>' +
         '</div>' +
       '</article>'
