@@ -84,7 +84,7 @@
       theme: 'kamp9Hazirlik',
       price: 5000,
       image: '../assets/img/programlar/kamp-9-hazirlik.png',
-      banner: '../assets/img/programlar/kamp-9-hazirlik.png',
+      banner: '../assets/img/hero/slide-vip-start.jpg',
       metaDescription:
         '9. sınıfa hazırlık kampı: 3 Ağustos başlangıç, 4 hafta, haftada 5 saat toplam 20 saat matematik dersi. 10 kişilik sınıf, birebir koçluk, seminerler ve 2 deneme sınavı.',
       shortDesc:
