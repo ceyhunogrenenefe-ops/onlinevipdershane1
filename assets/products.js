@@ -44,9 +44,17 @@
       id: 'kamplar',
       name: 'Yaz Kampları',
       subtitle: 'Temmuz-Ağustos · Kamp programı',
-      price: 24000,
+      price: 5000,
       period: 'kamp',
       slug: 'programlar/kamplar.html',
+    },
+    kamp9Hazirlik: {
+      id: 'kamp9Hazirlik',
+      name: '9. Sınıfa Hazırlık Kampı',
+      subtitle: '4 hafta · 20 saat matematik · 3 Ağustos',
+      price: 5000,
+      period: 'kamp',
+      slug: 'programlar/kamp-9-hazirlik.html',
     },
     kampLgs: {
       id: 'kampLgs',
@@ -153,6 +161,7 @@
     'lise.html': 'lise',
     'ilkokul.html': 'ilkokul',
     'kamplar.html': 'kamplar',
+    'kamp-9-hazirlik.html': 'kamp9Hazirlik',
     'kamp-lgs.html': 'kampLgs',
     'kamp-56.html': 'kamp56',
     'kamp-910.html': 'kamp910',
@@ -165,20 +174,21 @@
 
   /** Sepetteki urunlere gore onerilecek ilgili programlar */
   var RELATED = {
-    lgs: ['kampLgs', 'yazili', 'kitap'],
-    kampLgs: ['lgs', 'yazili', 'kamplar'],
+    lgs: ['kampLgs', 'kamp9Hazirlik', 'yazili'],
+    kampLgs: ['lgs', 'kamp9Hazirlik', 'kamplar'],
+    kamp9Hazirlik: ['lise', 'kamp910', 'kampLgs'],
     yks: ['kampTyt', 'kampMaarifTyt', 'yazili'],
     kampTyt: ['yks', 'kampMaarifTyt', 'lise'],
     kampMaarifTyt: ['yks', 'kampTyt', 'lise'],
     ortaokul: ['kamp56', 'yazili', 'ilkokul'],
     kamp56: ['ortaokul', 'kampLgs', 'yazili'],
-    lise: ['kamp910', 'kampMaarifTyt', 'yazili'],
-    kamp910: ['lise', 'kampTyt', 'kampMaarifTyt'],
+    lise: ['kamp9Hazirlik', 'kamp910', 'kampMaarifTyt'],
+    kamp910: ['lise', 'kamp9Hazirlik', 'kampTyt'],
     ilkokul: ['ortaokul', 'kamp56'],
     yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
     kitap: ['yazili', 'start', 'lgs'],
     start: ['yks', 'lgs', 'lise'],
-    kamplar: ['kampLgs', 'kamp56', 'kamp910', 'kampTyt'],
+    kamplar: ['kamp9Hazirlik', 'kampLgs', 'kamp56', 'kamp910'],
   };
 
   function formatPrice(amount) {

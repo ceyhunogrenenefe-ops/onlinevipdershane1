@@ -58,6 +58,12 @@
   background: var(--camp-thumb-bg);
 }
 
+.camp-card--kamp9Hazirlik {
+  --camp-accent: #e8232a;
+  --camp-glow: rgba(232, 35, 42, 0.18);
+  --camp-thumb-bg: linear-gradient(145deg, #fff0f1 0%, #ffe8ea 100%);
+}
+
 .camp-card--kampLgs {
   --camp-accent: #1a3fad;
   --camp-glow: rgba(26, 63, 173, 0.2);

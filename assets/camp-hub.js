@@ -18,6 +18,8 @@
 
     grid.innerHTML = '';
     window.OVD_listCamps().forEach(function (camp) {
+      // Featured card on hub for 9. Sınıfa Hazırlık — skip duplicate in grid
+      if (camp.id === 'kamp9Hazirlik') return;
       var card = document.createElement('a');
       card.href = camp.slug;
       card.className = 'prog-card camp-card camp-card--' + camp.theme;

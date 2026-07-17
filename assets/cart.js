@@ -181,6 +181,7 @@
       'lise.html': 'lise',
       'ilkokul.html': 'ilkokul',
       'kamplar.html': 'kamplar',
+      'kamp-9-hazirlik.html': 'kamp9Hazirlik',
       'kamp-lgs.html': 'kampLgs',
       'kamp-56.html': 'kamp56',
       'kamp-910.html': 'kamp910',

@@ -74,6 +74,81 @@
         },
       ],
     },
+    kamp9Hazirlik: {
+      id: 'kamp9Hazirlik',
+      slug: 'kamp-9-hazirlik.html',
+      title: '9. Sınıfa Hazırlık Kampı',
+      cardTitle: '9. Sınıfa Hazırlık Kampı',
+      tag: 'Lise hazırlık · 2026-2027 · 4 Hafta · Matematik',
+      icon: 'graduation-cap',
+      theme: 'kamp9Hazirlik',
+      price: 5000,
+      image: '../assets/img/programlar/kamp-9-hazirlik.png',
+      banner: '../assets/img/programlar/kamp-9-hazirlik.png',
+      metaDescription:
+        '9. sınıfa hazırlık kampı: 3 Ağustos başlangıç, 4 hafta, haftada 5 saat toplam 20 saat matematik dersi. 10 kişilik sınıf, birebir koçluk, seminerler ve 2 deneme sınavı.',
+      shortDesc:
+        '4 haftalık matematik kampı · 20 saat ders · Seminerler, koçluk ve 2 deneme. 3 Ağustos’ta başlıyor.',
+      heroDesc:
+        '2026-2027 eğitim öğretim yılına hazırlanan öğrenciler için 4 haftalık yoğun matematik kampı. Haftada 5 saat, toplam 20 saat canlı ders; seminerler, birebir koçluk ve denemelerle 9. sınıfa güçlü başlayın.',
+      intro:
+        'Online VIP Dershane 9. Sınıfa Hazırlık Kampı; 3 Ağustos’ta başlayan 4 haftalık (bir ay) programdır. Haftada 5 saat, toplam 20 saat matematik dersi canlı işlenir. Tüm dersler kaydedilir. On kişilik sınıflarda birebir eğitim koçluğu, 9. sınıfa hazırlık ve 10. sınıf odaklı seminerler ile iki deneme sınavı programın parçasıdır.',
+      whoCanJoin:
+        '2026-2027 eğitim öğretim yılında 9. sınıfa geçecek öğrenciler ve lise başlangıcına matematik temeliyle hazırlanmak isteyenler.',
+      duration: '4 hafta · 3 Ağustos başlangıç · Bir ay · Online canlı',
+      weeklySchedule: [
+        'Haftada 5 saat Matematik dersi',
+        'Toplam 20 saat canlı matematik',
+        '9. sınıfa hazırlık seminerleri (2 adet)',
+        '10. sınıf odaklı seminerler (2 adet)',
+        '2 deneme sınavı',
+      ],
+      features: [
+        '3 Ağustos’ta başlayan 4 haftalık kamp',
+        'Haftada 5 saat · toplam 20 saat matematik dersi',
+        'Maksimum 10 kişilik sınıflar',
+        'Tüm dersler kaydediliyor',
+        'Birebir eğitim koçluğu',
+        '9. sınıfa hazırlık semineri (2 adet)',
+        '10. sınıf odaklı seminer (2 adet)',
+        '2 deneme sınavı',
+      ],
+      goals: [
+        '9. sınıf matematik temeline güçlü başlamak',
+        'Lise temposuna alışmak ve çalışma disiplini kazanmak',
+        'Seminerlerle 9. ve 10. sınıf sürecini tanımak',
+        'Denemelerle eksikleri erken görmek',
+      ],
+      gains: [
+        '20 saat canlı matematik + ders kayıtlarına erişim',
+        'Birebir eğitim koçluğu',
+        '4 seminer (2 hazırlık + 2 onuncu sınıf odaklı)',
+        '2 deneme sınavı ve gelişim takibi',
+      ],
+      educationModel:
+        'On kişilik canlı sınıflarda yoğun matematik odaklı program. Her ders kayıt altına alınır; kaçırılan dersler tekrar izlenebilir.',
+      coaching:
+        'Her öğrenciye birebir eğitim koçluğu desteği sunulur. Haftalık hedefler ve motivasyon takibi yapılır.',
+      exams:
+        'Kamp süresince 2 deneme sınavı uygulanır. Sonuçlar üzerinden geri bildirim verilir.',
+      liveLessons:
+        'Tüm dersler online canlı işlenir ve kaydedilir. Seminerler de programa dahildir.',
+      studyHours: 'Haftada 5 saat matematik · 4 haftada toplam 20 saat ders.',
+      faq: [
+        {
+          q: 'Kamp ne zaman başlıyor ve ne kadar sürüyor?',
+          a: 'Kamp 3 Ağustos’ta başlar; 4 hafta (bir ay) sürer. Haftada 5 saat ders ile toplam 20 saat matematik işlenir.',
+        },
+        {
+          q: 'Seminerler neleri kapsıyor?',
+          a: 'Programda 9. sınıfa hazırlıkla ilgili 2 seminer ve 10. sınıfla ilgili 2 seminer yer alır.',
+        },
+        {
+          q: 'Sınıf kaç kişilik?',
+          a: 'Sınıflarımız maksimum 10 kişiliktir. Tüm dersler kaydedilir; birebir eğitim koçluğu dahildir.',
+        },
+      ],
+    },
     kamp56: {
       id: 'kamp56',
       slug: 'kamp-56.html',
@@ -341,7 +416,7 @@
     },
   };
 
-  var CAMP_ORDER = ['kampLgs', 'kamp56', 'kamp910', 'kampMaarifTyt', 'kampTyt'];
+  var CAMP_ORDER = ['kamp9Hazirlik', 'kampLgs', 'kamp56', 'kamp910', 'kampMaarifTyt', 'kampTyt'];
 
   function getCamp(id) {
     return CAMPS[id] || null;

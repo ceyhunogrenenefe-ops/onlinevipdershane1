@@ -93,6 +93,10 @@
   line-height: 1.7;
 }
 
+.camp-page--kamp9Hazirlik {
+  --camp-accent: #e8232a;
+}
+
 .camp-page--kampLgs {
   --camp-accent: #1a3fad;
 }
