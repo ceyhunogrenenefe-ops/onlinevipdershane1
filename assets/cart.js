@@ -164,7 +164,7 @@
     var product = window.VIP_getProductByPath(location.pathname);
     if (!product) return;
     var priceBox = document.querySelector('.price-box');
-    if (!priceBox || priceBox.querySelector('.btn-add-cart')) return;
+    if (!priceBox || priceBox.querySelector('.btn-add-cart, .btn-education-al')) return;
     var kayitBtn = priceBox.querySelector('.btn-kayit');
     var addBtn = makeEducationLink(product.id);
     if (kayitBtn) priceBox.insertBefore(addBtn, kayitBtn);
