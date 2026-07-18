@@ -23,8 +23,8 @@ module.exports = async function handler(req, res) {
   try {
     const slug = String(req.query.slug || '').trim();
     const url = slug
-      ? `${base}/api/public/teachers?slug=${encodeURIComponent(slug)}`
-      : `${base}/api/public/teachers`;
+      ? `${base}/api/public-teachers?slug=${encodeURIComponent(slug)}`
+      : `${base}/api/public-teachers`;
 
     const upstream = await fetch(url, {
       headers: { Accept: 'application/json' },
