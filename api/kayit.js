@@ -92,7 +92,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const kommo = await createKommoLead(data);
+    const kommoOpts =
+      data.program === 'Premium Özel Ders' ? { tag: 'Premium Özel Ders' } : {};
+    const kommo = await createKommoLead(data, kommoOpts);
     results.kommo = kommo.skipped ? 'skipped' : true;
     if (kommo.skipped) results.kommoReason = kommo.reason;
   } catch (err) {

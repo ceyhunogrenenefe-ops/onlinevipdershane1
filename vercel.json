@@ -2,145 +2,618 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.onlinevipdershane.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.onlinevipdershane.com"
+        }
+      ],
       "destination": "https://onlinevipdershane.com/:path*",
       "permanent": true
     },
-
-    { "source": "/lgs.html", "destination": "/programlar/lgs.html", "permanent": true },
-    { "source": "/yks.html", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/ortaokul.html", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/lise.html", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/ilkokul.html", "destination": "/programlar/ilkokul.html", "permanent": true },
-    { "source": "/kamplar.html", "destination": "/programlar/kamplar.html", "permanent": true },
-    { "source": "/yazili.html", "destination": "/programlar/yazili.html", "permanent": true },
-    { "source": "/kitap.html", "destination": "/programlar/kitap.html", "permanent": true },
-    { "source": "/start.html", "destination": "/programlar/start.html", "permanent": true },
-    { "source": "/kamp-lgs.html", "destination": "/programlar/kamp-lgs.html", "permanent": true },
-    { "source": "/kamp-56.html", "destination": "/programlar/kamp-56.html", "permanent": true },
-    { "source": "/kamp-910.html", "destination": "/programlar/kamp-910.html", "permanent": true },
-    { "source": "/kamp-tyt.html", "destination": "/programlar/kamp-tyt.html", "permanent": true },
-    { "source": "/kamp-maarif-tyt.html", "destination": "/programlar/kamp-maarif-tyt.html", "permanent": true },
-    { "source": "/gece-etutu.html", "destination": "/programlar/gece-etutu.html", "permanent": true },
-
-    { "source": "/urun/65/:slug*", "destination": "/programlar/lgs.html", "permanent": true },
-    { "source": "/urun/62/:slug*", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/urun/58/:slug*", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/urun/55/:slug*", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/urun/56/:slug*", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/urun/57/:slug*", "destination": "/programlar/ortaokul.html", "permanent": true },
-    { "source": "/urun/53/:slug*", "destination": "/programlar/ilkokul.html", "permanent": true },
-    { "source": "/urun/52/:slug*", "destination": "/programlar/ilkokul.html", "permanent": true },
-    { "source": "/urun/51/:slug*", "destination": "/programlar/ilkokul.html", "permanent": true },
-    { "source": "/urun/54/:slug*", "destination": "/programlar/ilkokul.html", "permanent": true },
-    { "source": "/urun/77/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/74/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/71/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/68/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/69/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/70/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/72/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/73/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/75/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/76/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/78/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/79/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/80/:slug*", "destination": "/programlar/lise.html", "permanent": true },
-    { "source": "/urun/83/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/84/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/85/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/86/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/87/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/88/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/89/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/90/:slug*", "destination": "/programlar/yks.html", "permanent": true },
-    { "source": "/urun/113/:slug*", "destination": "/programlar/start.html", "permanent": true },
-    { "source": "/urun/112/:slug*", "destination": "/programlar/yazili.html", "permanent": true },
-    { "source": "/urun/111/:slug*", "destination": "/programlar/kitap.html", "permanent": true },
-    { "source": "/urun/110/:slug*", "destination": "/programlar/kamplar.html", "permanent": true },
-    { "source": "/urun/109/:slug*", "destination": "/programlar/kamplar.html", "permanent": true },
-    { "source": "/urun/108/:slug*", "destination": "/programlar/kamplar.html", "permanent": true },
-    { "source": "/urun/107/:slug*", "destination": "/programlar/kamplar.html", "permanent": true },
-    { "source": "/urun/50/:slug*", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/urun/:id/:slug*", "destination": "/index.html#programlar", "permanent": true },
-
-    { "source": "/hakkimizda", "destination": "/index.html#hakkimizda", "permanent": true },
-    { "source": "/hakkimizda/", "destination": "/index.html#hakkimizda", "permanent": true },
-    { "source": "/ekibimiz", "destination": "/kadromuz.html", "permanent": true },
-    { "source": "/ekibimiz/", "destination": "/kadromuz.html", "permanent": true },
-    { "source": "/insan-kaynaklari", "destination": "/kariyer.html", "permanent": true },
-    { "source": "/insan-kaynaklari/", "destination": "/kariyer.html", "permanent": true },
-    { "source": "/kariyer", "destination": "/kariyer.html", "permanent": true },
-    { "source": "/kariyer/", "destination": "/kariyer.html", "permanent": true },
-    { "source": "/bize-ulasin", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/bize-ulasin/", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/iletisim", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/iletisim/", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/hesap-numaralarimiz", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/hesap-numaralarimiz/", "destination": "/iletisim.html", "permanent": true },
-    { "source": "/urunlerimiz", "destination": "/index.html#programlar", "permanent": true },
-    { "source": "/urunlerimiz/", "destination": "/index.html#programlar", "permanent": true },
-    { "source": "/kurslar", "destination": "/index.html#programlar", "permanent": true },
-    { "source": "/kurslar/", "destination": "/index.html#programlar", "permanent": true },
-    { "source": "/blog-ve-haberler", "destination": "/blog.html", "permanent": true },
-    { "source": "/blog-ve-haberler/", "destination": "/blog.html", "permanent": true },
-    { "source": "/blog", "destination": "/blog.html", "permanent": true },
-    { "source": "/blog/", "destination": "/blog.html", "permanent": true },
-    { "source": "/blog/:slug*", "destination": "/blog.html", "permanent": true },
-    { "source": "/haber/:slug*", "destination": "/blog.html", "permanent": true },
-    { "source": "/foto-galeri", "destination": "/basarilarimiz.html", "permanent": true },
-    { "source": "/foto-galeri/", "destination": "/basarilarimiz.html", "permanent": true },
-    { "source": "/fotograf-galerisi", "destination": "/basarilarimiz.html", "permanent": true },
-    { "source": "/fotograf-galerisi/", "destination": "/basarilarimiz.html", "permanent": true },
-    { "source": "/video-galeri", "destination": "/videolar.html", "permanent": true },
-    { "source": "/video-galeri/", "destination": "/videolar.html", "permanent": true },
-    { "source": "/video-galerisi", "destination": "/videolar.html", "permanent": true },
-    { "source": "/video-galerisi/", "destination": "/videolar.html", "permanent": true },
-    { "source": "/mesafeli-satis-sozlesmesi", "destination": "/satis.html", "permanent": true },
-    { "source": "/mesafeli-satis-sozlesmesi/", "destination": "/satis.html", "permanent": true },
-    { "source": "/iptal-ve-iade-politikasi", "destination": "/iade.html", "permanent": true },
-    { "source": "/iptal-ve-iade-politikasi/", "destination": "/iade.html", "permanent": true },
-    { "source": "/gizlilik-politikasi", "destination": "/gizlilik.html", "permanent": true },
-    { "source": "/gizlilik-politikasi/", "destination": "/gizlilik.html", "permanent": true },
-    { "source": "/uye-girisi", "destination": "https://www.dersonlinevipkocluk.com/login", "permanent": false },
-    { "source": "/uye-girisi/", "destination": "https://www.dersonlinevipkocluk.com/login", "permanent": false },
-    { "source": "/giris", "destination": "https://www.dersonlinevipkocluk.com/login", "permanent": false },
-    { "source": "/giris/", "destination": "https://www.dersonlinevipkocluk.com/login", "permanent": false },
-    { "source": "/premium-paketler", "destination": "/premium-paketler.html", "permanent": true },
-    { "source": "/premium-paketler/", "destination": "/premium-paketler.html", "permanent": true },
-    { "source": "/ozel-ders", "destination": "/ozel-ders.html", "permanent": true },
-    { "source": "/ozel-ders/", "destination": "/ozel-ders.html", "permanent": true },
-    { "source": "/premium-ozel-ders", "destination": "/ozel-ders.html", "permanent": true },
-    { "source": "/premium-ozel-ders/", "destination": "/ozel-ders.html", "permanent": true },
-    { "source": "/ogretmenler", "destination": "/ogretmenler.html", "permanent": true },
-    { "source": "/ogretmenler/", "destination": "/ogretmenler.html", "permanent": true },
-    { "source": "/premium-ogretmenler", "destination": "/ogretmenler.html", "permanent": true },
-    { "source": "/premium-ogretmenler/", "destination": "/ogretmenler.html", "permanent": true },
-    { "source": "/kayit", "destination": "/kayit.html", "permanent": true },
-    { "source": "/kayit/", "destination": "/kayit.html", "permanent": true },
-    { "source": "/kayit-alindi", "destination": "/kayit-tamamlandi.html", "permanent": true },
-    { "source": "/kayit-alindi/", "destination": "/kayit-tamamlandi.html", "permanent": true },
-    { "source": "/sepet", "destination": "/kayit.html", "permanent": true },
-    { "source": "/sepet/", "destination": "/kayit.html", "permanent": true }
+    {
+      "source": "/lgs.html",
+      "destination": "/programlar/lgs.html",
+      "permanent": true
+    },
+    {
+      "source": "/yks.html",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/ortaokul.html",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/lise.html",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/ilkokul.html",
+      "destination": "/programlar/ilkokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamplar.html",
+      "destination": "/programlar/kamplar.html",
+      "permanent": true
+    },
+    {
+      "source": "/yazili.html",
+      "destination": "/programlar/yazili.html",
+      "permanent": true
+    },
+    {
+      "source": "/kitap.html",
+      "destination": "/programlar/kitap.html",
+      "permanent": true
+    },
+    {
+      "source": "/start.html",
+      "destination": "/programlar/start.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamp-lgs.html",
+      "destination": "/programlar/kamp-lgs.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamp-56.html",
+      "destination": "/programlar/kamp-56.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamp-910.html",
+      "destination": "/programlar/kamp-910.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamp-tyt.html",
+      "destination": "/programlar/kamp-tyt.html",
+      "permanent": true
+    },
+    {
+      "source": "/kamp-maarif-tyt.html",
+      "destination": "/programlar/kamp-maarif-tyt.html",
+      "permanent": true
+    },
+    {
+      "source": "/gece-etutu.html",
+      "destination": "/programlar/gece-etutu.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/65/:slug*",
+      "destination": "/programlar/lgs.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/62/:slug*",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/58/:slug*",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/55/:slug*",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/56/:slug*",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/57/:slug*",
+      "destination": "/programlar/ortaokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/53/:slug*",
+      "destination": "/programlar/ilkokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/52/:slug*",
+      "destination": "/programlar/ilkokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/51/:slug*",
+      "destination": "/programlar/ilkokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/54/:slug*",
+      "destination": "/programlar/ilkokul.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/77/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/74/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/71/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/68/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/69/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/70/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/72/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/73/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/75/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/76/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/78/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/79/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/80/:slug*",
+      "destination": "/programlar/lise.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/83/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/84/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/85/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/86/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/87/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/88/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/89/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/90/:slug*",
+      "destination": "/programlar/yks.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/113/:slug*",
+      "destination": "/programlar/start.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/112/:slug*",
+      "destination": "/programlar/yazili.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/111/:slug*",
+      "destination": "/programlar/kitap.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/110/:slug*",
+      "destination": "/programlar/kamplar.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/109/:slug*",
+      "destination": "/programlar/kamplar.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/108/:slug*",
+      "destination": "/programlar/kamplar.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/107/:slug*",
+      "destination": "/programlar/kamplar.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/50/:slug*",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/urun/:id/:slug*",
+      "destination": "/index.html#programlar",
+      "permanent": true
+    },
+    {
+      "source": "/hakkimizda",
+      "destination": "/index.html#hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/hakkimizda/",
+      "destination": "/index.html#hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/ekibimiz",
+      "destination": "/kadromuz.html",
+      "permanent": true
+    },
+    {
+      "source": "/ekibimiz/",
+      "destination": "/kadromuz.html",
+      "permanent": true
+    },
+    {
+      "source": "/insan-kaynaklari",
+      "destination": "/kariyer.html",
+      "permanent": true
+    },
+    {
+      "source": "/insan-kaynaklari/",
+      "destination": "/kariyer.html",
+      "permanent": true
+    },
+    {
+      "source": "/kariyer",
+      "destination": "/kariyer.html",
+      "permanent": true
+    },
+    {
+      "source": "/kariyer/",
+      "destination": "/kariyer.html",
+      "permanent": true
+    },
+    {
+      "source": "/bize-ulasin",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/bize-ulasin/",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/iletisim",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/iletisim/",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/hesap-numaralarimiz",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/hesap-numaralarimiz/",
+      "destination": "/iletisim.html",
+      "permanent": true
+    },
+    {
+      "source": "/urunlerimiz",
+      "destination": "/index.html#programlar",
+      "permanent": true
+    },
+    {
+      "source": "/urunlerimiz/",
+      "destination": "/index.html#programlar",
+      "permanent": true
+    },
+    {
+      "source": "/kurslar",
+      "destination": "/index.html#programlar",
+      "permanent": true
+    },
+    {
+      "source": "/kurslar/",
+      "destination": "/index.html#programlar",
+      "permanent": true
+    },
+    {
+      "source": "/blog-ve-haberler",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog-ve-haberler/",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/haber/:slug*",
+      "destination": "/blog.html",
+      "permanent": true
+    },
+    {
+      "source": "/foto-galeri",
+      "destination": "/basarilarimiz.html",
+      "permanent": true
+    },
+    {
+      "source": "/foto-galeri/",
+      "destination": "/basarilarimiz.html",
+      "permanent": true
+    },
+    {
+      "source": "/fotograf-galerisi",
+      "destination": "/basarilarimiz.html",
+      "permanent": true
+    },
+    {
+      "source": "/fotograf-galerisi/",
+      "destination": "/basarilarimiz.html",
+      "permanent": true
+    },
+    {
+      "source": "/video-galeri",
+      "destination": "/videolar.html",
+      "permanent": true
+    },
+    {
+      "source": "/video-galeri/",
+      "destination": "/videolar.html",
+      "permanent": true
+    },
+    {
+      "source": "/video-galerisi",
+      "destination": "/videolar.html",
+      "permanent": true
+    },
+    {
+      "source": "/video-galerisi/",
+      "destination": "/videolar.html",
+      "permanent": true
+    },
+    {
+      "source": "/mesafeli-satis-sozlesmesi",
+      "destination": "/satis.html",
+      "permanent": true
+    },
+    {
+      "source": "/mesafeli-satis-sozlesmesi/",
+      "destination": "/satis.html",
+      "permanent": true
+    },
+    {
+      "source": "/iptal-ve-iade-politikasi",
+      "destination": "/iade.html",
+      "permanent": true
+    },
+    {
+      "source": "/iptal-ve-iade-politikasi/",
+      "destination": "/iade.html",
+      "permanent": true
+    },
+    {
+      "source": "/gizlilik-politikasi",
+      "destination": "/gizlilik.html",
+      "permanent": true
+    },
+    {
+      "source": "/gizlilik-politikasi/",
+      "destination": "/gizlilik.html",
+      "permanent": true
+    },
+    {
+      "source": "/uye-girisi",
+      "destination": "https://www.dersonlinevipkocluk.com/login",
+      "permanent": false
+    },
+    {
+      "source": "/uye-girisi/",
+      "destination": "https://www.dersonlinevipkocluk.com/login",
+      "permanent": false
+    },
+    {
+      "source": "/giris",
+      "destination": "https://www.dersonlinevipkocluk.com/login",
+      "permanent": false
+    },
+    {
+      "source": "/giris/",
+      "destination": "https://www.dersonlinevipkocluk.com/login",
+      "permanent": false
+    },
+    {
+      "source": "/premium-paketler",
+      "destination": "/premium-paketler.html",
+      "permanent": true
+    },
+    {
+      "source": "/premium-paketler/",
+      "destination": "/premium-paketler.html",
+      "permanent": true
+    },
+    {
+      "source": "/ozel-ders",
+      "destination": "/ozel-ders.html",
+      "permanent": true
+    },
+    {
+      "source": "/ozel-ders/",
+      "destination": "/ozel-ders.html",
+      "permanent": true
+    },
+    {
+      "source": "/premium-ozel-ders",
+      "destination": "/ozel-ders.html",
+      "permanent": true
+    },
+    {
+      "source": "/premium-ozel-ders/",
+      "destination": "/ozel-ders.html",
+      "permanent": true
+    },
+    {
+      "source": "/ogretmenler",
+      "destination": "/ozel-ders.html#ogretmenler",
+      "permanent": true
+    },
+    {
+      "source": "/ogretmenler/",
+      "destination": "/ozel-ders.html#ogretmenler",
+      "permanent": true
+    },
+    {
+      "source": "/premium-ogretmenler",
+      "destination": "/ozel-ders.html#ogretmenler",
+      "permanent": true
+    },
+    {
+      "source": "/premium-ogretmenler/",
+      "destination": "/ozel-ders.html#ogretmenler",
+      "permanent": true
+    },
+    {
+      "source": "/kayit",
+      "destination": "/kayit.html",
+      "permanent": true
+    },
+    {
+      "source": "/kayit/",
+      "destination": "/kayit.html",
+      "permanent": true
+    },
+    {
+      "source": "/kayit-alindi",
+      "destination": "/kayit-tamamlandi.html",
+      "permanent": true
+    },
+    {
+      "source": "/kayit-alindi/",
+      "destination": "/kayit-tamamlandi.html",
+      "permanent": true
+    },
+    {
+      "source": "/sepet",
+      "destination": "/kayit.html",
+      "permanent": true
+    },
+    {
+      "source": "/sepet/",
+      "destination": "/kayit.html",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/(.*)\\.html",
       "headers": [
-        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
       ]
     },
     {
       "source": "/assets/(.*)\\.js",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, must-revalidate"
+        }
       ]
     },
     {
       "source": "/assets/(.*)\\.(css|png|jpg|jpeg|webp|svg|woff2)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/ozel-ders/ogretmen/:slug",
+      "destination": "/ozel-ders-ogretmen.html?slug=:slug"
+    },
+    {
+      "source": "/ozel-ders/ogretmen/:slug/",
+      "destination": "/ozel-ders-ogretmen.html?slug=:slug"
     }
   ]
 }

@@ -64,7 +64,9 @@ tailwind.config={
   .teacher-photo-box{aspect-ratio:4/5;overflow:hidden;background:#eef2fb}
   .teacher-photo{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;transition:transform .5s ease}
   .group:hover .teacher-photo{transform:scale(1.03)}
-  #premiumPackageGrid{overflow:visible}
+  #premiumPackageGrid,#teacherGrid{overflow:visible}
+  .card-enter{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+  .card-enter.in{opacity:1;transform:none}
 </style>
 <script type="application/ld+json">
 {
@@ -100,12 +102,11 @@ tailwind.config={
       <a href="#avantajlar" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Avantajlar</a>
       <a href="#ogretmenler" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Öğretmenler</a>
       <a href="#paketler" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Paketler</a>
-      <a href="ogretmenler.html" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Öğretmenler</a>
       <a href="#sss" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">SSS</a>
     </nav>
     <div class="flex items-center gap-2">
       <a href="tel:08503034014" class="hidden rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-ink hover:border-navy hover:text-navy sm:inline-flex">0850 303 40 14</a>
-      <a href="kayit.html" class="inline-flex rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-accent-2">Kayıt Ol</a>
+      <a href="kayit.html?program=premium-ozel-ders" class="inline-flex rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-accent-2">Kayıt Ol</a>
     </div>
   </div>
 </header>
@@ -144,9 +145,89 @@ tailwind.config={
     </ul>
 
     <div class="mt-10 flex flex-wrap gap-3 animate-[fadeUp_.7s_.28s_ease_both]">
-      <a href="iletisim.html" class="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-accent-2">Ücretsiz Tanışma Dersi</a>
-      <a href="#paketler" class="inline-flex items-center justify-center rounded-xl border-2 border-white/35 bg-white/5 px-6 py-3.5 text-[15px] font-bold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10">Paketleri İncele</a>
+      <a href="#ogretmenler" class="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-accent-2">Öğretmen Seç</a>
+      <a href="iletisim.html" class="inline-flex items-center justify-center rounded-xl border-2 border-white/35 bg-white/5 px-6 py-3.5 text-[15px] font-bold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10">Ücretsiz Tanışma</a>
+      <a href="#paketler" class="inline-flex items-center justify-center rounded-xl border-2 border-white/20 px-6 py-3.5 text-[15px] font-bold text-white/90 transition hover:border-white/40 hover:bg-white/5">Paketler</a>
     </div>
+  </div>
+</section>
+
+<!-- ÖĞRETMEN SEÇ -->
+<section id="ogretmenler" class="border-b border-slate-200 bg-soft py-16 lg:py-20">
+  <div class="mx-auto max-w-6xl px-5 lg:px-6">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <p class="mb-3 text-sm font-bold uppercase tracking-wider text-accent">Premium Kadro</p>
+      <h2 class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Öğretmen seç, özel derse başla</h2>
+      <p class="mt-4 text-mute">Branş, sınıf ve müsaitliğe göre filtreleyin. Seçtiğiniz öğretmenle hemen eğitime başlayın.</p>
+    </div>
+
+    <div class="reveal mt-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5" aria-label="Öğretmen filtreleri">
+      <div class="mb-4">
+        <label for="q" class="sr-only">Öğretmen ara</label>
+        <div class="relative">
+          <span class="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-mute" aria-hidden="true">⌕</span>
+          <input id="q" type="search" placeholder="Ad, branş veya üniversite ara…" autocomplete="off"
+            class="w-full rounded-xl border border-slate-200 bg-soft py-3 pl-10 pr-4 text-sm font-semibold text-ink outline-none placeholder:font-medium placeholder:text-mute focus:border-navy focus:bg-white focus:ring-2 focus:ring-navy/20">
+        </div>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div>
+          <label for="f-branch" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-mute">Branş</label>
+          <select id="f-branch" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"></select>
+        </div>
+        <div>
+          <label for="f-grade" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-mute">Sınıf</label>
+          <select id="f-grade" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-navy focus:ring-2 focus:ring-navy/20">
+            <option value="">Tümü</option>
+            <option value="ilkokul">İlkokul</option>
+            <option value="ortaokul">Ortaokul</option>
+            <option value="lise">Lise</option>
+            <option value="lgs">LGS</option>
+            <option value="yks">YKS</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-price" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-mute">Fiyat</label>
+          <select id="f-price" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-navy focus:ring-2 focus:ring-navy/20">
+            <option value="">Tümü</option>
+            <option value="0-650">0 – 650 ₺</option>
+            <option value="651-800">651 – 800 ₺</option>
+            <option value="801+">801 ₺+</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-avail" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-mute">Müsait</label>
+          <select id="f-avail" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-navy focus:ring-2 focus:ring-navy/20">
+            <option value="">Tümü</option>
+            <option value="1">Müsait</option>
+            <option value="0">Dolu</option>
+            <option value="live">Şu an canlı</option>
+          </select>
+        </div>
+        <div>
+          <label for="f-exp" class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-mute">Deneyim</label>
+          <select id="f-exp" class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-navy focus:ring-2 focus:ring-navy/20">
+            <option value="">Tümü</option>
+            <option value="0-9">0–9 yıl</option>
+            <option value="10-15">10–15 yıl</option>
+            <option value="16+">16+ yıl</option>
+          </select>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <p id="resultMeta" class="text-sm font-semibold text-mute">—</p>
+        <button type="button" id="btnReset" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-navy hover:bg-soft">Filtreleri Temizle</button>
+      </div>
+    </div>
+
+    <div class="reveal mt-6" aria-live="polite">
+      <div id="teacherGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="emptyState" class="hidden rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+        <p class="font-display text-xl font-bold text-ink">Sonuç bulunamadı</p>
+        <p class="mt-2 text-sm text-mute">Filtreleri gevşetin veya arama metnini değiştirin.</p>
+      </div>
+    </div>
+    <nav id="pagination" class="reveal mt-8 flex flex-wrap items-center justify-center gap-2" aria-label="Sayfalama"></nav>
   </div>
 </section>
 
@@ -188,85 +269,6 @@ tailwind.config={
         <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-accent text-lg text-white" aria-hidden="true">✉</div>
         <h3 class="font-display text-lg font-bold text-ink">Veli raporu</h3>
         <p class="mt-2 text-sm leading-relaxed text-mute">Devam, performans ve öneriler velilerle düzenli paylaşılır.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ÖĞRETMENLER -->
-<section id="ogretmenler" class="bg-white py-20 lg:py-24">
-  <div class="mx-auto max-w-6xl px-5 lg:px-6">
-    <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <p class="mb-3 text-sm font-bold uppercase tracking-wider text-accent">Kadro</p>
-        <h2 class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Alanında uzman öğretmenler</h2>
-        <p class="mt-3 max-w-xl text-mute">LGS ve YKS deneyimli kadroyla birebir özel ders.</p>
-      </div>
-      <div class="flex flex-wrap gap-3">
-        <a href="kadromuz.html" class="text-sm font-bold text-navy hover:text-accent">Tüm kadroyu gör →</a>
-        <a href="ogretmenler.html" class="text-sm font-bold text-accent hover:text-accent-2">Filtrele & Eğitimi Al →</a>
-      </div>
-    </div>
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/dogan-akturk.jpg" alt="Doğan Aktürk — Matematik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 18%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Doğan Aktürk</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Matematik · LGS / YKS</p>
-          <p class="mt-2 text-sm text-mute">16 yıllık deneyim, sınav odaklı soru çözümü ve kişiye özel plan.</p>
-        </div>
-      </article>
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/merve-matematik.jpg" alt="Merve — Matematik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 32%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Merve</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Matematik · LGS / TYT · Koç</p>
-          <p class="mt-2 text-sm text-mute">Planlama, motivasyon ve kalıcı öğrenme odaklı birebir dersler.</p>
-        </div>
-      </article>
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/gonul-cavusoglu.png" alt="Gönül Çavuşoğlu — Fen ve Biyoloji öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 22%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Gönül Çavuşoğlu</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Fen / Biyoloji · LGS / TYT / AYT</p>
-          <p class="mt-2 text-sm text-mute">Online ve yüz yüze özel ders deneyimiyle net yükselten takip.</p>
-        </div>
-      </article>
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/sultan-kurt.jpg" alt="Sultan Kurt — Türkçe öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 20%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Sultan Kurt</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Türkçe / Edebiyat · LGS / YKS</p>
-          <p class="mt-2 text-sm text-mute">Paragraf, dil bilgisi ve sınav stratejisinde sistemli özel ders.</p>
-        </div>
-      </article>
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/ali-aktas.jpg" alt="Ali Aktaş — Fizik öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 18%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Ali Aktaş</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Fizik · TYT / AYT</p>
-          <p class="mt-2 text-sm text-mute">Ezber değil mantık: fiziği basitleştiren deneyimli anlatım.</p>
-        </div>
-      </article>
-      <article class="reveal group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
-        <div class="teacher-photo-box">
-          <img src="assets/img/kadro/merve-yetkin.png" alt="Merve Yetkin — Türkçe öğretmeni" width="640" height="800" loading="lazy" decoding="async" class="teacher-photo" style="object-position:center 20%">
-        </div>
-        <div class="p-5">
-          <h3 class="font-display text-lg font-bold text-ink">Merve Yetkin</h3>
-          <p class="mt-1 text-sm font-semibold text-navy">Türkçe · Çocuk edebiyatı</p>
-          <p class="mt-2 text-sm text-mute">Bireyselleştirilmiş Türkçe dersleri ve okuma becerisi gelişimi.</p>
-        </div>
       </article>
     </div>
   </div>
@@ -395,10 +397,10 @@ tailwind.config={
 <section class="relative overflow-hidden bg-gradient-to-br from-navy-3 via-navy-2 to-navy py-20 text-white">
   <div class="absolute right-0 top-0 h-64 w-64 rounded-full bg-accent/25 blur-3xl animate-float" aria-hidden="true"></div>
   <div class="reveal relative mx-auto max-w-4xl px-5 text-center lg:px-6">
-    <h2 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Premium özel derse bugün başlayın</h2>
-    <p class="mx-auto mt-4 max-w-xl text-slate-200">Ücretsiz tanışma dersiyle öğretmeninizi tanıyın, paketinizi netleştirin.</p>
+    <h2 class="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">Sorularınız mı var?</h2>
+    <p class="mx-auto mt-4 max-w-xl text-slate-200">Ücretsiz tanışma dersi veya WhatsApp ile ekibimize ulaşın.</p>
     <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-      <a href="kayit.html" class="inline-flex rounded-xl bg-accent px-7 py-3.5 text-[15px] font-bold text-white transition hover:-translate-y-0.5 hover:bg-accent-2">Kayıt Ol</a>
+      <a href="iletisim.html" class="inline-flex rounded-xl bg-accent px-7 py-3.5 text-[15px] font-bold text-white transition hover:-translate-y-0.5 hover:bg-accent-2">Ücretsiz Tanışma</a>
       <a href="https://wa.me/908503034014" target="_blank" rel="noopener" class="inline-flex rounded-xl border-2 border-white/40 px-7 py-3.5 text-[15px] font-bold text-white transition hover:bg-white hover:text-navy-3">WhatsApp</a>
       <a href="tel:08503034014" class="inline-flex rounded-xl bg-white/10 px-7 py-3.5 text-[15px] font-bold text-white transition hover:bg-white/20">0850 303 40 14</a>
     </div>
@@ -424,10 +426,10 @@ tailwind.config={
     <div>
       <h3 class="mb-4 font-display text-xs font-bold uppercase tracking-widest text-white">Özel Ders</h3>
       <ul class="space-y-2 text-sm">
-        <li><a href="#avantajlar" class="hover:text-white">Avantajlar</a></li>
+        <li><a href="#ogretmenler" class="hover:text-white">Öğretmenler</a></li>
         <li><a href="#paketler" class="hover:text-white">Paketler</a></li>
         <li><a href="#sss" class="hover:text-white">SSS</a></li>
-        <li><a href="kayit.html" class="hover:text-white">Kayıt</a></li>
+        <li><a href="kayit.html?program=premium-ozel-ders" class="hover:text-white">Kayıt</a></li>
       </ul>
     </div>
     <div>
@@ -459,10 +461,13 @@ document.getElementById('y').textContent=new Date().getFullYear();
   nodes.forEach(function(n){io.observe(n);});
 })();
 </script>
-<script src="assets/products.js?v=20260716c"></script>
-<script src="assets/cart.js?v=20260716c"></script>
-<script src="assets/premium-packages-ui.js?v=20260716c"></script>
+<script src="assets/products.js?v=20260717a"></script>
+<script src="assets/cart.js?v=20260717a"></script>
+<script src="assets/premium-packages-ui.js?v=20260717a"></script>
 <script>OVD_PREMIUM_PACKAGES.init({ source:'ozel-ders' });</script>
+<script src="assets/premium-teachers.js?v=20260718a"></script>
+<script src="assets/premium-teachers-ui.js?v=20260718a"></script>
+<script>OVD_PREMIUM_TEACHERS_UI.init();</script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

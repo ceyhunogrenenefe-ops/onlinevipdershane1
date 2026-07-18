@@ -1,6 +1,22 @@
 const { paytrConfig, verifyCallbackHash } = require('./_lib/paytr');
 const { createKommoLead } = require('./_lib/kommo');
 
+async function notifyPanelPaid({ merchantOid, totalAmount }) {
+  const url = process.env.KOCLUK_PANEL_URL;
+  const secret = process.env.OZEL_DERS_WEBHOOK_SECRET;
+  if (!url || !secret) return;
+  await fetch(`${url.replace(/\/$/, '')}/api/ozel-ders-talepleri?op=webhook`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-webhook-secret': secret },
+    body: JSON.stringify({
+      event: 'order_paid',
+      merchant_oid: merchantOid,
+      amount_kurus: Number(totalAmount) || null,
+      source: 'onlinevipdershane.com',
+    }),
+  });
+}
+
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
 async function notifyPaidOrder({ merchantOid, totalAmount }) {
@@ -74,6 +90,9 @@ module.exports = async function handler(req, res) {
       console.log('paytr-callback: success', merchantOid, totalAmount);
       notifyPaidOrder({ merchantOid, totalAmount }).catch((err) =>
         console.error('paytr-callback notify', err)
+      );
+      notifyPanelPaid({ merchantOid, totalAmount }).catch((err) =>
+        console.warn('paytr-callback panel notify', err)
       );
     } else {
       console.log('paytr-callback: failed', merchantOid, status);

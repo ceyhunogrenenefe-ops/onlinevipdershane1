@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Öğretmen Profili — Online VIP Dershane</title>
+<meta name="description" content="Premium online özel ders öğretmen profili. Branş, deneyim ve eğitim bilgilerini inceleyin.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1f5c">
+<link rel="icon" type="image/png" href="/assets/img/ovd-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={
+  theme:{
+    extend:{
+      colors:{
+        navy:{DEFAULT:'#1a3fad',2:'#0f2a7a',3:'#0d1f5c',4:'#071236'},
+        accent:{DEFAULT:'#e8232a',2:'#c8191f'},
+        ink:'#1a1f36',
+        mute:'#64748b',
+        soft:'#f4f7ff'
+      },
+      fontFamily:{
+        display:['Bricolage Grotesque','system-ui','sans-serif'],
+        sans:['Nunito','system-ui','sans-serif']
+      },
+      boxShadow:{
+        soft:'0 12px 40px rgba(26,63,173,.12)',
+        lift:'0 20px 50px rgba(13,31,92,.18)'
+      }
+    }
+  }
+};
+</script>
+<style>
+  body{font-family:Nunito,system-ui,sans-serif;color:#1a1f36;background:#fff}
+  .font-display{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+  .teacher-hero-photo{aspect-ratio:4/5;object-fit:cover;width:100%;height:100%}
+</style>
+</head>
+<body class="bg-white text-ink antialiased">
+<header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 lg:px-6">
+    <a href="/" class="flex items-center gap-2.5">
+      <img src="/assets/img/ovd-logo.png" alt="Online VIP Dershane" class="h-9 w-9 rounded-lg object-contain" width="36" height="36">
+      <span class="font-display text-sm font-extrabold tracking-tight text-navy-3 sm:text-base">Online VIP Dershane</span>
+    </a>
+    <nav class="flex items-center gap-1 sm:gap-2">
+      <a href="/ozel-ders.html#ogretmenler" class="rounded-lg px-3 py-2 text-sm font-semibold text-mute hover:bg-soft hover:text-navy">Öğretmenler</a>
+      <a href="/premium-paketler.html" class="rounded-lg bg-accent px-3 py-2 text-sm font-bold text-white hover:bg-accent-2">Paketler</a>
+    </nav>
+  </div>
+</header>
+
+<main class="mx-auto max-w-6xl px-5 py-10 lg:px-6 lg:py-14">
+  <p id="teacherStatus" class="mb-6 text-sm font-semibold text-mute">Profil yükleniyor…</p>
+  <div id="teacherDetail" class="hidden"></div>
+  <div id="teacherMissing" class="hidden rounded-2xl border border-slate-200 bg-soft p-8 text-center">
+    <h1 class="font-display text-2xl font-extrabold text-ink">Öğretmen bulunamadı</h1>
+    <p class="mt-3 text-mute">Bu profil yayında değil veya bağlantı hatalı olabilir.</p>
+    <a href="/ozel-ders.html#ogretmenler" class="mt-6 inline-flex rounded-xl bg-navy px-5 py-3 text-sm font-bold text-white hover:bg-navy-2">Öğretmen listesine dön</a>
+  </div>
+</main>
+
+<footer class="border-t border-slate-200 bg-navy-4 py-8 text-center text-sm text-white/70">
+  <p>© <span id="y"></span> Online VIP Dershane</p>
+</footer>
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="/assets/teacher-detail-ui.js?v=20260718a"></script>
+<script>OVD_TEACHER_DETAIL.init();</script>
+</body>
+</html>

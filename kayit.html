@@ -80,8 +80,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </select>
       </div>
       <div class="fg"><label>İlgilendiğiniz Program *</label>
-        <select name="program" required>
+        <select name="program" id="program-select" required>
           <option value="">Seçiniz...</option>
+          <option>Premium Özel Ders</option>
           <option>LGS Hazırlık Programı</option>
           <option>YKS TYT-AYT Hazırlık Programı</option>
           <option>5-6-7. Sınıf VIP Paketi</option>
@@ -114,6 +115,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 var form=document.getElementById("kayit-form");
 if(form){
+  (function prefillFromQuery(){
+    var params=new URLSearchParams(location.search);
+    var program=params.get("program")||"";
+    var teacher=params.get("ogretmen")||"";
+    try{if(!teacher) teacher=sessionStorage.getItem("ovd_premium_teacher")||"";}catch(e){}
+    var programSel=document.getElementById("program-select");
+    if(programSel && (program==="premium-ozel-ders"||program==="ozel-ders")){
+      programSel.value="Premium Özel Ders";
+      var heroH1=document.querySelector(".page-hero h1");
+      var heroP=document.querySelector(".page-hero p");
+      if(heroH1) heroH1.textContent="Premium Özel Derse Kayıt Olun";
+      if(heroP) heroP.textContent="Formu doldurun; özel ders ekibimiz en kısa sürede sizi arasın.";
+    }
+    if(teacher){
+      var notEl=form.querySelector('textarea[name="not"]');
+      if(notEl && !notEl.value){
+        var slugOk=/^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(teacher);
+        var label=teacher.replace(/-/g," ");
+        notEl.value="Premium özel ders · Öğretmen: "+label+(slugOk?" · slug:"+teacher.toLowerCase():"");
+      }
+    }
+  })();
   form.addEventListener("submit",function(e){
     e.preventDefault();
     var btn=document.getElementById("kayit-submit");

@@ -98,12 +98,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){
   var provider='none';
+  var selectedTeacherSlug='';
 
   function ensurePackageFromQuery(){
     var paket=new URLSearchParams(location.search).get('paket')||'';
     var teacher=new URLSearchParams(location.search).get('ogretmen')||'';
     if(!teacher){
       try{ teacher=sessionStorage.getItem('ovd_premium_teacher')||''; }catch(e){}
+    }
+    if(teacher && /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(teacher)){
+      selectedTeacherSlug=teacher.toLowerCase();
     }
     if(paket && VIP_getProduct(paket)){
       var items=OVD_CART.read();
@@ -112,10 +116,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         OVD_CART.write([{ id:paket, qty:1 }]);
       }
     }
-    if(teacher){
+    if(selectedTeacherSlug){
       var tip=document.getElementById('studentInfo');
       if(tip && !tip.value){
-        tip.value='Premium özel ders · Öğretmen: '+teacher.replace(/-/g,' ');
+        tip.value='Premium özel ders · Öğretmen: '+selectedTeacherSlug.replace(/-/g,' ');
       }
     }
     var isPremium=!!(paket && String(paket).indexOf('ders-')===0);
@@ -156,6 +160,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       phone:document.getElementById('phone').value.trim(),
       email:document.getElementById('email').value.trim(),
       studentInfo:document.getElementById('studentInfo').value.trim(),
+      teacherSlug:selectedTeacherSlug||''
     };
   }
 
