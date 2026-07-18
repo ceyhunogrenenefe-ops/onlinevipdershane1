@@ -38,7 +38,7 @@ module.exports = async function handler(req, res) {
     }
 
     if (slug) return res.status(200).json({ teacher: data.teacher || null, source: 'panel' });
-    return res.status(200).json({ teachers: data.teachers || [], source: 'panel' });
+    return res.status(200).json({ teachers: data.teachers || [], managed_slugs: data.managed_slugs || [], source: 'panel' });
   } catch (err) {
     console.error('[public-teachers]', err);
     return res.status(200).json({ teachers: [], source: 'fallback', error: 'upstream_unreachable' });

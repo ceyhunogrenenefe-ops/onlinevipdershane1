@@ -1,6 +1,6 @@
 /**
  * Premium öğretmen filtresi + kart grid (ozel-ders.html)
- * Kaynak: önce panel yayınlı profiller (/api/public-teachers), yoksa statik katalog.
+ * Kaynak: panel yayınlı + panelde kaydı olmayan statik katalog. Panel pasifi statikten bile düşer.
  */
 (function (global) {
   function mapApiTeacher(t) {
@@ -321,19 +321,42 @@
       applyFilters();
     }
 
+    function mergeCatalog(staticList, liveList, managedSlugs) {
+      var managed = {};
+      (managedSlugs || []).forEach(function (slug) {
+        if (slug) managed[String(slug)] = true;
+      });
+      var bySlug = {};
+      // Statik kadro: panelde hic kaydi olmayanlar kalsin
+      (staticList || []).forEach(function (t) {
+        if (!t || !t.slug) return;
+        if (managed[t.slug]) return; // panel yonetiyor (pasif dahil) -> statikten gosterme
+        bySlug[t.slug] = t;
+      });
+      // Panel yayinlari ezsin / eklesin
+      (liveList || []).forEach(function (t) {
+        if (!t || !t.slug) return;
+        bySlug[t.slug] = t;
+      });
+      return Object.keys(bySlug).map(function (k) { return bySlug[k]; });
+    }
+
     bindUi();
     boot(teachers, 'katalog');
 
     fetch('/api/public-teachers')
       .then(function (r) {
+        if (!r.ok) throw new Error('public_teachers_' + r.status);
         return r.json();
       })
       .then(function (data) {
         var live = Array.isArray(data.teachers) ? data.teachers.map(mapApiTeacher) : [];
-        if (live.length) boot(live, 'panel');
+        var managed = Array.isArray(data.managed_slugs) ? data.managed_slugs : [];
+        // API basariliysa her zaman birlestir (bos liste = yalnizca panel disi statikler)
+        boot(mergeCatalog(teachers, live, managed), managed.length || live.length ? 'panel+katalog' : 'katalog');
       })
       .catch(function () {
-        /* statik katalog kalır */
+        /* ag hatasi: statik katalog kalir */
       });
   }
 
