@@ -130,9 +130,12 @@
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + ratingTxt + '</dd></div>' +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Ders</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + lessonsTxt + '</dd></div>' +
             '</dl>' +
-            '<div class="mt-auto flex gap-2 pt-4">' +
-              '<a href="' + profileHref(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold text-navy hover:border-navy hover:bg-soft">Profil</a>' +
-              '<a href="premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Eğitimi Al</a>' +
+            '<div class="mt-auto flex flex-col gap-2 pt-4">' +
+              '<div class="flex gap-2">' +
+                '<a href="' + profileHref(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold text-navy hover:border-navy hover:bg-soft">Profili İncele</a>' +
+                '<a href="premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-white hover:bg-accent-2">Özel Ders Al</a>' +
+              '</div>' +
+              '<a href="' + profileHref(t.slug) + '#availSection" class="inline-flex w-full items-center justify-center rounded-xl border border-navy/30 px-3 py-2 text-xs font-bold text-navy hover:bg-soft">Müsait Saatleri Gör</a>' +
             '</div>' +
           '</div>' +
         '</article>'
