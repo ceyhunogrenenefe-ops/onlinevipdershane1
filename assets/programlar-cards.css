@@ -101,9 +101,34 @@
   font-weight: 800;
   color: var(--navy, #1a3fad);
   margin-top: auto;
+  line-height: 1.25;
 }
 
-.prog-price span {
+.prog-price-old {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8e8e93;
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+
+.prog-price-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(232, 35, 42, 0.1);
+  color: #e8232a;
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.prog-price .prog-price-period,
+.prog-price > span:not(.prog-price-old):not(.prog-price-badge) {
   font-size: 12px;
   color: var(--muted, #6e6e73);
   font-weight: 400;
