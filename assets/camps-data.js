@@ -86,16 +86,16 @@
       image: '../assets/img/programlar/kamp-9-hazirlik.png',
       banner: '../assets/img/hero/slide-vip-start.jpg',
       metaDescription:
-        '9. sınıfa hazırlık kampı: 3 Ağustos başlangıç, 4 hafta, haftada 5 saat toplam 20 saat matematik dersi. 10 kişilik sınıf, birebir koçluk, seminerler ve 2 deneme sınavı.',
+        '9. sınıfa hazırlık kampı: 10 Ağustos başlangıç, 4 hafta, haftada 5 saat toplam 20 saat matematik dersi. 10 kişilik sınıf, birebir koçluk, seminerler ve 2 deneme sınavı.',
       shortDesc:
-        '4 haftalık matematik kampı · 20 saat ders · Seminerler, koçluk ve 2 deneme. 3 Ağustos’ta başlıyor.',
+        '4 haftalık matematik kampı · 20 saat ders · Seminerler, koçluk ve 2 deneme. 10 Ağustos’ta başlıyor.',
       heroDesc:
         '2026-2027 eğitim öğretim yılına hazırlanan öğrenciler için 4 haftalık yoğun matematik kampı. Haftada 5 saat, toplam 20 saat canlı ders; seminerler, birebir koçluk ve denemelerle 9. sınıfa güçlü başlayın.',
       intro:
-        'Online VIP Dershane 9. Sınıfa Hazırlık Kampı; 3 Ağustos’ta başlayan 4 haftalık (bir ay) programdır. Haftada 5 saat, toplam 20 saat matematik dersi canlı işlenir. Tüm dersler kaydedilir. On kişilik sınıflarda birebir eğitim koçluğu, 9. sınıfa hazırlık ve 10. sınıf odaklı seminerler ile iki deneme sınavı programın parçasıdır.',
+        'Online VIP Dershane 9. Sınıfa Hazırlık Kampı; 10 Ağustos’ta başlayan 4 haftalık (bir ay) programdır. Haftada 5 saat, toplam 20 saat matematik dersi canlı işlenir. Tüm dersler kaydedilir. On kişilik sınıflarda birebir eğitim koçluğu, 9. sınıfa hazırlık ve 10. sınıf odaklı seminerler ile iki deneme sınavı programın parçasıdır.',
       whoCanJoin:
         '2026-2027 eğitim öğretim yılında 9. sınıfa geçecek öğrenciler ve lise başlangıcına matematik temeliyle hazırlanmak isteyenler.',
-      duration: '4 hafta · 3 Ağustos başlangıç · Bir ay · Online canlı',
+      duration: '4 hafta · 10 Ağustos başlangıç · Bir ay · Online canlı',
       weeklySchedule: [
         'Haftada 5 saat Matematik dersi',
         'Toplam 20 saat canlı matematik',
@@ -104,7 +104,7 @@
         '2 deneme sınavı',
       ],
       features: [
-        '3 Ağustos’ta başlayan 4 haftalık kamp',
+        '10 Ağustos’ta başlayan 4 haftalık kamp',
         'Haftada 5 saat · toplam 20 saat matematik dersi',
         'Maksimum 10 kişilik sınıflar',
         'Tüm dersler kaydediliyor',
@@ -137,7 +137,7 @@
       faq: [
         {
           q: 'Kamp ne zaman başlıyor ve ne kadar sürüyor?',
-          a: 'Kamp 3 Ağustos’ta başlar; 4 hafta (bir ay) sürer. Haftada 5 saat ders ile toplam 20 saat matematik işlenir.',
+          a: 'Kamp 10 Ağustos’ta başlar; 4 hafta (bir ay) sürer. Haftada 5 saat ders ile toplam 20 saat matematik işlenir.',
         },
         {
           q: 'Seminerler neleri kapsıyor?',
