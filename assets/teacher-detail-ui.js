@@ -4,11 +4,67 @@
  */
 (function (global) {
   function escapeHtml(s) {
-    return String(s == null ? '')
+    return String(s == null ? '' : s)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function upgradeRemotePhotoUrl(url, minSize) {
+    minSize = minSize || 800;
+    var u = String(url || '').trim();
+    if (!u) return u;
+    if (!/ggpht\.com|googleusercontent\.com/i.test(u)) return u;
+    return u.replace(/=s(\d+)/i, function (match, n) {
+      var size = parseInt(n, 10);
+      if (!Number.isFinite(size) || size === 0 || size >= minSize) return match;
+      return '=s' + minSize;
+    });
+  }
+
+  function isUsablePhoto(url) {
+    var u = String(url || '').trim();
+    if (!u) return false;
+    if (/^https?:\/\//i.test(u)) return true;
+    if (/^\/?assets\//i.test(u)) return true;
+    if (u.charAt(0) === '/' && u.indexOf(' ') === -1) return true;
+    return false;
+  }
+
+  function titleCaseTr(s) {
+    return String(s == null ? '' : s)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(function (w) {
+        if (/^(LGS|TYT|AYT|YKS|KPSS|VIP)$/i.test(w)) return w.toUpperCase();
+        var lower = w.toLocaleLowerCase('tr-TR');
+        return lower.charAt(0).toLocaleUpperCase('tr-TR') + lower.slice(1);
+      })
+      .join(' ');
+  }
+
+  var PHOTO_FALLBACKS = {
+    'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
+    'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg'
+  };
+
+  function youtubeIdFromUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return '';
+    var m = u.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{6,})/i
+    );
+    return m ? m[1] : '';
+  }
+
+  function isDirectVideoUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return false;
+    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
+    if (/\/storage\/v1\/object\//i.test(u) && /video/i.test(u)) return true;
+    return false;
   }
 
   function slugFromLocation() {
@@ -135,16 +191,29 @@
     var exams = Array.isArray(t.exam_areas) ? t.exam_areas : [];
     var grades = Array.isArray(t.grade_levels) ? t.grade_levels : [];
     var specs = Array.isArray(t.specialties) ? t.specialties : [];
-    var role = t.title || [t.branch, exams.join(' / ')].filter(Boolean).join(' · ');
-    var photo = t.photo_url || '/assets/img/ovd-logo.png';
+    var name = titleCaseTr(t.name) || t.name || 'Öğretmen';
+    var role = titleCaseTr(t.title || [t.branch, exams.join(' / ')].filter(Boolean).join(' · '));
+    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
+    var photo = isUsablePhoto(rawPhoto)
+      ? rawPhoto
+      : PHOTO_FALLBACKS[t.slug] || '/assets/img/ovd-logo.png';
     var bio = t.full_bio || t.short_bio || '';
     var buy = '/premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug);
+    var videoUrl = String(t.video_url || '').trim();
+    var canHoverVideo = !!(youtubeIdFromUrl(videoUrl) || isDirectVideoUrl(videoUrl));
 
     return (
       '<div class="grid gap-8 lg:grid-cols-[340px_1fr] lg:gap-12">' +
         '<aside>' +
-          '<div class="overflow-hidden rounded-2xl border border-slate-200 bg-soft shadow-soft">' +
-            '<img src="' + escapeHtml(photo) + '" alt="' + escapeHtml(t.name) + '" class="teacher-hero-photo" width="480" height="600">' +
+          '<div class="teacher-hero-box overflow-hidden rounded-2xl border border-slate-200 bg-soft shadow-soft' +
+          (canHoverVideo ? ' has-video' : '') +
+          '"' +
+          (canHoverVideo ? ' data-video="' + escapeHtml(videoUrl) + '"' : '') +
+          '>' +
+            '<img src="' + escapeHtml(photo) + '" alt="' + escapeHtml(name) + '" class="teacher-hero-photo" width="480" height="600">' +
+            (canHoverVideo
+              ? '<div class="teacher-video-layer" aria-hidden="true"></div><span class="teacher-video-badge" aria-hidden="true">Tanıtım videosu</span><button type="button" class="teacher-unmute-btn" aria-label="Sesi aç">🔊 Sesi aç</button>'
+              : '') +
           '</div>' +
           '<a href="#availSection" class="mt-4 flex w-full items-center justify-center rounded-xl border border-navy px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Müsait Saatleri Gör</a>' +
           '<a href="' + buy + '" class="mt-2 flex w-full items-center justify-center rounded-xl bg-accent px-4 py-3.5 text-sm font-bold text-white shadow-lift hover:bg-accent-2">Özel Ders Al</a>' +
@@ -152,8 +221,8 @@
         '</aside>' +
         '<section>' +
           '<p class="text-sm font-bold uppercase tracking-wider text-accent">Özel ders öğretmeni</p>' +
-          '<h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">' + escapeHtml(t.name) + '</h1>' +
-          '<p class="mt-2 text-lg font-bold text-navy">' + escapeHtml(role) + '</p>' +
+          '<h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">' + escapeHtml(name) + '</h1>' +
+          '<p class="mt-2 text-xl font-bold text-navy sm:text-2xl">' + escapeHtml(role) + '</p>' +
           (t.university ? '<p class="mt-1 text-sm font-semibold text-mute">' + escapeHtml(t.university) + (t.department ? ' · ' + escapeHtml(t.department) : '') + '</p>' : '') +
           '<dl class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">' +
             '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Deneyim</dt><dd class="mt-1 text-sm font-extrabold">' + (t.experience_years != null ? escapeHtml(t.experience_years) + ' yıl' : '—') + '</dd></div>' +
@@ -174,15 +243,207 @@
               escapeHtml(t.teaching_approach) +
               '</p></div>'
             : '') +
-          (t.video_url
+          (videoUrl && !canHoverVideo
             ? '<div class="mt-8"><h2 class="font-display text-lg font-bold">Tanıtım videosu</h2><a class="mt-3 inline-flex text-sm font-bold text-navy underline" href="' +
-              escapeHtml(t.video_url) +
+              escapeHtml(videoUrl) +
               '" target="_blank" rel="noopener">Videoyu izle</a></div>'
             : '') +
           renderAvailability(t, slots) +
         '</section>' +
       '</div>'
     );
+  }
+
+  function bindHoverVideo() {
+    var box = document.querySelector('.teacher-hero-box.has-video');
+    if (!box) return;
+    var layer = box.querySelector('.teacher-video-layer');
+    function stop() {
+      if (box._dwellTimer) {
+        clearTimeout(box._dwellTimer);
+        box._dwellTimer = null;
+      }
+      if (box._videoInjectTimer) {
+        clearTimeout(box._videoInjectTimer);
+        box._videoInjectTimer = null;
+      }
+      if (box._videoClearTimer) {
+        clearTimeout(box._videoClearTimer);
+        box._videoClearTimer = null;
+      }
+      box.classList.remove('is-playing', 'is-muted', 'has-sound');
+      box._videoClearTimer = setTimeout(function () {
+        box._videoClearTimer = null;
+        if (!box.classList.contains('is-playing') && layer) layer.innerHTML = '';
+      }, 700);
+    }
+    function markSoundOn() {
+      box.classList.remove('is-muted');
+      box.classList.add('has-sound');
+    }
+    function forceUnmute() {
+      var iframe = box.querySelector('iframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+            '*'
+          );
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
+            '*'
+          );
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+            '*'
+          );
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      var video = box.querySelector('video');
+      if (video) {
+        video.muted = false;
+        video.volume = 1;
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      markSoundOn();
+    }
+    function injectMedia(url, muted) {
+      var yt = youtubeIdFromUrl(url);
+      var origin = '';
+      try {
+        origin = '&origin=' + encodeURIComponent(window.location.origin);
+      } catch (e) {
+        /* ignore */
+      }
+      if (yt) {
+        layer.innerHTML =
+          '<iframe src="https://www.youtube.com/embed/' +
+          encodeURIComponent(yt) +
+          '?autoplay=1&mute=' +
+          (muted ? '1' : '0') +
+          '&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&loop=1&playlist=' +
+          encodeURIComponent(yt) +
+          origin +
+          '" title="Tanıtım videosu" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      } else if (isDirectVideoUrl(url)) {
+        layer.innerHTML =
+          '<video src="' +
+          escapeHtml(url) +
+          '" autoplay loop playsinline controls' +
+          (muted ? ' muted' : '') +
+          '></video>';
+        var video = layer.querySelector('video');
+        if (video) {
+          video.muted = !!muted;
+          video.volume = 1;
+          var playPromise = video.play();
+          if (playPromise && playPromise.catch) {
+            playPromise.catch(function () {
+              video.muted = true;
+              box.classList.add('is-muted');
+              video.play().catch(function () {
+                video.controls = true;
+              });
+            });
+          }
+        }
+      } else return false;
+      if (muted) {
+        box.classList.add('is-muted');
+        box.classList.remove('has-sound');
+      } else {
+        markSoundOn();
+        forceUnmute();
+      }
+      return true;
+    }
+    function start(restart, muted, fromUnmute) {
+      if (box.classList.contains('is-playing') && !restart) {
+        if (!muted) start(true, false, true);
+        return;
+      }
+      var url = box.getAttribute('data-video') || '';
+      if (!layer || !url) return;
+      if (!youtubeIdFromUrl(url) && !isDirectVideoUrl(url)) return;
+      if (box._videoClearTimer) {
+        clearTimeout(box._videoClearTimer);
+        box._videoClearTimer = null;
+      }
+      if (box._videoInjectTimer) {
+        clearTimeout(box._videoInjectTimer);
+        box._videoInjectTimer = null;
+      }
+      if (box.classList.contains('is-playing') && !fromUnmute) {
+        box.classList.remove('is-playing');
+        void box.offsetWidth;
+      }
+      if (restart) layer.innerHTML = '';
+      box.classList.add('is-playing');
+      if (muted) box.classList.add('is-muted');
+      else box.classList.remove('is-muted');
+      var reduceMotion =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var delay = reduceMotion || fromUnmute ? 0 : 160;
+      box._videoInjectTimer = setTimeout(function () {
+        box._videoInjectTimer = null;
+        if (!box.classList.contains('is-playing')) return;
+        injectMedia(url, !!muted);
+      }, delay);
+    }
+    var unmuteBtn = box.querySelector('.teacher-unmute-btn');
+    if (unmuteBtn) {
+      unmuteBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        start(true, false, true);
+      });
+    }
+    var hoverCapable = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (hoverCapable) {
+      box.addEventListener('mouseenter', function () {
+        start(false, false, false);
+        setTimeout(function () {
+          if (box.classList.contains('is-playing') && !box.classList.contains('has-sound')) {
+            box.classList.add('is-muted');
+          }
+        }, 800);
+      });
+      box.addEventListener('mouseleave', stop);
+    } else {
+      box.addEventListener('click', function (e) {
+        if (e.target && e.target.closest && e.target.closest('.teacher-unmute-btn')) return;
+        if (box._dwellTimer) {
+          clearTimeout(box._dwellTimer);
+          box._dwellTimer = null;
+        }
+        start(true, false, true);
+      });
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (box._dwellTimer) {
+                clearTimeout(box._dwellTimer);
+                box._dwellTimer = null;
+              }
+              if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+                box._dwellTimer = setTimeout(function () {
+                  box._dwellTimer = null;
+                  start(false, true, false);
+                }, 1200);
+              } else if (box.classList.contains('is-playing')) {
+                stop();
+              }
+            });
+          },
+          { threshold: [0.55, 0.7] }
+        );
+        io.observe(box);
+      }
+    }
   }
 
   function bindBooking(slug) {
@@ -261,13 +522,14 @@
         var t = data.teacher;
         if (!t) throw new Error('not_found');
         var slots = data.availability_slots || t.availability_slots || [];
-        document.title = (t.name || 'Öğretmen') + ' — Online VIP Dershane';
+        document.title = (titleCaseTr(t.name) || t.name || 'Öğretmen') + ' — Online VIP Dershane';
         var desc = document.querySelector('meta[name="description"]');
         if (desc && t.short_bio) desc.setAttribute('content', t.short_bio.slice(0, 160));
         if (status) status.classList.add('hidden');
         if (box) {
           box.innerHTML = render(t, slots);
           box.classList.remove('hidden');
+          bindHoverVideo();
           bindBooking(t.slug);
         }
       })

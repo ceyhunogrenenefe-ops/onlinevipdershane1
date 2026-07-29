@@ -206,7 +206,7 @@
       card.style.cursor = 'default';
 
       var wrap = document.createElement('div');
-      wrap.className = 'prog-card-wrap card ' + card.className.replace('prog-card', '').trim();
+      wrap.className = 'prog-card prog-card-wrap ' + card.className.replace(/\bprog-card\b/g, '').replace(/\s+/g, ' ').trim();
       wrap.innerHTML = card.innerHTML;
 
       var actions = document.createElement('div');

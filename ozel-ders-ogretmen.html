@@ -38,7 +38,92 @@ tailwind.config={
 <style>
   body{font-family:Nunito,system-ui,sans-serif;color:#1a1f36;background:#fff}
   .font-display{font-family:'Bricolage Grotesque',system-ui,sans-serif}
-  .teacher-hero-photo{aspect-ratio:4/5;object-fit:cover;width:100%;height:100%}
+  .teacher-hero-box{position:relative;aspect-ratio:4/5;overflow:hidden;background:#eef2fb}
+  .teacher-hero-photo{aspect-ratio:4/5;object-fit:cover;width:100%;height:100%;display:block;transition:transform .5s ease,opacity .35s ease}
+  .teacher-hero-box.has-video{cursor:pointer}
+  .teacher-hero-box.has-video .teacher-hero-photo{
+    position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;
+    transform:scale(1) rotate(0deg);
+    transform-origin:center center;
+    transition:transform .55s cubic-bezier(.15,.9,.25,1),opacity .4s ease,filter .55s ease;
+    z-index:1;
+  }
+  .teacher-hero-box.has-video.is-playing .teacher-hero-photo{
+    transform:scale(2.15) rotate(4deg);
+    opacity:0;
+    filter:brightness(1.85) contrast(1.1) blur(12px);
+    pointer-events:none;
+  }
+  .teacher-hero-box.has-video::before,
+  .teacher-hero-box.has-video::after{
+    content:"";position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;
+  }
+  .teacher-hero-box.has-video::before{
+    background:radial-gradient(circle at center,rgba(255,255,255,.95) 0%,rgba(255,220,180,.55) 18%,rgba(232,35,42,.35) 42%,transparent 68%);
+    transform:scale(.2);
+  }
+  .teacher-hero-box.has-video.is-playing::before{
+    animation:teacher-burst-core .7s cubic-bezier(.12,.85,.25,1) forwards;
+  }
+  .teacher-hero-box.has-video::after{
+    box-shadow:0 0 0 0 rgba(255,255,255,.55),0 0 0 0 rgba(232,35,42,.35),inset 0 0 0 0 rgba(255,255,255,.4);
+  }
+  .teacher-hero-box.has-video.is-playing::after{
+    animation:teacher-burst-ring .75s cubic-bezier(.12,.85,.25,1) forwards;
+  }
+  @keyframes teacher-burst-core{
+    0%{opacity:0;transform:scale(.15)}
+    22%{opacity:1;transform:scale(1.05)}
+    100%{opacity:0;transform:scale(2.6)}
+  }
+  @keyframes teacher-burst-ring{
+    0%{opacity:.9;box-shadow:0 0 0 0 rgba(255,255,255,.7),0 0 0 0 rgba(232,35,42,.45),inset 0 0 40px rgba(255,255,255,.35)}
+    100%{opacity:0;box-shadow:0 0 0 90px rgba(255,255,255,0),0 0 0 140px rgba(232,35,42,0),inset 0 0 0 rgba(255,255,255,0)}
+  }
+  .teacher-video-layer{
+    position:absolute;inset:0;opacity:0;pointer-events:none;background:#0b1224;
+    transform:scale(.18);
+    transform-origin:center center;
+    filter:blur(10px) brightness(1.4);
+    transition:transform .65s cubic-bezier(.12,.9,.2,1) .1s,opacity .45s ease .12s,filter .55s ease .1s;
+    z-index:2;
+  }
+  .teacher-hero-box.is-playing .teacher-video-layer{
+    transform:scale(1);
+    opacity:1;
+    filter:blur(0) brightness(1);
+    pointer-events:auto;
+  }
+  .teacher-video-layer iframe,
+  .teacher-video-layer video{width:100%;height:100%;border:0;object-fit:cover;display:block}
+  .teacher-video-badge{
+    position:absolute;right:12px;bottom:12px;z-index:5;display:inline-flex;align-items:center;
+    border-radius:999px;background:rgba(13,31,92,.88);color:#fff;font-size:11px;font-weight:800;
+    padding:6px 10px;pointer-events:none;transition:opacity .3s ease,transform .35s cubic-bezier(.2,.9,.3,1);
+  }
+  .teacher-hero-box.is-playing .teacher-video-badge{opacity:0;transform:scale(1.6);filter:blur(4px)}
+  .teacher-unmute-btn{
+    display:none;position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+    z-index:12;align-items:center;justify-content:center;gap:6px;
+    border:0;border-radius:999px;padding:10px 16px;cursor:pointer;
+    background:#e8232a;color:#fff;font-size:13px;font-weight:800;
+    box-shadow:0 10px 28px rgba(232,35,42,.4);pointer-events:auto;
+    animation:teacher-unmute-pulse 1.4s ease-in-out infinite;
+  }
+  .teacher-hero-box.is-playing.is-muted .teacher-unmute-btn{display:inline-flex}
+  .teacher-hero-box.has-sound .teacher-unmute-btn{display:none!important}
+  @keyframes teacher-unmute-pulse{
+    0%,100%{transform:translateX(-50%) scale(1)}
+    50%{transform:translateX(-50%) scale(1.06)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .teacher-hero-box.has-video .teacher-hero-photo,
+    .teacher-video-layer{transition:opacity .2s ease!important;transform:none!important;filter:none!important}
+    .teacher-hero-box.has-video.is-playing .teacher-hero-photo{opacity:0}
+    .teacher-hero-box.is-playing .teacher-video-layer{opacity:1}
+    .teacher-hero-box.has-video.is-playing::before,
+    .teacher-hero-box.has-video.is-playing::after{animation:none!important;opacity:0!important}
+  }
 </style>
 </head>
 <body class="bg-white text-ink antialiased">
@@ -69,7 +154,7 @@ tailwind.config={
   <p>© <span id="y"></span> Online VIP Dershane</p>
 </footer>
 <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
-<script src="/assets/teacher-detail-ui.js?v=20260718a"></script>
+<script src="/assets/teacher-detail-ui.js?v=20260727a"></script>
 <script>OVD_TEACHER_DETAIL.init();</script>
 </body>
 </html>

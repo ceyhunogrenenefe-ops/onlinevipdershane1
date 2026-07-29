@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="assets/testimonials.css">
 <link rel="stylesheet" href="assets/welcome-modal.css">
 <link rel="stylesheet" href="assets/nav-logo.css">
-<link rel="stylesheet" href="assets/programlar-cards.css">
+<link rel="stylesheet" href="assets/programlar-cards.css?v=20260721b">
 <style>
 :root {
   --navy:   #1a3fad;
@@ -346,16 +346,16 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 
 <style>
 /* ── HERO SLIDER */
-.hero { background:#fff; }
+.hero { background:#fff; overflow:hidden; }
 .hero-slider { display:flex; transition:transform .5s cubic-bezier(.4,0,.2,1); }
-.hero-slide { min-width:100%; }
+.hero-slide { min-width:100%; overflow:hidden; }
 
 .hero-content {
   max-width:1240px; margin:0 auto;
-  padding:56px 5% 64px;
+  padding:40px 5% 48px;
   display:flex; align-items:center;
   gap:clamp(28px,4vw,56px);
-  min-height:clamp(440px,54vh,600px);
+  min-height:0;
 }
 .hero-text { flex:1 1 340px; max-width:520px; min-width:0; }
 .hero-badge {
@@ -439,9 +439,11 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 
 .hero-visual {
   position:relative;
-  flex:1 1 300px;
-  width:auto;
+  flex:0 1 auto;
+  width:100%;
   max-width:min(540px,46vw);
+  height:clamp(350px, 360px, 370px);
+  max-height:370px;
   border-radius:22px;
   overflow:hidden;
   box-shadow:0 24px 56px rgba(26,63,173,.16), 0 8px 20px rgba(26,31,54,.06);
@@ -451,13 +453,15 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 .hero-visual::after {
   content:'';
   position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(10,26,78,.58) 0%,rgba(10,26,78,.12) 36%,transparent 58%);
+  background:linear-gradient(to top,rgba(10,26,78,.55) 0%,rgba(10,26,78,.08) 28%,transparent 48%);
   pointer-events:none;
+  z-index:0;
 }
 .hero-visual-img {
   width:100%;
-  aspect-ratio:5/4;
-  min-height:300px;
+  height:100%;
+  min-height:0;
+  max-height:100%;
   object-fit:cover;
   object-position:center 42%;
   display:block;
@@ -468,42 +472,72 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 .hero-visual--face-left .hero-visual-img { object-position:32% 38%; }
 .hero-visual--subject-left .hero-visual-img { object-position:18% 42%; }
 .hero-visual--erken .hero-visual-img { object-position:center 40%; }
+/* Fotoğrafın üstünü kaplamasın: ince alt şerit */
 .hero-visual-overlay {
   position:absolute;
-  left:12px;
-  right:12px;
-  bottom:12px;
+  left:10px;
+  right:10px;
+  bottom:10px;
   z-index:1;
+  max-height:38%;
+  pointer-events:none;
 }
 .hero-visual-overlay .hero-stats {
   width:100%;
-  gap:8px;
+  gap:6px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
 }
 .hero-visual-overlay .hero-stats .stat-card {
-  padding:12px 10px;
+  padding:8px 6px;
+  border-radius:10px;
 }
 .hero-visual-overlay .hero-stats .stat-num {
-  font-size:20px;
+  font-size:15px;
+}
+.hero-visual-overlay .hero-stats .stat-label {
+  font-size:9px;
+  line-height:1.2;
 }
 .hero-visual-overlay .hero-feature-box,
 .hero-visual-overlay .hero-camp-box {
   width:100%;
-  padding:16px;
-  backdrop-filter:blur(6px);
+  max-width:100%;
+  padding:10px 12px;
+  border-radius:14px;
+  backdrop-filter:blur(8px);
+  text-align:left;
+}
+.hero-visual-overlay .hero-overlay-strip {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px 8px;
+}
+.hero-visual-overlay .hero-overlay-strip strong {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:14px;
+  font-weight:800;
+  color:#fff;
+  line-height:1.2;
+  margin-right:4px;
 }
 .hero-visual-overlay .hero-feature-box--navy,
 .hero-visual-overlay .hero-camp-box {
-  background:linear-gradient(135deg,rgba(26,63,173,.9),rgba(37,84,212,.85)) !important;
+  background:linear-gradient(135deg,rgba(26,63,173,.82),rgba(37,84,212,.78)) !important;
 }
 .hero-visual-overlay .hero-feature-box--red {
-  background:linear-gradient(135deg,rgba(232,35,42,.92),rgba(184,21,28,.88)) !important;
+  background:linear-gradient(135deg,rgba(232,35,42,.84),rgba(184,21,28,.8)) !important;
 }
 .hero-visual-overlay .hero-feature-box--deep {
-  background:linear-gradient(135deg,rgba(10,26,78,.92),rgba(26,63,173,.88)) !important;
+  background:linear-gradient(135deg,rgba(10,26,78,.84),rgba(26,63,173,.8)) !important;
 }
-.hero-visual-overlay .hero-feature-chip,
-.hero-visual-overlay .hero-camp-box > div {
-  font-size:12.5px;
+.hero-visual-overlay .hero-feature-chip {
+  font-size:11px !important;
+  padding:5px 8px !important;
+  margin:0 !important;
+  border-radius:8px !important;
+  display:inline-flex !important;
+  width:auto !important;
 }
 
 /* Ok butonları */
@@ -549,21 +583,29 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
     order:-1;
     margin:0 auto;
     border-radius:18px;
+    height:clamp(240px, 62vw, 320px);
+    max-height:320px;
+    min-height:0;
   }
   .hero-visual-img {
-    aspect-ratio:16/11;
-    min-height:220px;
+    height:100%;
+    width:100%;
+    min-height:0;
+    max-height:100%;
   }
   .hero-visual--outdoor .hero-visual-img { object-position:center 62%; }
   .hero-visual--subject-left .hero-visual-img { object-position:22% 40%; }
   .hero-visual--face-left .hero-visual-img { object-position:30% 36%; }
-  .hero-stats {
+  .hero-visual-overlay { max-height:42%; left:8px; right:8px; bottom:8px; }
+  .hero-visual-overlay .hero-stats {
     width:100%;
     grid-template-columns:repeat(4,1fr);
-    gap:8px;
+    gap:5px;
   }
-  .stat-card { padding:12px 8px; }
-  .stat-num { font-size:18px; }
+  .hero-visual-overlay .hero-stats .stat-card { padding:7px 4px; }
+  .hero-visual-overlay .hero-stats .stat-num { font-size:13px; }
+  .hero-visual-overlay .hero-overlay-strip strong { font-size:13px; }
+  .hero-visual-overlay .hero-feature-chip { font-size:10px !important; padding:4px 7px !important; }
   .stat-label { font-size:9px; }
   .hero-camp-box, .hero-feature-box { width:100%; }
   .hero-title { font-size:clamp(22px,6vw,32px); }
@@ -876,12 +918,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hero-visual hero-visual--erken">
             <img data-src="assets/img/hero/slide-erken-kayit.jpg" alt="Erken kayıt — öğrenci canlı ders çalışıyor" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
             <div class="hero-visual-overlay">
-              <div class="hero-feature-box hero-feature-box--red">
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;line-height:1;margin-bottom:4px;">%30</div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">İndirim</div>
-                <div style="font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px;">Erken Kayıt Fırsatı</div>
-                <div class="hero-feature-chip">Yeni sezon kayıtlarında geçerli</div>
-                <div class="hero-feature-chip hero-feature-chip--accent">Kontenjan dolmadan kaydol</div>
+              <div class="hero-feature-box hero-feature-box--red hero-overlay-strip">
+                <strong>%30 indirim</strong>
+                <span class="hero-feature-chip">Erken kayıt</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">Kontenjan sınırlı</span>
               </div>
             </div>
           </div>
@@ -905,12 +945,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hero-visual hero-visual--outdoor">
             <img data-src="assets/img/hero/slide-yaz-kampi.jpg" alt="Yaz kampı — öğrenciler dışarıda ders çalışıyor" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
             <div class="hero-visual-overlay">
-              <div class="hero-camp-box">
-                <div class="hero-camp-icon" data-icon="tent" data-icon-size="40" style="margin-bottom:12px;color:#fff;"></div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;">Yaz Kampı 2025</div>
-                <div style="font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px;">Temmuz-Ağustos 2025</div>
-                <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:10px;margin-bottom:8px;font-size:13.5px;color:#fff;">9 Haftalık Program</div>
-                <div style="background:rgba(232,35,42,.4);border-radius:10px;padding:10px;font-size:13.5px;font-weight:700;color:#fff;">5–7 ve 9–11. Sınıf</div>
+              <div class="hero-camp-box hero-overlay-strip">
+                <strong>Yaz Kampı 2025</strong>
+                <span class="hero-feature-chip">9 hafta</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">5–7 ve 9–11. sınıf</span>
               </div>
             </div>
           </div>
@@ -935,12 +973,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hero-visual hero-visual--face-left">
             <img data-src="assets/img/hero/slide-lgs.jpg" alt="LGS hazırlık — öğrenci sınıfta ders çalışıyor" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
             <div class="hero-visual-overlay">
-              <div class="hero-feature-box hero-feature-box--navy">
-                <div class="hero-camp-icon" data-icon="trophy" data-icon-size="40" style="margin-bottom:12px;color:#fff;"></div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">LGS Online Paket</div>
-                <div style="font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px;">2026-2027 Dönemi</div>
-                <div class="hero-feature-chip">Haftalık deneme kulübü</div>
-                <div class="hero-feature-chip hero-feature-chip--accent">En fazla 10 kişilik sınıf</div>
+              <div class="hero-feature-box hero-feature-box--navy hero-overlay-strip">
+                <strong>LGS Online Paket</strong>
+                <span class="hero-feature-chip">Haftalık deneme</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">Max 10 kişi</span>
               </div>
             </div>
           </div>
@@ -964,12 +1000,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hero-visual hero-visual--group">
             <img data-src="assets/img/hero/slide-ortaokul.jpg" alt="5-6-7. sınıf online ders — öğretmen ve öğrenci" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
             <div class="hero-visual-overlay">
-              <div class="hero-feature-box hero-feature-box--deep">
-                <div class="hero-camp-icon" data-icon="book-open" data-icon-size="40" style="margin-bottom:12px;color:#fff;"></div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">5-6-7. Sınıf VIP</div>
-                <div style="font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px;">Online Eğitim Paketi</div>
-                <div class="hero-feature-chip">Haftalık 9 saat canlı ders</div>
-                <div class="hero-feature-chip hero-feature-chip--accent">Birebir koçluk desteği</div>
+              <div class="hero-feature-box hero-feature-box--deep hero-overlay-strip">
+                <strong>5-6-7. Sınıf VIP</strong>
+                <span class="hero-feature-chip">9 saat canlı</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">Birebir koçluk</span>
               </div>
             </div>
           </div>
@@ -994,12 +1028,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="hero-visual hero-visual--subject-left">
             <img data-src="assets/img/hero/slide-vip-start.jpg" alt="VIP Start — öğrenci masada ders çalışıyor" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
             <div class="hero-visual-overlay">
-              <div class="hero-feature-box hero-feature-box--red">
-                <div class="hero-camp-icon" data-icon="rocket" data-icon-size="40" style="margin-bottom:12px;color:#fff;"></div>
-                <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;margin-bottom:6px;">VIP Start Paketi</div>
-                <div style="font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px;">Yazılı + Deneme + Etüt</div>
-                <div class="hero-feature-chip">1M+ soru havuzu</div>
-                <div class="hero-feature-chip hero-feature-chip--accent">Yazılı + deneme + etüt</div>
+              <div class="hero-feature-box hero-feature-box--red hero-overlay-strip">
+                <strong>VIP Start Paketi</strong>
+                <span class="hero-feature-chip">1M+ soru</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">Yazılı + deneme + etüt</span>
               </div>
             </div>
           </div>
@@ -1100,9 +1132,12 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
         <div class="prog-card-body">
         <h3>LGS Hazırlık</h3>
         <p>8. Sınıf yoğun hazırlık. Maarif Modeli uyumlu, haftalık deneme sistemi.</p>
-        <div class="prog-price">
-          <span class="prog-price-old">160.000₺</span>
-          112.000₺ <span class="prog-price-period">/ yıllık</span><span class="prog-price-badge">%30</span>
+        <div class="prog-price prog-price--campaign">
+          <div class="prog-price-top">
+            <s class="prog-price-old">160.000₺</s>
+            <span class="prog-price-discount">%30 indirim</span>
+          </div>
+          <div class="prog-price-now">112.000₺ <span class="prog-price-period">/ yıllık</span></div>
         </div>
         <span class="prog-arrow">→</span>
         </div>
@@ -1114,9 +1149,12 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
         <div class="prog-card-body">
         <h3>YKS TYT-AYT Hazırlık</h3>
         <p>Üniversite hazırlığı. TYT + AYT kapsamlı program, birebir koçluk.</p>
-        <div class="prog-price">
-          <span class="prog-price-old">170.000₺</span>
-          119.000₺ <span class="prog-price-period">/ yıllık</span><span class="prog-price-badge">%30</span>
+        <div class="prog-price prog-price--campaign">
+          <div class="prog-price-top">
+            <s class="prog-price-old">170.000₺</s>
+            <span class="prog-price-discount">%30 indirim</span>
+          </div>
+          <div class="prog-price-now">119.000₺ <span class="prog-price-period">/ yıllık</span></div>
         </div>
         <span class="prog-arrow">→</span>
         </div>
@@ -1128,9 +1166,12 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
         <div class="prog-card-body">
         <h3>5-6-7. Sınıf VIP Paketi</h3>
         <p>Ortaokul kapsamlı akademik destek. Ders başarısı ve alışkanlık sistemi.</p>
-        <div class="prog-price">
-          <span class="prog-price-old">140.000₺</span>
-          98.000₺ <span class="prog-price-period">/ yıllık</span><span class="prog-price-badge">%30</span>
+        <div class="prog-price prog-price--campaign">
+          <div class="prog-price-top">
+            <s class="prog-price-old">140.000₺</s>
+            <span class="prog-price-discount">%30 indirim</span>
+          </div>
+          <div class="prog-price-now">98.000₺ <span class="prog-price-period">/ yıllık</span></div>
         </div>
         <span class="prog-arrow">→</span>
         </div>
@@ -1142,9 +1183,12 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
         <div class="prog-card-body">
         <h3>9-10-11. Sınıf Programı</h3>
         <p>Lise müfredatı ve üniversiteye hazırlık. Konu takibi ve haftalık deneme analizi.</p>
-        <div class="prog-price">
-          <span class="prog-price-old">160.000₺</span>
-          112.000₺ <span class="prog-price-period">/ yıllık</span><span class="prog-price-badge">%30</span>
+        <div class="prog-price prog-price--campaign">
+          <div class="prog-price-top">
+            <s class="prog-price-old">160.000₺</s>
+            <span class="prog-price-discount">%30 indirim</span>
+          </div>
+          <div class="prog-price-now">112.000₺ <span class="prog-price-period">/ yıllık</span></div>
         </div>
         <span class="prog-arrow">→</span>
         </div>
@@ -1156,9 +1200,12 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
         <div class="prog-card-body">
         <h3>3-4. Sınıf Programı</h3>
         <p>Temel beceriler, sayısal düşünme, okuma alışkanlığı.</p>
-        <div class="prog-price">
-          <span class="prog-price-old">120.000₺</span>
-          84.000₺ <span class="prog-price-period">/ yıllık</span><span class="prog-price-badge">%30</span>
+        <div class="prog-price prog-price--campaign">
+          <div class="prog-price-top">
+            <s class="prog-price-old">120.000₺</s>
+            <span class="prog-price-discount">%30 indirim</span>
+          </div>
+          <div class="prog-price-now">84.000₺ <span class="prog-price-period">/ yıllık</span></div>
         </div>
         <span class="prog-arrow">→</span>
         </div>

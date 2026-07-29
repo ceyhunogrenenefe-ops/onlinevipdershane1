@@ -3,12 +3,79 @@
  * Kaynak: panel yayınlı + panelde kaydı olmayan statik katalog. Panel pasifi statikten bile düşer.
  */
 (function (global) {
+  function upgradeRemotePhotoUrl(url, minSize) {
+    minSize = minSize || 800;
+    var u = String(url || '').trim();
+    if (!u) return u;
+    if (!/ggpht\.com|googleusercontent\.com/i.test(u)) return u;
+    return u.replace(/=s(\d+)/i, function (match, n) {
+      var size = parseInt(n, 10);
+      if (!Number.isFinite(size) || size === 0 || size >= minSize) return match;
+      return '=s' + minSize;
+    });
+  }
+
+  /** Panel bazen dosya adı yazar; yalnızca URL / assets yolu kabul. */
+  function isUsablePhoto(url) {
+    var u = String(url || '').trim();
+    if (!u) return false;
+    if (/^https?:\/\//i.test(u)) return true;
+    if (/^\/?assets\//i.test(u)) return true;
+    if (u.charAt(0) === '/' && u.indexOf(' ') === -1) return true;
+    return false;
+  }
+
+  function titleCaseTr(s) {
+    return String(s == null ? '' : s)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(function (w) {
+        if (/^(LGS|TYT|AYT|YKS|KPSS|VIP)$/i.test(w)) return w.toUpperCase();
+        var lower = w.toLocaleLowerCase('tr-TR');
+        return lower.charAt(0).toLocaleUpperCase('tr-TR') + lower.slice(1);
+      })
+      .join(' ');
+  }
+
+  function youtubeIdFromUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return '';
+    // Tek video URL'leri (shorts / watch / youtu.be / embed)
+    var m = u.match(
+      /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{6,11})/i
+    );
+    if (m) return m[1];
+    // ?v= parametresi
+    try {
+      var q = new URL(u).searchParams.get('v');
+      if (q && /^[A-Za-z0-9_-]{6,11}$/.test(q)) return q;
+    } catch (e) {
+      /* ignore */
+    }
+    return '';
+  }
+
+  function isPlayableVideoUrl(url) {
+    return !!(youtubeIdFromUrl(url) || isDirectVideoUrl(url));
+  }
+
+  function isDirectVideoUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return false;
+    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
+    if (/\/storage\/v1\/object\//i.test(u) && /video/i.test(u)) return true;
+    return false;
+  }
+
   function mapApiTeacher(t) {
     var exams = Array.isArray(t.exam_areas) ? t.exam_areas.join(' / ') : '';
+    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
+    var roleRaw = t.title || [t.branch, exams].filter(Boolean).join(' · ');
     return {
       slug: t.slug,
-      name: t.name || 'Öğretmen',
-      branch: t.branch || '',
+      name: titleCaseTr(t.name) || 'Öğretmen',
+      branch: titleCaseTr(t.branch) || '',
       university: t.university || '',
       experience: Number(t.experience_years) || 0,
       rating: null,
@@ -17,9 +84,10 @@
       available: t.accepting_students !== false,
       price: null,
       grades: Array.isArray(t.grade_levels) ? t.grade_levels.slice() : [],
-      photo: t.photo_url || 'assets/img/ovd-logo.png',
+      photo: isUsablePhoto(rawPhoto) ? rawPhoto : '',
       photoPos: 'center 20%',
-      role: t.title || [t.branch, exams].filter(Boolean).join(' · '),
+      role: titleCaseTr(roleRaw),
+      video: String(t.video_url || '').trim(),
       fromApi: true,
       short_bio: t.short_bio || ''
     };
@@ -114,17 +182,27 @@
       var pos = t.photoPos || 'center 20%';
       var ratingTxt = t.rating != null ? '★ ' + Number(t.rating).toFixed(1) : '—';
       var lessonsTxt = t.lessons != null ? Number(t.lessons).toLocaleString('tr-TR') : '—';
+      var videoUrl = String(t.video || '').trim();
+      var canHoverVideo = isPlayableVideoUrl(videoUrl);
+      var videoBadge = canHoverVideo
+        ? '<span class="teacher-video-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Tanıtım</span>' +
+          '<button type="button" class="teacher-unmute-btn" aria-label="Sesi aç">🔊 Sesi aç</button>'
+        : '';
 
       return (
         '<article class="card-enter flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">' +
-          '<div class="teacher-photo-box relative">' +
+          '<div class="teacher-photo-box relative' +
+          (canHoverVideo ? ' has-video' : '') +
+          '"' +
+          (canHoverVideo ? ' data-video="' + escapeHtml(videoUrl) + '"' : '') +
+          '>' +
             '<img data-src="' + escapeHtml(t.photo) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async">' +
-            '<div class="absolute left-3 top-3 flex flex-wrap gap-1.5">' + liveBadge + availBadge + '</div>' +
+            (canHoverVideo ? '<div class="teacher-video-layer" aria-hidden="true"></div>' + videoBadge : '') +
+            '<div class="absolute left-3 top-3 z-[2] flex flex-wrap gap-1.5">' + liveBadge + availBadge + '</div>' +
           '</div>' +
           '<div class="flex flex-1 flex-col p-4 sm:p-5">' +
-            '<h2 class="font-display text-lg font-bold text-ink">' + escapeHtml(t.name) + '</h2>' +
-            '<p class="mt-0.5 text-sm font-bold text-navy">' + escapeHtml(t.role || t.branch) + '</p>' +
-            '<p class="mt-1 text-xs font-semibold text-mute">' + escapeHtml(t.university) + '</p>' +
+            '<h2 class="font-display text-xl font-extrabold tracking-tight text-ink sm:text-2xl">' + escapeHtml(t.name) + '</h2>' +
+            '<p class="mt-1 text-base font-bold text-navy sm:text-lg">' + escapeHtml(t.role || t.branch) + '</p>' +
             '<dl class="mt-4 grid grid-cols-3 gap-2 text-center">' +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Deneyim</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + (t.experience || '—') + (t.experience ? ' yıl' : '') + '</dd></div>' +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + ratingTxt + '</dd></div>' +
@@ -140,6 +218,263 @@
           '</div>' +
         '</article>'
       );
+    }
+
+    function stopHoverVideo(box) {
+      if (!box) return;
+      if (box._videoInjectTimer) {
+        clearTimeout(box._videoInjectTimer);
+        box._videoInjectTimer = null;
+      }
+      if (box._videoClearTimer) {
+        clearTimeout(box._videoClearTimer);
+        box._videoClearTimer = null;
+      }
+      box.classList.remove('is-playing', 'is-muted', 'has-sound', 'is-touch-playing');
+      var layer = box.querySelector('.teacher-video-layer');
+      // Dönüş animasyonu bitsin, sonra videoyu temizle
+      box._videoClearTimer = setTimeout(function () {
+        box._videoClearTimer = null;
+        if (!box.classList.contains('is-playing') && layer) layer.innerHTML = '';
+      }, 700);
+    }
+
+    function ytEmbedSrc(id, muted) {
+      var origin = '';
+      try {
+        origin = '&origin=' + encodeURIComponent(window.location.origin);
+      } catch (e) {
+        /* ignore */
+      }
+      return (
+        'https://www.youtube.com/embed/' +
+        encodeURIComponent(id) +
+        '?autoplay=1&mute=' +
+        (muted ? '1' : '0') +
+        '&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&loop=1&playlist=' +
+        encodeURIComponent(id) +
+        origin
+      );
+    }
+
+    function markSoundOn(box) {
+      if (!box) return;
+      box.classList.remove('is-muted');
+      box.classList.add('has-sound');
+    }
+
+    function forceUnmute(box) {
+      if (!box) return;
+      var iframe = box.querySelector('iframe');
+      if (iframe && iframe.contentWindow) {
+        try {
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+            '*'
+          );
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
+            '*'
+          );
+          iframe.contentWindow.postMessage(
+            JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+            '*'
+          );
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      var video = box.querySelector('video');
+      if (video) {
+        video.muted = false;
+        video.volume = 1;
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+      }
+      markSoundOn(box);
+    }
+
+    function enableSound(box) {
+      if (!box) return;
+      // Kullanıcı jesti ile sesli yeniden yükle (en güvenilir yol)
+      startHoverVideo(box, { restart: true, muted: false, fromUnmute: true });
+    }
+
+    function injectVideoMedia(box, layer, url, muted) {
+      var yt = youtubeIdFromUrl(url);
+      if (yt) {
+        layer.innerHTML =
+          '<iframe src="' +
+          ytEmbedSrc(yt, muted) +
+          '" title="Tanıtım videosu" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe>';
+      } else if (isDirectVideoUrl(url)) {
+        layer.innerHTML =
+          '<video src="' +
+          escapeHtml(url) +
+          '" autoplay loop playsinline controls' +
+          (muted ? ' muted' : '') +
+          '></video>';
+        var video = layer.querySelector('video');
+        if (video) {
+          video.muted = !!muted;
+          video.volume = 1;
+          var playPromise = video.play();
+          if (playPromise && playPromise.catch) {
+            playPromise.catch(function () {
+              video.muted = true;
+              box.classList.add('is-muted');
+              video.play().catch(function () {
+                video.controls = true;
+              });
+            });
+          }
+        }
+      } else {
+        return false;
+      }
+      if (muted) {
+        box.classList.add('is-muted');
+        box.classList.remove('has-sound');
+      } else {
+        markSoundOn(box);
+        forceUnmute(box);
+      }
+      return true;
+    }
+
+    function startHoverVideo(box, opts) {
+      opts = opts || {};
+      var restart = !!opts.restart;
+      var muted = !!opts.muted;
+      if (!box) return;
+      if (box.classList.contains('is-playing') && !restart) {
+        if (!muted) enableSound(box);
+        return;
+      }
+      var url = box.getAttribute('data-video') || '';
+      var layer = box.querySelector('.teacher-video-layer');
+      if (!layer || !url) return;
+      if (!isPlayableVideoUrl(url)) return;
+
+      if (box._videoClearTimer) {
+        clearTimeout(box._videoClearTimer);
+        box._videoClearTimer = null;
+      }
+      if (box._videoInjectTimer) {
+        clearTimeout(box._videoInjectTimer);
+        box._videoInjectTimer = null;
+      }
+
+      if (box.classList.contains('is-playing') && !opts.fromUnmute) {
+        box.classList.remove('is-playing');
+        void box.offsetWidth;
+      }
+      if (restart) layer.innerHTML = '';
+      box.classList.add('is-playing');
+      if (muted) box.classList.add('is-muted');
+      else box.classList.remove('is-muted');
+
+      var reduceMotion =
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var delay = reduceMotion || opts.fromUnmute ? 0 : 160;
+
+      box._videoInjectTimer = setTimeout(function () {
+        box._videoInjectTimer = null;
+        if (!box.classList.contains('is-playing')) return;
+        injectVideoMedia(box, layer, url, muted);
+      }, delay);
+    }
+
+    function stopOtherVideos(exceptBox) {
+      grid.querySelectorAll('.teacher-photo-box.has-video.is-playing').forEach(function (other) {
+        if (other !== exceptBox) stopHoverVideo(other);
+      });
+    }
+
+    function bindHoverVideos() {
+      if (grid._videoIO) {
+        grid._videoIO.disconnect();
+        grid._videoIO = null;
+      }
+      grid.querySelectorAll('.teacher-photo-box.has-video').forEach(function (box) {
+        if (box._dwellTimer) {
+          clearTimeout(box._dwellTimer);
+          box._dwellTimer = null;
+        }
+        if (box.dataset.videoBound === '1') return;
+        box.dataset.videoBound = '1';
+
+        var unmuteBtn = box.querySelector('.teacher-unmute-btn');
+        if (unmuteBtn) {
+          unmuteBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            stopOtherVideos(box);
+            enableSound(box);
+          });
+        }
+
+        var hoverCapable =
+          window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        if (hoverCapable) {
+          box.addEventListener('mouseenter', function () {
+            stopOtherVideos(box);
+            // Hover'da sessiz başlat (tarayıcı sesli autoplay'i engeller)
+            startHoverVideo(box, { muted: true });
+          });
+          box.addEventListener('mouseleave', function (e) {
+            // iframe/iç elemana geçişte kapanmasın
+            if (e.relatedTarget && box.contains(e.relatedTarget)) return;
+            stopHoverVideo(box);
+          });
+        } else {
+          // Mobil: bekleyince otomatik (sessiz başlar) — ses için Sesi aç / dokun
+          box.addEventListener('click', function (e) {
+            if (e.target && e.target.closest && e.target.closest('.teacher-unmute-btn')) return;
+            e.preventDefault();
+            e.stopPropagation();
+            if (box._dwellTimer) {
+              clearTimeout(box._dwellTimer);
+              box._dwellTimer = null;
+            }
+            stopOtherVideos(box);
+            box.classList.add('is-touch-playing');
+            enableSound(box);
+          });
+        }
+      });
+
+      var touchMode =
+        !(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+      if (touchMode && 'IntersectionObserver' in window) {
+        grid._videoIO = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              var box = entry.target;
+              if (box._dwellTimer) {
+                clearTimeout(box._dwellTimer);
+                box._dwellTimer = null;
+              }
+              if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+                box._dwellTimer = setTimeout(function () {
+                  box._dwellTimer = null;
+                  if (!box.isConnected) return;
+                  stopOtherVideos(box);
+                  box.classList.add('is-touch-playing');
+                  // Tarayıcı izinsiz sesi engeller → sessiz otomatik + Sesi aç
+                  startHoverVideo(box, { muted: true });
+                }, 1200);
+              } else if (box.classList.contains('is-playing')) {
+                stopHoverVideo(box);
+              }
+            });
+          },
+          { threshold: [0.6, 0.75], rootMargin: '0px 0px -8% 0px' }
+        );
+        grid.querySelectorAll('.teacher-photo-box.has-video').forEach(function (box) {
+          grid._videoIO.observe(box);
+        });
+      }
     }
 
     function observeLazy() {
@@ -245,6 +580,7 @@
       grid.innerHTML = list.map(cardHtml).join('');
       renderPager();
       observeLazy();
+      bindHoverVideos();
     }
 
     function applyFilters() {
@@ -329,6 +665,10 @@
       (managedSlugs || []).forEach(function (slug) {
         if (slug) managed[String(slug)] = true;
       });
+      var staticBySlug = {};
+      (staticList || []).forEach(function (t) {
+        if (t && t.slug) staticBySlug[t.slug] = t;
+      });
       var bySlug = {};
       // Statik kadro: panelde hic kaydi olmayanlar kalsin
       (staticList || []).forEach(function (t) {
@@ -336,10 +676,20 @@
         if (managed[t.slug]) return; // panel yonetiyor (pasif dahil) -> statikten gosterme
         bySlug[t.slug] = t;
       });
-      // Panel yayinlari ezsin / eklesin
+      // Panel yayinlari ezsin / eklesin; bozuk foto / eksik metin icin statik yedek
       (liveList || []).forEach(function (t) {
         if (!t || !t.slug) return;
-        bySlug[t.slug] = t;
+        var base = staticBySlug[t.slug] || {};
+        var photo = isUsablePhoto(t.photo) ? t.photo : base.photo || 'assets/img/ovd-logo.png';
+        bySlug[t.slug] = Object.assign({}, base, t, {
+          photo: photo,
+          photoPos: t.photoPos || base.photoPos || 'center 20%',
+          name: t.name || base.name || 'Öğretmen',
+          role: t.role || base.role || t.branch || base.branch || '',
+          university: t.university || base.university || '',
+          branch: t.branch || base.branch || '',
+          video: t.video || base.video || ''
+        });
       });
       return Object.keys(bySlug).map(function (k) { return bySlug[k]; });
     }

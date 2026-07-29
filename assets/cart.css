@@ -90,7 +90,9 @@
 
 .prog-card-wrap {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 .prog-card-wrap .prog-arrow {
   display: none;
