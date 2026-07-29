@@ -97,9 +97,14 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.5rem,4vw,2rem)
       <div class="fg"><label>Özgeçmiş / deneyim *</label>
         <textarea name="full_bio" required placeholder="Eğitim, okul/dershane deneyimi, çalışma tarzınız..."></textarea>
       </div>
-      <div class="fg"><label>Profil fotoğrafı linki *</label>
-        <input name="photo_url" type="url" required placeholder="https://drive.google.com/... veya doğrudan görsel linki">
-        <div class="hint">Drive: dosyayı «Bağlantısı olan herkes görüntüleyebilir» yapın.</div>
+      <div class="fg"><label>Profil fotoğrafı *</label>
+        <input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp">
+        <input type="hidden" name="photo_url" id="photo-url" value="">
+        <div class="hint" id="photo-hint">Bilgisayarınızdan JPG/PNG/WEBP yükleyin (max 2.5 MB). İsterseniz aşağıya link de yapıştırabilirsiniz.</div>
+        <input id="photo-url-alt" type="url" placeholder="veya foto linki (Drive vb.)" style="margin-top:8px;">
+        <div id="photo-preview" style="display:none;margin-top:10px;">
+          <img alt="Önizleme" style="max-height:120px;border-radius:10px;border:1px solid var(--border);">
+        </div>
       </div>
       <div class="fg"><label>Tanıtım videosu (YouTube / Drive) *</label>
         <input name="intro_video_url" type="url" required placeholder="https://youtube.com/... veya Drive linki">
@@ -125,42 +130,132 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.5rem,4vw,2rem)
   var form = document.getElementById('teacher-apply-form');
   var btn = document.getElementById('submit-btn');
   var ok = document.getElementById('success-box');
+  var photoFile = document.getElementById('photo-file');
+  var photoUrlHidden = document.getElementById('photo-url');
+  var photoUrlAlt = document.getElementById('photo-url-alt');
+  var photoHint = document.getElementById('photo-hint');
+  var photoPreview = document.getElementById('photo-preview');
   if (!form) return;
+
+  function setPreview(url) {
+    if (!photoPreview) return;
+    var img = photoPreview.querySelector('img');
+    if (url) {
+      img.src = url;
+      photoPreview.style.display = 'block';
+    } else {
+      photoPreview.style.display = 'none';
+      img.removeAttribute('src');
+    }
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function() { resolve(reader.result); };
+      reader.onerror = function() { reject(new Error('Dosya okunamadı')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function uploadPhoto(file) {
+    if (!file) return Promise.resolve('');
+    if (file.size > 2.5 * 1024 * 1024) {
+      return Promise.reject(new Error('Fotoğraf en fazla 2.5 MB olabilir.'));
+    }
+    photoHint.textContent = 'Fotoğraf yükleniyor…';
+    return readFileAsDataUrl(file).then(function(dataUrl) {
+      return fetch('/api/teacher-applications', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          op: 'upload-photo',
+          fileBase64: dataUrl,
+          contentType: file.type || 'image/jpeg',
+          fileName: file.name || 'photo.jpg'
+        })
+      }).then(function(r) {
+        return r.json().then(function(d) { return { ok: r.ok, data: d }; });
+      });
+    }).then(function(res) {
+      if (!res.ok || !res.data || !res.data.photo_url) {
+        throw new Error((res.data && (res.data.message || res.data.error)) || 'Fotoğraf yüklenemedi');
+      }
+      photoUrlHidden.value = res.data.photo_url;
+      setPreview(res.data.photo_url);
+      photoHint.textContent = 'Fotoğraf yüklendi ✓';
+      return res.data.photo_url;
+    });
+  }
+
+  if (photoFile) {
+    photoFile.addEventListener('change', function() {
+      var file = photoFile.files && photoFile.files[0];
+      if (!file) return;
+      uploadPhoto(file).catch(function(err) {
+        alert(err.message || 'Fotoğraf yüklenemedi');
+        photoFile.value = '';
+        photoHint.textContent = 'Bilgisayarınızdan JPG/PNG/WEBP yükleyin (max 2.5 MB).';
+      });
+    });
+  }
+  if (photoUrlAlt) {
+    photoUrlAlt.addEventListener('change', function() {
+      var u = (photoUrlAlt.value || '').trim();
+      if (u && !photoUrlHidden.value) {
+        photoUrlHidden.value = u;
+        setPreview(u);
+      }
+    });
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     var levels = [];
     form.querySelectorAll('input[name="grade_levels"]:checked').forEach(function(el){ levels.push(el.value); });
     if (!levels.length) { alert('En az bir ders seviyesi seçin.'); return; }
-    var fd = new FormData(form);
-    var body = {
-      first_name: fd.get('first_name'),
-      last_name: fd.get('last_name'),
-      phone: fd.get('phone'),
-      email: fd.get('email'),
-      branch: fd.get('branch'),
-      experience_label: fd.get('experience_label'),
-      address: fd.get('address'),
-      university: fd.get('university'),
-      graduation_year: fd.get('graduation_year'),
-      grade_levels: levels,
-      short_bio: fd.get('short_bio'),
-      full_bio: fd.get('full_bio'),
-      photo_url: fd.get('photo_url'),
-      intro_video_url: fd.get('intro_video_url'),
-      lesson_video_url: fd.get('lesson_video_url'),
-      instagram_url: fd.get('instagram_url') || '',
-      youtube_url: fd.get('youtube_url') || '',
-      kvkk_accepted: fd.get('kvkk_accepted') === '1',
-      _gotcha: fd.get('_gotcha') || ''
-    };
+
+    var photoPromise = Promise.resolve((photoUrlHidden.value || '').trim());
+    if (!photoUrlHidden.value && photoFile && photoFile.files && photoFile.files[0]) {
+      photoPromise = uploadPhoto(photoFile.files[0]);
+    } else if (!photoUrlHidden.value && photoUrlAlt && photoUrlAlt.value.trim()) {
+      photoUrlHidden.value = photoUrlAlt.value.trim();
+      photoPromise = Promise.resolve(photoUrlHidden.value);
+    }
+
     btn.disabled = true;
     btn.textContent = 'Gönderiliyor…';
-    fetch('/api/teacher-applications', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+
+    photoPromise.then(function(photoUrl) {
+      if (!photoUrl) throw new Error('Profil fotoğrafı zorunlu — bilgisayardan yükleyin veya link girin.');
+      var fd = new FormData(form);
+      var body = {
+        first_name: fd.get('first_name'),
+        last_name: fd.get('last_name'),
+        phone: fd.get('phone'),
+        email: fd.get('email'),
+        branch: fd.get('branch'),
+        experience_label: fd.get('experience_label'),
+        address: fd.get('address'),
+        university: fd.get('university'),
+        graduation_year: fd.get('graduation_year'),
+        grade_levels: levels,
+        short_bio: fd.get('short_bio'),
+        full_bio: fd.get('full_bio'),
+        photo_url: photoUrl,
+        intro_video_url: fd.get('intro_video_url'),
+        lesson_video_url: fd.get('lesson_video_url'),
+        instagram_url: fd.get('instagram_url') || '',
+        youtube_url: fd.get('youtube_url') || '',
+        kvkk_accepted: fd.get('kvkk_accepted') === '1',
+        _gotcha: fd.get('_gotcha') || ''
+      };
+      return fetch('/api/teacher-applications', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).then(function(r){ return r.json().then(function(d){ return { ok: r.ok, status: r.status, data: d }; }); });
     })
-    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, status: r.status, data: d }; }); })
     .then(function(res){
       if (res.ok && res.data && res.data.ok) {
         form.style.display = 'none';
@@ -172,8 +267,8 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.5rem,4vw,2rem)
       btn.disabled = false;
       btn.textContent = 'Başvuruyu Gönder';
     })
-    .catch(function(){
-      alert('Bağlantı hatası. Lütfen tekrar deneyin.');
+    .catch(function(err){
+      alert((err && err.message) || 'Bağlantı hatası. Lütfen tekrar deneyin.');
       btn.disabled = false;
       btn.textContent = 'Başvuruyu Gönder';
     });

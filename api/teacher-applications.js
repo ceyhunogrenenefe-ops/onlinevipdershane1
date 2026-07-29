@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(req.body || {}),
-      signal: AbortSignal.timeout ? AbortSignal.timeout(30000) : undefined
+      signal: AbortSignal.timeout ? AbortSignal.timeout(60000) : undefined
     });
     const data = await upstream.json().catch(() => ({}));
     return res.status(upstream.status).json(data);
