@@ -310,6 +310,125 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 .perk-card h5{font-size:13.5px;font-weight:700;margin-bottom:3px;}
 .perk-card p{font-size:12.5px;color:var(--muted);line-height:1.6;}
 @media(max-width:768px){.kar-grid{grid-template-columns:1fr;}}
+
+/* Başvuru paneli */
+.apply-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(26,63,173,.08);
+}
+.apply-card-head{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  padding:22px 28px;
+  color:#fff;
+}
+.apply-card-head h3{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.25rem;
+  font-weight:800;
+  letter-spacing:-.02em;
+  margin:0 0 6px;
+  color:#fff;
+}
+.apply-card-head p{
+  margin:0;
+  font-size:13px;
+  color:rgba(255,255,255,.88);
+  line-height:1.5;
+}
+.apply-card-body{padding:24px 28px 28px;}
+.apply-cta{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  padding:16px 20px;
+  border-radius:12px;
+  background:var(--navy);
+  color:#fff !important;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:15px;
+  font-weight:800;
+  text-decoration:none;
+  text-align:center;
+  transition:.25s;
+  box-shadow:0 6px 20px rgba(26,63,173,.22);
+}
+.apply-cta:hover{
+  background:var(--navy2);
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(26,63,173,.3);
+}
+.apply-cta span{opacity:.75;font-weight:700;}
+.apply-divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:22px 0 16px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.apply-divider::before,
+.apply-divider::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+.apply-card .fg{margin-bottom:12px;}
+.apply-card .fg label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:5px;
+}
+.apply-card .fg input,
+.apply-card .fg select,
+.apply-card .fg textarea{
+  width:100%;
+  padding:11px 13px;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  font:inherit;
+  font-size:14px;
+  color:var(--text);
+  background:#fafbff;
+  transition:border-color .2s, box-shadow .2s, background .2s;
+  outline:none;
+}
+.apply-card .fg input:focus,
+.apply-card .fg select:focus,
+.apply-card .fg textarea:focus{
+  border-color:var(--navy);
+  background:#fff;
+  box-shadow:0 0 0 3px rgba(26,63,173,.12);
+}
+.apply-card .fg textarea{min-height:88px;resize:vertical;}
+.apply-card .fg .hint{display:block;font-size:11px;color:var(--muted);margin-top:4px;}
+.apply-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.apply-row{grid-template-columns:1fr;}}
+.apply-submit{
+  width:100%;
+  margin-top:6px;
+  padding:13px 18px;
+  border:none;
+  border-radius:12px;
+  background:var(--accent);
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.25s;
+}
+.apply-submit:hover{background:var(--accent2);transform:translateY(-1px);}
+.apply-submit:disabled{opacity:.65;cursor:not-allowed;transform:none;}
 </style>
   <link rel="stylesheet" href="assets/nav-logo.css">
   <link rel="stylesheet" href="assets/welcome-modal.css">
@@ -414,46 +533,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="perk-card"><div class="perk-icon">🤖</div><div><h5>YZ Destekli Sistem</h5><p>Modern eğitim ortamı ve dijital materyaller.</p></div></div>
   </div>
   <div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px;">
-      <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;">📋 Başvuru Formu</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Detaylı başvuru (video linkleri, üniversite, seviyeler) için özel formu kullanın.</p>
-      <a href="ogretmen-basvuru.html" class="submit-btn" style="display:block;text-align:center;margin-bottom:16px;text-decoration:none;">Öğretmen Başvuru Formu →</a>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Hızlı iletişim (eski form):</p>
-      <form id="ik-form" action="https://formspree.io/f/mpqnjdwd" method="POST">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-          <div class="fg"><label>Ad Soyad *</label><input type="text" name="ad_soyad" required placeholder="Ad Soyad"></div>
-          <div class="fg"><label>Telefon *</label><input type="tel" name="telefon" required placeholder="05XX XXX XX XX"></div>
+    <div class="apply-card">
+      <div class="apply-card-head">
+        <h3>Öğretmen Başvuru Formu</h3>
+        <p>Video, üniversite ve seviye bilgileriyle tam başvuru için özel formumuzu kullanın.</p>
+      </div>
+      <div class="apply-card-body">
+        <a href="ogretmen-basvuru.html" class="apply-cta">
+          Başvuruya Başla <span>→</span>
+        </a>
+        <div class="apply-divider">veya hızlı iletişim</div>
+        <form id="ik-form" action="https://formspree.io/f/mpqnjdwd" method="POST">
+          <div class="apply-row">
+            <div class="fg"><label>Ad Soyad *</label><input type="text" name="ad_soyad" required placeholder="Ad Soyad" autocomplete="name"></div>
+            <div class="fg"><label>Telefon *</label><input type="tel" name="telefon" required placeholder="05XX XXX XX XX" autocomplete="tel"></div>
+          </div>
+          <div class="fg"><label>E-posta *</label><input type="email" name="email" required placeholder="ornek@email.com" autocomplete="email"></div>
+          <div class="fg"><label>Branş *</label>
+            <select name="brans" required>
+              <option value="">Seçiniz...</option>
+              <option>Matematik</option><option>Türkçe / Edebiyat</option>
+              <option>Fizik</option><option>Kimya</option><option>Biyoloji</option>
+              <option>Tarih</option><option>Coğrafya</option><option>İngilizce</option>
+              <option>Fen Bilimleri</option><option>Sosyal Bilgiler</option>
+              <option>KPSS</option><option>Diğer</option>
+            </select>
+          </div>
+          <div class="fg"><label>Deneyim</label>
+            <select name="deneyim">
+              <option>1 yıldan az</option><option>1-3 yıl</option>
+              <option>3-5 yıl</option><option>5-10 yıl</option><option>10 yıl ve üzeri</option>
+            </select>
+          </div>
+          <div class="fg"><label>Kendinizi Tanıtın</label>
+            <textarea name="tanitim" placeholder="Eğitim geçmişiniz, deneyimleriniz..."></textarea>
+          </div>
+          <div class="fg"><label>CV Linki (Google Drive) — İsteğe Bağlı</label>
+            <input type="url" name="cv_link" placeholder="https://drive.google.com/...">
+            <span class="hint">Drive’da «Bağlantısı olan herkes görüntüleyebilir» yapın.</span>
+          </div>
+          <input type="hidden" name="_subject" value="Yeni Öğretmen Başvurusu — Online VIP Dershane">
+          <button type="submit" class="apply-submit" id="ik-submit">Başvurumu Gönder →</button>
+        </form>
+        <div id="ik-success" style="display:none;padding:20px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:12px;margin-top:14px;text-align:center;">
+          <h4 style="color:var(--green);margin-bottom:4px;font-family:'Bricolage Grotesque',sans-serif;">✅ Başvurunuz Alındı!</h4>
+          <p style="font-size:13px;color:var(--muted);margin:0;">En kısa sürede info@onlinevipdershane.com adresinden sizinle iletişime geçeceğiz.</p>
         </div>
-        <div class="fg"><label>E-posta *</label><input type="email" name="email" required placeholder="ornek@email.com"></div>
-        <div class="fg"><label>Branş *</label>
-          <select name="brans" required>
-            <option value="">Seçiniz...</option>
-            <option>Matematik</option><option>Türkçe / Edebiyat</option>
-            <option>Fizik</option><option>Kimya</option><option>Biyoloji</option>
-            <option>Tarih</option><option>Coğrafya</option><option>İngilizce</option>
-            <option>Fen Bilimleri</option><option>Sosyal Bilgiler</option>
-            <option>KPSS</option><option>Diğer</option>
-          </select>
-        </div>
-        <div class="fg"><label>Deneyim</label>
-          <select name="deneyim">
-            <option>1 yıldan az</option><option>1-3 yıl</option>
-            <option>3-5 yıl</option><option>5-10 yıl</option><option>10 yıl ve üzeri</option>
-          </select>
-        </div>
-        <div class="fg"><label>Kendinizi Tanıtın</label>
-          <textarea name="tanitim" style="min-height:90px;" placeholder="Eğitim geçmişiniz, deneyimleriniz..."></textarea>
-        </div>
-        <div class="fg"><label>CV Linki (Google Drive) — İsteğe Bağlı</label>
-          <input type="url" name="cv_link" placeholder="https://drive.google.com/...">
-          <span style="font-size:11.5px;color:var(--muted);margin-top:3px;">Google Drive'a yükleyip "Bağlantısı olan herkes" yapın.</span>
-        </div>
-        <input type="hidden" name="_subject" value="Yeni Öğretmen Başvurusu — Online VIP Dershane">
-        <button type="submit" class="submit-btn" id="ik-submit">Başvurumu Gönder →</button>
-      </form>
-      <div id="ik-success" style="display:none;padding:20px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;margin-top:14px;text-align:center;">
-        <h4 style="color:var(--green);margin-bottom:4px;">✅ Başvurunuz Alındı!</h4>
-        <p style="font-size:13px;color:var(--muted);">En kısa sürede info@onlinevipdershane.com adresinden sizinle iletişime geçeceğiz.</p>
       </div>
     </div>
   </div>
