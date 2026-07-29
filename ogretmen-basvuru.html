@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Öğretmen Başvuru Formu — Online VIP Dershane</title>
+<meta name="description" content="Online VIP Dershane öğretmen başvuru formu. Tanıtım ve ders videolarınızı YouTube veya Google Drive linki ile gönderin.">
+<link rel="canonical" href="https://onlinevipdershane.com/ogretmen-basvuru.html">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nav-logo.css">
+<style>
+:root{--navy:#1a3fad;--accent:#e8232a;--border:#e2e8f4;--text:#1a1f36;--muted:#64748b;--green:#10b981;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;color:var(--text);background:#f8faff;line-height:1.6;}
+.wrap{max-width:720px;margin:0 auto;padding:32px 5% 64px;}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(1.5rem,4vw,2rem);margin:12px 0 8px;}
+.lead{color:var(--muted);font-size:15px;margin-bottom:24px;}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(26,63,173,.06);}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:14px;}
+.fg textarea{min-height:88px;resize:vertical;}
+.fg .hint{font-size:11.5px;color:var(--muted);margin-top:4px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+.levels{display:flex;flex-wrap:wrap;gap:8px;}
+.levels label{font-weight:600;font-size:12px;display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:#fafbff;}
+.levels input{width:auto;margin:0;}
+.kvkk{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;margin:16px 0;}
+.kvkk input{width:auto;margin-top:3px;}
+.submit{width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;font-size:15px;cursor:pointer;}
+.submit:disabled{opacity:.6;cursor:not-allowed;}
+.ok{display:none;margin-top:16px;padding:16px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:12px;text-align:center;color:#047857;font-weight:700;}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;}
+.back{display:inline-block;margin-bottom:16px;font-size:14px;font-weight:700;color:var(--navy);}
+</style>
+</head>
+<body>
+<nav style="position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:12px 5%;">
+  <a href="index.html"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" style="height:48px;width:auto;"></a>
+</nav>
+<div class="wrap">
+  <a href="kariyer.html" class="back">← Kariyer sayfası</a>
+  <div style="font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;">Öğretmen başvurusu</div>
+  <h1>Özel Ders Öğretmeni Başvuru Formu</h1>
+  <p class="lead">Videolarınızı <strong>YouTube</strong> veya <strong>Google Drive</strong> linki olarak paylaşın (herkese açık görüntüleme). Başvurunuz incelendikten sonra size dönüş yapılır.</p>
+
+  <div class="card">
+    <form id="teacher-apply-form" novalidate>
+      <div class="hp" aria-hidden="true">
+        <label>Website</label>
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="grid2">
+        <div class="fg"><label>Ad *</label><input name="first_name" required autocomplete="given-name"></div>
+        <div class="fg"><label>Soyad *</label><input name="last_name" required autocomplete="family-name"></div>
+      </div>
+      <div class="grid2">
+        <div class="fg"><label>Telefon *</label><input name="phone" type="tel" required placeholder="05XX XXX XX XX" autocomplete="tel"></div>
+        <div class="fg"><label>E-posta *</label><input name="email" type="email" required autocomplete="email"></div>
+      </div>
+      <div class="fg"><label>Branş *</label>
+        <select name="branch" required>
+          <option value="">Seçiniz</option>
+          <option>Matematik</option><option>Türkçe / Edebiyat</option>
+          <option>Fizik</option><option>Kimya</option><option>Biyoloji</option>
+          <option>Tarih</option><option>Coğrafya</option><option>İngilizce</option>
+          <option>Fen Bilimleri</option><option>Sosyal Bilgiler</option>
+          <option>KPSS</option><option>Diğer</option>
+        </select>
+      </div>
+      <div class="fg"><label>Deneyim *</label>
+        <select name="experience_label" required>
+          <option value="">Seçiniz</option>
+          <option>1 yıldan az</option><option>1-3 yıl</option>
+          <option>3-5 yıl</option><option>5-10 yıl</option><option>10 yıl ve üzeri</option>
+        </select>
+      </div>
+      <div class="fg"><label>Adres (il / ilçe) *</label><input name="address" required placeholder="Örn. İstanbul, Kadıköy"></div>
+      <div class="grid2">
+        <div class="fg"><label>Mezun olduğunuz üniversite *</label><input name="university" required></div>
+        <div class="fg"><label>Mezuniyet yılı *</label><input name="graduation_year" type="number" min="1970" max="2035" required></div>
+      </div>
+      <div class="fg"><label>Ders verdiğiniz seviyeler *</label>
+        <div class="levels" id="grade-levels">
+          <label><input type="checkbox" name="grade_levels" value="3-4. sınıf"> 3-4. sınıf</label>
+          <label><input type="checkbox" name="grade_levels" value="5-8. sınıf"> 5-8. sınıf</label>
+          <label><input type="checkbox" name="grade_levels" value="9-12. sınıf"> 9-12. sınıf</label>
+          <label><input type="checkbox" name="grade_levels" value="LGS"> LGS</label>
+          <label><input type="checkbox" name="grade_levels" value="TYT-AYT"> TYT-AYT</label>
+          <label><input type="checkbox" name="grade_levels" value="KPSS"> KPSS</label>
+        </div>
+      </div>
+      <div class="fg"><label>Kısa tanıtım (vitrin) *</label>
+        <textarea name="short_bio" required maxlength="400" placeholder="Öğrencilere kendinizi 2-3 cümleyle anlatın."></textarea>
+      </div>
+      <div class="fg"><label>Özgeçmiş / deneyim *</label>
+        <textarea name="full_bio" required placeholder="Eğitim, okul/dershane deneyimi, çalışma tarzınız..."></textarea>
+      </div>
+      <div class="fg"><label>Profil fotoğrafı linki *</label>
+        <input name="photo_url" type="url" required placeholder="https://drive.google.com/... veya doğrudan görsel linki">
+        <div class="hint">Drive: dosyayı «Bağlantısı olan herkes görüntüleyebilir» yapın.</div>
+      </div>
+      <div class="fg"><label>Tanıtım videosu (YouTube / Drive) *</label>
+        <input name="intro_video_url" type="url" required placeholder="https://youtube.com/... veya Drive linki">
+      </div>
+      <div class="fg"><label>Ders / demo videosu (YouTube / Drive) *</label>
+        <input name="lesson_video_url" type="url" required placeholder="Örnek ders kaydınız">
+      </div>
+      <div class="grid2">
+        <div class="fg"><label>Instagram (isteğe bağlı)</label><input name="instagram_url" type="url" placeholder="https://instagram.com/..."></div>
+        <div class="fg"><label>YouTube kanalı (isteğe bağlı)</label><input name="youtube_url" type="url" placeholder="https://youtube.com/@..."></div>
+      </div>
+      <label class="kvkk">
+        <input type="checkbox" name="kvkk_accepted" value="1" required>
+        <span>Kişisel verilerimin başvuru sürecinde işlenmesini ve Online VIP Dershane ile iletişim kurulmasını kabul ediyorum. <a href="gizlilik.html" target="_blank" rel="noopener">Gizlilik politikası</a></span>
+      </label>
+      <button type="submit" class="submit" id="submit-btn">Başvuruyu Gönder</button>
+    </form>
+    <div class="ok" id="success-box">✅ Başvurunuz alındı. İnceleme sonrası e-posta veya telefon ile dönüş yapılacaktır.</div>
+  </div>
+</div>
+<script>
+(function(){
+  var form = document.getElementById('teacher-apply-form');
+  var btn = document.getElementById('submit-btn');
+  var ok = document.getElementById('success-box');
+  if (!form) return;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var levels = [];
+    form.querySelectorAll('input[name="grade_levels"]:checked').forEach(function(el){ levels.push(el.value); });
+    if (!levels.length) { alert('En az bir ders seviyesi seçin.'); return; }
+    var fd = new FormData(form);
+    var body = {
+      first_name: fd.get('first_name'),
+      last_name: fd.get('last_name'),
+      phone: fd.get('phone'),
+      email: fd.get('email'),
+      branch: fd.get('branch'),
+      experience_label: fd.get('experience_label'),
+      address: fd.get('address'),
+      university: fd.get('university'),
+      graduation_year: fd.get('graduation_year'),
+      grade_levels: levels,
+      short_bio: fd.get('short_bio'),
+      full_bio: fd.get('full_bio'),
+      photo_url: fd.get('photo_url'),
+      intro_video_url: fd.get('intro_video_url'),
+      lesson_video_url: fd.get('lesson_video_url'),
+      instagram_url: fd.get('instagram_url') || '',
+      youtube_url: fd.get('youtube_url') || '',
+      kvkk_accepted: fd.get('kvkk_accepted') === '1',
+      _gotcha: fd.get('_gotcha') || ''
+    };
+    btn.disabled = true;
+    btn.textContent = 'Gönderiliyor…';
+    fetch('/api/teacher-applications', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    .then(function(r){ return r.json().then(function(d){ return { ok: r.ok, status: r.status, data: d }; }); })
+    .then(function(res){
+      if (res.ok && res.data && res.data.ok) {
+        form.style.display = 'none';
+        ok.style.display = 'block';
+        return;
+      }
+      var msg = (res.data && (res.data.message || res.data.error)) || 'Gönderilemedi. Lütfen tekrar deneyin veya info@onlinevipdershane.com adresine yazın.';
+      alert(msg);
+      btn.disabled = false;
+      btn.textContent = 'Başvuruyu Gönder';
+    })
+    .catch(function(){
+      alert('Bağlantı hatası. Lütfen tekrar deneyin.');
+      btn.disabled = false;
+      btn.textContent = 'Başvuruyu Gönder';
+    });
+  });
+})();
+</script>
+</body>
+</html>

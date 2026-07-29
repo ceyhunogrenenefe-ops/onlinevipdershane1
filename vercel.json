@@ -327,6 +327,16 @@
       "permanent": true
     },
     {
+      "source": "/ogretmen-basvuru",
+      "destination": "/ogretmen-basvuru.html",
+      "permanent": true
+    },
+    {
+      "source": "/ogretmen-basvuru/",
+      "destination": "/ogretmen-basvuru.html",
+      "permanent": true
+    },
+    {
       "source": "/bize-ulasin",
       "destination": "/iletisim.html",
       "permanent": true
