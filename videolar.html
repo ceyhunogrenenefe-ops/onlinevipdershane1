@@ -63,6 +63,13 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,40px);l
 .video-card--inline{cursor:default;}
 .video-card--inline:hover{transform:none;}
 .video-card--inline .video-card-thumb iframe{pointer-events:auto;}
+.from-you-grid{display:grid;grid-template-columns:minmax(0,720px);gap:24px;justify-content:center;}
+.from-you-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.from-you-card .video-shell{border-radius:0;box-shadow:none;}
+.from-you-card .video-shell iframe{aspect-ratio:16/9;max-height:none;}
+.from-you-body{padding:18px 20px 20px;}
+.from-you-body h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;margin-bottom:6px;}
+.from-you-body p{font-size:14px;color:var(--muted);line-height:1.6;}
 .cta-box{margin-top:40px;padding:28px;border-radius:16px;background:linear-gradient(135deg,#1a3fad,#0f2a7a);color:#fff;text-align:center;}
 .cta-box h3{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;margin-bottom:8px;}
 .cta-box p{opacity:.85;margin-bottom:16px;font-size:14px;}
@@ -155,6 +162,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<section class="section" id="sizden-gelenler">
+  <div class="container">
+    <div class="section-head">
+      <div class="sec-label">Sizden Gelenler</div>
+      <h2>Ailemizden paylaşımlar</h2>
+      <p>Velilerimizin ve öğrencilerimizin bizimle paylaştığı deneyimler.</p>
+    </div>
+    <div class="from-you-grid" id="fromYouGrid"></div>
+  </div>
+</section>
+
 <footer class="footer">
   <p>© 2025 Online VIP Dershane · <a href="index.html" style="color:var(--navy);font-weight:700;">Ana Sayfa</a> · <a href="iletisim.html" style="color:var(--navy);font-weight:700;">İletişim</a></p>
 </footer>
@@ -233,6 +251,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 
   renderVideos();
+
+  (function renderFromYou(){
+    var host = document.getElementById('fromYouGrid');
+    if(!host || !OVD_VIDEOS.fromYou || !OVD_VIDEOS.fromYou.length) return;
+    host.innerHTML = OVD_VIDEOS.fromYou.map(function(v){
+      var start = Number(v.start) > 0 ? ('&start=' + Number(v.start)) : '';
+      var src = 'https://www.youtube.com/embed/' + v.id + '?rel=0&modestbranding=1' + start;
+      return '<article class="from-you-card">'
+        + '<div class="video-shell video-shell--landscape">'
+        + '<iframe src="' + src + '" title="' + String(v.title || '').replace(/"/g,'&quot;') + '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'
+        + '</div>'
+        + '<div class="from-you-body">'
+        + '<h3>' + v.title + '</h3>'
+        + '<p>' + v.desc + '</p>'
+        + '</div></article>';
+    }).join('');
+  })();
 })();
 </script>
   <script src="assets/welcome-modal.js"></script>

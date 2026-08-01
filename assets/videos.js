@@ -53,6 +53,15 @@
         portrait: true,
       },
     ],
+    /** Veliler / öğrencilerden gelen paylaşımlar */
+    fromYou: [
+      {
+        id: 'k7FZLq9-drI',
+        start: 253,
+        title: 'Sizden Gelenler',
+        desc: 'Online VIP Dershane ailesinden gelen bir deneyim paylaşımı.',
+      },
+    ],
   };
 
   global.OVD_VIDEOS = VIDEOS;
