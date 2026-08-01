@@ -64,16 +64,47 @@ var VIDEO_FALLBACKS = {
   'ali-aktas': 'https://youtu.be/pGq1SMo2kY8'
 };
 
+/** Panel videos jsonb + legacy video_url → en fazla 3 kayıt; ilki tanıtım */
+function normalizeVideos(raw, fallbackUrl) {
+  var list = [];
+  if (Array.isArray(raw)) {
+    raw.forEach(function (item, idx) {
+      var url = '';
+      var title = '';
+      var id = 'v-' + (idx + 1);
+      if (typeof item === 'string') {
+        url = String(item || '').trim();
+      } else if (item && typeof item === 'object') {
+        url = String(item.url || item.public_url || item.video_url || '').trim();
+        title = String(item.title || '').trim();
+        if (item.id) id = String(item.id);
+      }
+      if (!url) return;
+      list.push({ id: id, url: url, title: title });
+    });
+  }
+  if (!list.length) {
+    var legacy = String(fallbackUrl || '').trim();
+    if (legacy) list.push({ id: 'v-1', url: legacy, title: '' });
+  }
+  return list.slice(0, 3);
+}
+
 function normalizeTeacher(t) {
   if (!t || typeof t !== 'object') return t;
   var slug = String(t.slug || '');
   var fb = DISPLAY_FALLBACKS[slug] || {};
   var photo = upgradeRemotePhotoUrl(t.photo_url);
   if (!isUsablePhoto(photo)) photo = PHOTO_FALLBACKS[slug] || photo || '';
-  var video = String(t.video_url || '').trim() || VIDEO_FALLBACKS[slug] || '';
+  var videos = normalizeVideos(t.videos, t.video_url);
+  if (!videos.length && VIDEO_FALLBACKS[slug]) {
+    videos = [{ id: 'v-1', url: VIDEO_FALLBACKS[slug], title: '' }];
+  }
+  var video = videos[0] ? videos[0].url : String(t.video_url || '').trim() || VIDEO_FALLBACKS[slug] || '';
   return Object.assign({}, t, {
     photo_url: photo,
     video_url: video || null,
+    videos: videos,
     name: titleCaseTr(t.name || fb.name || '') || fb.name || t.name,
     title: titleCaseTr(t.title || fb.title || '') || fb.title || t.title,
     branch: titleCaseTr(t.branch || fb.branch || '') || fb.branch || t.branch

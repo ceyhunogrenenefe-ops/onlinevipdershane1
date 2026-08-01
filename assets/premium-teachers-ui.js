@@ -68,6 +68,21 @@
     return false;
   }
 
+  /** İlk video = hover tanıtımı (videos[0] veya video_url) */
+  function primaryVideoUrl(t) {
+    if (Array.isArray(t.videos)) {
+      for (var i = 0; i < t.videos.length; i++) {
+        var item = t.videos[i];
+        var url =
+          typeof item === 'string'
+            ? String(item || '').trim()
+            : String((item && (item.url || item.public_url || item.video_url)) || '').trim();
+        if (url) return url;
+      }
+    }
+    return String(t.video_url || '').trim();
+  }
+
   function mapApiTeacher(t) {
     var exams = Array.isArray(t.exam_areas) ? t.exam_areas.join(' / ') : '';
     var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
@@ -87,7 +102,7 @@
       photo: isUsablePhoto(rawPhoto) ? rawPhoto : '',
       photoPos: 'center 20%',
       role: titleCaseTr(roleRaw),
-      video: String(t.video_url || '').trim(),
+      video: primaryVideoUrl(t),
       fromApi: true,
       short_bio: t.short_bio || ''
     };

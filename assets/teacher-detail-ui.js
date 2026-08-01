@@ -67,6 +67,92 @@
     return false;
   }
 
+  /** Panel videos[] + video_url → en fazla 3; ilki hover tanıtımı */
+  function normalizeVideos(raw, fallbackUrl) {
+    var list = [];
+    if (Array.isArray(raw)) {
+      raw.forEach(function (item, idx) {
+        var url = '';
+        var title = '';
+        var id = 'v-' + (idx + 1);
+        if (typeof item === 'string') {
+          url = String(item || '').trim();
+        } else if (item && typeof item === 'object') {
+          url = String(item.url || item.public_url || item.video_url || '').trim();
+          title = String(item.title || '').trim();
+          if (item.id) id = String(item.id);
+        }
+        if (!url) return;
+        list.push({ id: id, url: url, title: title });
+      });
+    }
+    if (!list.length) {
+      var legacy = String(fallbackUrl || '').trim();
+      if (legacy) list.push({ id: 'v-1', url: legacy, title: '' });
+    }
+    return list.slice(0, 3);
+  }
+
+  function primaryVideoUrl(videos, fallbackUrl) {
+    if (videos && videos.length && videos[0].url) return videos[0].url;
+    return String(fallbackUrl || '').trim();
+  }
+
+  function embedHtml(url, title) {
+    var yt = youtubeIdFromUrl(url);
+    var label = title || 'Tanıtım videosu';
+    if (yt) {
+      return (
+        '<div class="teacher-profile-video-frame aspect-video overflow-hidden rounded-xl border border-slate-200 bg-black">' +
+        '<iframe src="https://www.youtube.com/embed/' +
+        encodeURIComponent(yt) +
+        '?rel=0&modestbranding=1&playsinline=1" title="' +
+        escapeHtml(label) +
+        '" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy" class="h-full w-full border-0"></iframe></div>'
+      );
+    }
+    if (isDirectVideoUrl(url)) {
+      return (
+        '<div class="teacher-profile-video-frame aspect-video overflow-hidden rounded-xl border border-slate-200 bg-black">' +
+        '<video src="' +
+        escapeHtml(url) +
+        '" controls playsinline preload="metadata" class="h-full w-full"></video></div>'
+      );
+    }
+    return (
+      '<a class="inline-flex text-sm font-bold text-navy underline" href="' +
+      escapeHtml(url) +
+      '" target="_blank" rel="noopener">' +
+      escapeHtml(label || 'Videoyu izle') +
+      '</a>'
+    );
+  }
+
+  function renderVideosSection(videos) {
+    if (!videos || !videos.length) return '';
+    var heading = videos.length > 1 ? 'Tanıtım videoları' : 'Tanıtım videosu';
+    var html =
+      '<div class="mt-8" id="teacherVideos">' +
+      '<h2 class="font-display text-lg font-bold">' +
+      heading +
+      '</h2>' +
+      '<div class="mt-4 flex flex-col gap-5">';
+    videos.forEach(function (v, idx) {
+      var title =
+        v.title ||
+        (idx === 0 ? 'Tanıtım videosu' : 'Video ' + (idx + 1));
+      html +=
+        '<div class="teacher-profile-video">' +
+        (videos.length > 1
+          ? '<p class="mb-2 text-sm font-bold text-navy">' + escapeHtml(title) + '</p>'
+          : '') +
+        embedHtml(v.url, title) +
+        '</div>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+
   function slugFromLocation() {
     var q = new URLSearchParams(location.search).get('slug');
     if (q) return q.trim().toLowerCase();
@@ -199,7 +285,8 @@
       : PHOTO_FALLBACKS[t.slug] || '/assets/img/ovd-logo.png';
     var bio = t.full_bio || t.short_bio || '';
     var buy = '/premium-paketler.html?ogretmen=' + encodeURIComponent(t.slug);
-    var videoUrl = String(t.video_url || '').trim();
+    var videos = normalizeVideos(t.videos, t.video_url);
+    var videoUrl = primaryVideoUrl(videos, t.video_url);
     var canHoverVideo = !!(youtubeIdFromUrl(videoUrl) || isDirectVideoUrl(videoUrl));
 
     return (
@@ -243,11 +330,7 @@
               escapeHtml(t.teaching_approach) +
               '</p></div>'
             : '') +
-          (videoUrl && !canHoverVideo
-            ? '<div class="mt-8"><h2 class="font-display text-lg font-bold">Tanıtım videosu</h2><a class="mt-3 inline-flex text-sm font-bold text-navy underline" href="' +
-              escapeHtml(videoUrl) +
-              '" target="_blank" rel="noopener">Videoyu izle</a></div>'
-            : '') +
+          renderVideosSection(videos) +
           renderAvailability(t, slots) +
         '</section>' +
       '</div>'
