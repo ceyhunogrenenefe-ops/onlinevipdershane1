@@ -226,6 +226,13 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
           <img alt="Önizleme" style="max-height:120px;border-radius:10px;border:1px solid var(--border);">
         </div>
       </div>
+      <div class="fg"><label>Öğretmenlik belgesi veya mezuniyet belgesi *</label>
+        <input id="credential-file" type="file" accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf" required>
+        <input type="hidden" name="credential_document_url" id="credential-url" value="">
+        <div class="hint" id="credential-hint">PDF, JPG veya PNG yükleyin (max 5 MB). Öğretmenlik belgesi <strong>veya</strong> mezuniyet belgesi yeterlidir.</div>
+        <input id="credential-url-alt" type="url" placeholder="veya belge linki (Drive vb.)" style="margin-top:8px;">
+        <div id="credential-status" style="display:none;margin-top:8px;font-size:13px;font-weight:700;color:var(--green);"></div>
+      </div>
       <div class="fg"><label>Tanıtım videosu (YouTube / Drive) *</label>
         <input name="intro_video_url" type="url" required placeholder="https://youtube.com/... veya Drive linki">
       </div>
@@ -255,6 +262,11 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
   var photoUrlAlt = document.getElementById('photo-url-alt');
   var photoHint = document.getElementById('photo-hint');
   var photoPreview = document.getElementById('photo-preview');
+  var credentialFile = document.getElementById('credential-file');
+  var credentialUrlHidden = document.getElementById('credential-url');
+  var credentialUrlAlt = document.getElementById('credential-url-alt');
+  var credentialHint = document.getElementById('credential-hint');
+  var credentialStatus = document.getElementById('credential-status');
   if (!form) return;
 
   function setPreview(url) {
@@ -267,6 +279,18 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
       photoPreview.style.display = 'none';
       img.removeAttribute('src');
     }
+  }
+
+  function setCredentialStatus(text, ok) {
+    if (!credentialStatus) return;
+    if (!text) {
+      credentialStatus.style.display = 'none';
+      credentialStatus.textContent = '';
+      return;
+    }
+    credentialStatus.style.display = 'block';
+    credentialStatus.style.color = ok ? 'var(--green)' : 'var(--accent)';
+    credentialStatus.textContent = text;
   }
 
   function readFileAsDataUrl(file) {
@@ -308,6 +332,40 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
     });
   }
 
+  function uploadCredential(file) {
+    if (!file) return Promise.resolve('');
+    if (file.size > 5 * 1024 * 1024) {
+      return Promise.reject(new Error('Belge en fazla 5 MB olabilir.'));
+    }
+    if (credentialHint) credentialHint.textContent = 'Belge yükleniyor…';
+    setCredentialStatus('Belge yükleniyor…', true);
+    return readFileAsDataUrl(file).then(function(dataUrl) {
+      return fetch('/api/teacher-applications', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          op: 'upload-document',
+          fileBase64: dataUrl,
+          contentType: file.type || 'application/pdf',
+          fileName: file.name || 'belge.pdf'
+        })
+      }).then(function(r) {
+        return r.json().then(function(d) { return { ok: r.ok, data: d }; });
+      });
+    }).then(function(res) {
+      if (!res.ok || !res.data || !res.data.document_url) {
+        throw new Error((res.data && (res.data.message || res.data.error)) || 'Belge yüklenemedi');
+      }
+      credentialUrlHidden.value = res.data.document_url;
+      if (credentialFile) credentialFile.removeAttribute('required');
+      if (credentialHint) {
+        credentialHint.innerHTML = 'Belge yüklendi ✓ — Öğretmenlik belgesi <strong>veya</strong> mezuniyet belgesi yeterlidir.';
+      }
+      setCredentialStatus('Belge yüklendi ✓', true);
+      return res.data.document_url;
+    });
+  }
+
   if (photoFile) {
     photoFile.addEventListener('change', function() {
       var file = photoFile.files && photoFile.files[0];
@@ -328,6 +386,34 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
       }
     });
   }
+  if (credentialFile) {
+    credentialFile.addEventListener('change', function() {
+      var file = credentialFile.files && credentialFile.files[0];
+      if (!file) return;
+      uploadCredential(file).catch(function(err) {
+        alert(err.message || 'Belge yüklenemedi');
+        credentialFile.value = '';
+        credentialUrlHidden.value = '';
+        if (credentialHint) {
+          credentialHint.innerHTML = 'PDF, JPG veya PNG yükleyin (max 5 MB). Öğretmenlik belgesi <strong>veya</strong> mezuniyet belgesi yeterlidir.';
+        }
+        setCredentialStatus('', false);
+        credentialFile.setAttribute('required', 'required');
+      });
+    });
+  }
+  if (credentialUrlAlt) {
+    credentialUrlAlt.addEventListener('change', function() {
+      var u = (credentialUrlAlt.value || '').trim();
+      if (!u) return;
+      credentialUrlHidden.value = u;
+      if (credentialFile) {
+        credentialFile.removeAttribute('required');
+        credentialFile.value = '';
+      }
+      setCredentialStatus('Belge linki kaydedildi ✓', true);
+    });
+  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -343,11 +429,22 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
       photoPromise = Promise.resolve(photoUrlHidden.value);
     }
 
+    var credentialPromise = Promise.resolve((credentialUrlHidden.value || '').trim());
+    if (!credentialUrlHidden.value && credentialFile && credentialFile.files && credentialFile.files[0]) {
+      credentialPromise = uploadCredential(credentialFile.files[0]);
+    } else if (!credentialUrlHidden.value && credentialUrlAlt && credentialUrlAlt.value.trim()) {
+      credentialUrlHidden.value = credentialUrlAlt.value.trim();
+      credentialPromise = Promise.resolve(credentialUrlHidden.value);
+    }
+
     btn.disabled = true;
     btn.textContent = 'Gönderiliyor…';
 
-    photoPromise.then(function(photoUrl) {
+    Promise.all([photoPromise, credentialPromise]).then(function(results) {
+      var photoUrl = results[0];
+      var credentialUrl = results[1];
       if (!photoUrl) throw new Error('Profil fotoğrafı zorunlu — bilgisayardan yükleyin veya link girin.');
+      if (!credentialUrl) throw new Error('Öğretmenlik belgesi veya mezuniyet belgesi zorunludur — dosya yükleyin veya link girin.');
       var fd = new FormData(form);
       var body = {
         first_name: fd.get('first_name'),
@@ -363,6 +460,7 @@ body{font-family:'Nunito',sans-serif;color:var(--text);background:#f4f7ff;line-h
         short_bio: fd.get('short_bio'),
         full_bio: fd.get('full_bio'),
         photo_url: photoUrl,
+        credential_document_url: credentialUrl,
         intro_video_url: fd.get('intro_video_url'),
         lesson_video_url: fd.get('lesson_video_url'),
         instagram_url: fd.get('instagram_url') || '',
