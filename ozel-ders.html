@@ -160,6 +160,44 @@ tailwind.config={
     .teacher-photo-box.has-video.is-playing::after{animation:none!important;opacity:0!important}
   }
   #premiumPackageGrid,#teacherGrid{overflow:visible}
+  /* Hero öğretmen şeridi */
+  .hero-teachers{position:relative;isolation:isolate;min-height:88vh;background:#0d1f5c;color:#fff;overflow:hidden}
+  .hero-teachers-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 40%;opacity:.28;pointer-events:none}
+  .hero-teachers-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,31,92,.72) 0%,rgba(13,31,92,.35) 40%,rgba(13,31,92,.82) 100%);pointer-events:none}
+  .hero-teachers-inner{position:relative;z-index:1;display:flex;flex-direction:column;min-height:88vh;max-width:1200px;margin:0 auto;padding:1.5rem 1.25rem 2rem}
+  .hero-teachers-head{text-align:center;padding:0.5rem 0 1rem}
+  .hero-teachers-head .eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(254,202,202,.9)}
+  .hero-teachers-head h1{margin:.35rem auto 0;max-width:18ch;font-size:clamp(1.45rem,3.4vw,2.35rem);line-height:1.15;font-weight:800;letter-spacing:-.02em}
+  .hero-teachers-head p{margin:.55rem auto 0;max-width:36rem;font-size:.95rem;line-height:1.55;color:rgba(226,232,240,.88)}
+  .hero-teacher-grid{display:grid;gap:14px;flex:1;align-content:center;min-height:0}
+  .hero-teacher-grid[data-cols="1"]{grid-template-columns:minmax(0,420px);justify-content:center}
+  .hero-teacher-grid[data-cols="2"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-teacher-grid[data-cols="3"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-teacher-grid[data-cols="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hero-teacher-card{min-width:0}
+  .hero-teacher-link{display:block;height:100%;border-radius:18px;overflow:hidden;outline:none}
+  .hero-teacher-photo{aspect-ratio:3/4;border-radius:18px;box-shadow:0 18px 50px rgba(0,0,0,.35);transition:transform .45s cubic-bezier(.2,.9,.3,1),box-shadow .45s ease}
+  .hero-teacher-card:hover .hero-teacher-photo,
+  .hero-teacher-photo.is-playing{transform:scale(1.045);box-shadow:0 28px 64px rgba(0,0,0,.45);z-index:2}
+  .hero-teacher-meta{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:3.2rem 1rem 1rem;background:linear-gradient(transparent,rgba(8,16,48,.92));pointer-events:none;transition:opacity .35s ease}
+  .hero-teacher-photo.is-playing .hero-teacher-meta{opacity:.35}
+  .hero-teacher-name{font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+  .hero-teacher-role{margin-top:2px;font-size:.8rem;font-weight:700;color:rgba(226,232,240,.85)}
+  .hero-teachers-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding-top:1.15rem}
+  .hero-teacher-fallback{text-align:center;padding:3rem 1rem;color:rgba(255,255,255,.85)}
+  .hero-teacher-fallback a{color:#fff;font-weight:800}
+  @media(max-width:900px){
+    .hero-teacher-grid[data-cols="3"],
+    .hero-teacher-grid[data-cols="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media(max-width:560px){
+    .hero-teachers-inner{min-height:auto;padding-top:1.25rem}
+    .hero-teacher-grid[data-cols="2"],
+    .hero-teacher-grid[data-cols="3"],
+    .hero-teacher-grid[data-cols="4"]{grid-template-columns:1fr;max-width:360px;margin:0 auto;width:100%}
+    .hero-teacher-photo{aspect-ratio:4/5}
+  }
+  #premiumPackageGrid,#teacherGrid{overflow:visible}
   .card-enter{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
   .card-enter.in{opacity:1;transform:none}
 </style>
@@ -206,41 +244,27 @@ tailwind.config={
   </div>
 </header>
 
-<!-- HERO -->
-<section class="relative isolate min-h-[88vh] overflow-hidden bg-navy-3 text-white">
+<!-- HERO — tanıtım videolu öğretmenler -->
+<section class="hero-teachers" aria-label="Öğretmen tanıtımları">
   <img
+    class="hero-teachers-bg"
     src="assets/img/hero/slide-vip-start.jpg"
     alt=""
     width="1600"
     height="1067"
     fetchpriority="high"
     decoding="async"
-    class="absolute inset-0 h-full w-full object-cover object-[62%_40%] opacity-45"
     aria-hidden="true">
-  <div class="absolute inset-0 bg-gradient-to-r from-navy-4 via-navy-3/92 to-navy-3/55"></div>
-  <div class="absolute -right-24 top-20 h-72 w-72 rounded-full bg-accent/20 blur-3xl animate-pulseSoft" aria-hidden="true"></div>
-  <div class="absolute -left-16 bottom-10 h-64 w-64 rounded-full bg-navy/40 blur-3xl" aria-hidden="true"></div>
-
-  <div class="relative mx-auto flex max-w-6xl flex-col justify-center px-5 pb-20 pt-16 lg:min-h-[88vh] lg:px-6 lg:pt-20">
-    <p class="mb-4 font-display text-sm font-bold tracking-[0.18em] text-red-200/90 uppercase animate-[fadeUp_.6s_ease_forwards]">Online VIP Dershane</p>
-    <h1 class="max-w-3xl font-display text-[clamp(2rem,5.2vw,3.75rem)] font-extrabold leading-[1.08] tracking-tight animate-[fadeUp_.7s_.08s_ease_both]">
-      Türkiye'nin Premium Online Özel Ders Platformu
-    </h1>
-    <p class="mt-5 max-w-xl text-base leading-relaxed text-slate-200/90 sm:text-lg animate-[fadeUp_.7s_.14s_ease_both]">
-      Birebir canlı ders, kayıtlar, AI koçluk ve veli takibi — tek sistemde, evinizden.
-    </p>
-
-    <ul class="mt-8 grid max-w-2xl gap-3 sm:grid-cols-2 animate-[fadeUp_.7s_.2s_ease_both]" aria-label="Platform avantajları">
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> Canlı birebir ders</li>
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> Ders kayıtları</li>
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> AI destekli koçluk</li>
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> 1 Milyon soru</li>
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> Haftalık takip</li>
-      <li class="flex items-center gap-2.5 text-[15px] font-semibold text-white/95"><span class="text-emerald-400" aria-hidden="true">✔</span> Veli raporu</li>
-    </ul>
-
-    <div class="mt-10 flex flex-wrap gap-3 animate-[fadeUp_.7s_.28s_ease_both]">
-      <a href="#ogretmenler" class="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-accent-2">Öğretmen Seç</a>
+  <div class="hero-teachers-veil" aria-hidden="true"></div>
+  <div class="hero-teachers-inner">
+    <div class="hero-teachers-head">
+      <p class="eyebrow">Online VIP Dershane</p>
+      <h1>Türkiye'nin Premium Online Özel Ders Platformu</h1>
+      <p>Hocalarımızın üzerine gelin — kendilerini anlatsınlar. Seçin, özel derse başlayın.</p>
+    </div>
+    <div id="heroTeacherGrid" class="hero-teacher-grid" data-cols="3" aria-live="polite"></div>
+    <div class="hero-teachers-cta">
+      <a href="#ogretmenler" class="inline-flex items-center justify-center rounded-xl bg-accent px-6 py-3.5 text-[15px] font-bold text-white shadow-lift transition hover:-translate-y-0.5 hover:bg-accent-2">Tüm Öğretmenler</a>
       <a href="iletisim.html" class="inline-flex items-center justify-center rounded-xl border-2 border-white/35 bg-white/5 px-6 py-3.5 text-[15px] font-bold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10">Ücretsiz Tanışma</a>
       <a href="#paketler" class="inline-flex items-center justify-center rounded-xl border-2 border-white/20 px-6 py-3.5 text-[15px] font-bold text-white/90 transition hover:border-white/40 hover:bg-white/5">Paketler</a>
     </div>
@@ -562,7 +586,13 @@ document.getElementById('y').textContent=new Date().getFullYear();
 <script>OVD_PREMIUM_PACKAGES.init({ source:'ozel-ders' });</script>
 <script src="assets/premium-teachers.js?v=20260729a"></script>
 <script src="assets/premium-teachers-ui.js?v=20260801a"></script>
-<script>OVD_PREMIUM_TEACHERS_UI.init();</script>
+<script src="assets/ozel-ders-hero-teachers.js?v=20260803a"></script>
+<script>
+  // 3. hoca (Alakdış) slug’ı gelince diziye ekleyin — örn. ['elif-denk','ALAKDIS-SLUG','merve-matematik']
+  window.OVD_OZEL_HERO_SLUGS = ['elif-denk', 'merve-matematik'];
+  OVD_OZEL_HERO_TEACHERS.init();
+  OVD_PREMIUM_TEACHERS_UI.init();
+</script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>
