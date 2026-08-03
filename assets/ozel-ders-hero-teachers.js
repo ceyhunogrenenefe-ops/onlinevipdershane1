@@ -7,8 +7,8 @@
   /** Hero’da gösterilecek öğretmen slug’ları (sıra korunur) */
   var FEATURED_SLUGS = [
     'elif-denk',
+    'ali-aktas',
     'merve-matematik'
-    // Alakdış Hoca panelde bulunamadı — slug gelince buraya ekleyin
   ];
 
   function escapeHtml(s) {
