@@ -216,11 +216,11 @@
         ';--avatar-b:' +
         colors[1] +
         '">' +
-        '<img class="teacher-avatar-img lazy-img" data-src="' +
+        '<img class="teacher-avatar-img" src="' +
         escapeHtml(photo) +
         '" alt="' +
         escapeHtml(t.name) +
-        '" width="76" height="76" decoding="async" style="object-position:' +
+        '" width="76" height="76" loading="lazy" decoding="async" style="object-position:' +
         escapeHtml(pos) +
         '">' +
         '</div>' +
@@ -243,7 +243,6 @@
         return;
       }
       strip.innerHTML = rows.map(avatarStripHtml).join('');
-      observeLazy();
     }
 
     function cardHtml(t) {
