@@ -187,6 +187,15 @@
       return '/ozel-ders/ogretmen/' + encodeURIComponent(slug);
     }
 
+    /** /ozel-ders rewrite altında relative assets/... 404 olmasın */
+    function absoluteAssetUrl(url) {
+      var u = String(url || '').trim();
+      if (!u) return '/assets/img/ovd-logo.png';
+      if (/^(https?:)?\/\//i.test(u) || /^data:/i.test(u) || /^blob:/i.test(u)) return u;
+      if (u.charAt(0) === '/') return u;
+      return '/' + u.replace(/^\.\//, '');
+    }
+
     var AVATAR_COLORS = [
       ['#ff7a45', '#ff9f43'],
       ['#6c5ce7', '#a29bfe'],
@@ -202,7 +211,7 @@
 
     function avatarStripHtml(t, idx) {
       var colors = AVATAR_COLORS[idx % AVATAR_COLORS.length];
-      var photo = String(t.photo || '').trim() || 'assets/img/ovd-logo.png';
+      var photo = absoluteAssetUrl(t.photo);
       var pos = t.photoPos || 'center 20%';
       var branch = t.branch || t.role || '';
       return (
@@ -222,7 +231,7 @@
         escapeHtml(t.name) +
         '" width="76" height="76" loading="lazy" decoding="async" style="object-position:' +
         escapeHtml(pos) +
-        '">' +
+        '" onerror="this.onerror=null;this.src=\'/assets/img/ovd-logo.png\'">' +
         '</div>' +
         '<div class="teacher-avatar-name">' +
         escapeHtml(t.name) +
@@ -269,7 +278,7 @@
           '"' +
           (canHoverVideo ? ' data-video="' + escapeHtml(videoUrl) + '"' : '') +
           '>' +
-            '<img data-src="' + escapeHtml(t.photo) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async">' +
+            '<img data-src="' + escapeHtml(absoluteAssetUrl(t.photo)) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async">' +
             (canHoverVideo ? '<div class="teacher-video-layer" aria-hidden="true"></div>' + videoBadge : '') +
             '<div class="absolute left-3 top-3 z-[2] flex flex-wrap gap-1.5">' + liveBadge + availBadge + '</div>' +
           '</div>' +
