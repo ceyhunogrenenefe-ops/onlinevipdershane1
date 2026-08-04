@@ -187,6 +187,65 @@
       return '/ozel-ders/ogretmen/' + encodeURIComponent(slug);
     }
 
+    var AVATAR_COLORS = [
+      ['#ff7a45', '#ff9f43'],
+      ['#6c5ce7', '#a29bfe'],
+      ['#0984e3', '#74b9ff'],
+      ['#00b894', '#55efc4'],
+      ['#2d3436', '#636e72'],
+      ['#e84393', '#fd79a8'],
+      ['#e8232a', '#ff7675'],
+      ['#f5c542', '#ffeaa7'],
+      ['#1a3fad', '#4c6fff'],
+      ['#00cec9', '#81ecec']
+    ];
+
+    function avatarStripHtml(t, idx) {
+      var colors = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+      var photo = String(t.photo || '').trim() || 'assets/img/ovd-logo.png';
+      var pos = t.photoPos || 'center 20%';
+      var branch = t.branch || t.role || '';
+      return (
+        '<a class="teacher-avatar-item" href="' +
+        profileHref(t.slug) +
+        '" title="' +
+        escapeHtml(t.name) +
+        '">' +
+        '<div class="teacher-avatar-ring" style="--avatar-a:' +
+        colors[0] +
+        ';--avatar-b:' +
+        colors[1] +
+        '">' +
+        '<img class="teacher-avatar-img lazy-img" data-src="' +
+        escapeHtml(photo) +
+        '" alt="' +
+        escapeHtml(t.name) +
+        '" width="76" height="76" decoding="async" style="object-position:' +
+        escapeHtml(pos) +
+        '">' +
+        '</div>' +
+        '<div class="teacher-avatar-name">' +
+        escapeHtml(t.name) +
+        '</div>' +
+        (branch
+          ? '<div class="teacher-avatar-branch">' + escapeHtml(branch) + '</div>'
+          : '') +
+        '</a>'
+      );
+    }
+
+    function renderAvatarStrip(list) {
+      var strip = document.getElementById('teacherAvatarStrip');
+      if (!strip) return;
+      var rows = Array.isArray(list) ? list : [];
+      if (!rows.length) {
+        strip.innerHTML = '';
+        return;
+      }
+      strip.innerHTML = rows.map(avatarStripHtml).join('');
+      observeLazy();
+    }
+
     function cardHtml(t) {
       var liveBadge = t.live
         ? '<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500"></span>Canlı</span>'
@@ -672,6 +731,7 @@
       teachers = list;
       sourceLabel = label || 'katalog';
       fillBranches();
+      renderAvatarStrip(teachers);
       applyFilters();
     }
 

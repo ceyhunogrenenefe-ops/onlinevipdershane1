@@ -198,6 +198,41 @@ tailwind.config={
     .hero-teacher-photo{aspect-ratio:4/5}
   }
   #premiumPackageGrid,#teacherGrid{overflow:visible}
+  /* Yatay öğretmen avatar şeridi (başlık ↔ filtreler) */
+  .teacher-avatar-rail{margin-left:-0.25rem;margin-right:-0.25rem}
+  .teacher-avatar-strip{
+    display:flex;gap:18px;overflow-x:auto;overflow-y:visible;
+    padding:10px 8px 18px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;scrollbar-color:#c5c9d6 transparent;
+  }
+  .teacher-avatar-strip::-webkit-scrollbar{height:6px}
+  .teacher-avatar-strip::-webkit-scrollbar-thumb{background:#c5c9d6;border-radius:99px}
+  .teacher-avatar-item{
+    flex:0 0 auto;width:92px;text-align:center;text-decoration:none;color:inherit;
+    scroll-snap-align:start;outline:none;
+  }
+  .teacher-avatar-ring{
+    width:76px;height:76px;margin:0 auto;border-radius:999px;padding:3px;
+    background:linear-gradient(145deg,var(--avatar-a,#1a3fad),var(--avatar-b,#e8232a));
+    box-shadow:0 8px 18px rgba(26,63,173,.14);
+    transition:transform .28s cubic-bezier(.2,.9,.3,1),box-shadow .28s ease;
+  }
+  .teacher-avatar-item:hover .teacher-avatar-ring,
+  .teacher-avatar-item:focus-visible .teacher-avatar-ring{
+    transform:scale(1.12);box-shadow:0 14px 28px rgba(26,63,173,.22);
+  }
+  .teacher-avatar-img{
+    width:100%;height:100%;border-radius:999px;object-fit:cover;object-position:center 20%;
+    display:block;background:#eef2fb;border:2px solid #fff;
+  }
+  .teacher-avatar-name{
+    margin-top:8px;font-size:12px;font-weight:800;line-height:1.25;color:#1a1f36;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .teacher-avatar-branch{
+    margin-top:2px;font-size:11px;font-weight:600;color:#6e6e73;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
   .card-enter{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
   .card-enter.in{opacity:1;transform:none}
 </style>
@@ -280,7 +315,11 @@ tailwind.config={
       <p class="mt-4 text-mute">Branş, sınıf ve müsaitliğe göre filtreleyin. Seçtiğiniz öğretmenle hemen eğitime başlayın.</p>
     </div>
 
-    <div class="reveal mt-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5" aria-label="Öğretmen filtreleri">
+    <div class="teacher-avatar-rail reveal mt-8" aria-label="Hızlı öğretmen seçimi">
+      <div id="teacherAvatarStrip" class="teacher-avatar-strip"></div>
+    </div>
+
+    <div class="reveal mt-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5" aria-label="Öğretmen filtreleri">
       <div class="mb-4">
         <label for="q" class="sr-only">Öğretmen ara</label>
         <div class="relative">
@@ -585,7 +624,7 @@ document.getElementById('y').textContent=new Date().getFullYear();
 <script src="assets/premium-packages-ui.js?v=20260717a"></script>
 <script>OVD_PREMIUM_PACKAGES.init({ source:'ozel-ders' });</script>
 <script src="assets/premium-teachers.js?v=20260729a"></script>
-<script src="assets/premium-teachers-ui.js?v=20260801a"></script>
+<script src="assets/premium-teachers-ui.js?v=20260804a"></script>
 <script src="assets/ozel-ders-hero-teachers.js?v=20260803b"></script>
 <script>
   window.OVD_OZEL_HERO_SLUGS = ['elif-denk', 'ali-aktas', 'merve-matematik'];
