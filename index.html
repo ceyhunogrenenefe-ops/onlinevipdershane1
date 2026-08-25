@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="assets/welcome-modal.css">
 <link rel="stylesheet" href="assets/nav-logo.css">
 <link rel="stylesheet" href="assets/programlar-cards.css?v=20260721b">
-<link rel="stylesheet" href="assets/prog-hover-video.css?v=3">
+<link rel="stylesheet" href="assets/prog-hover-video.css?v=4">
 <style>
 :root {
   --navy:   #1a3fad;
@@ -1144,8 +1144,11 @@ if('requestIdleCallback' in window){requestIdleCallback(function(){loadHeroImg(1
 
 <section class="section section-light" id="hakkimizda">
   <div class="container about-split">
-    <div class="about-photo about-photo--img" id="kurucu-foto">
+    <div class="about-photo about-photo--img has-prog-video" id="kurucu-foto" data-prog-video="https://youtu.be/Bw3QrmZnP3w">
       <img src="assets/img/kurucu/zeynep-ozcan.jpg" alt="Zeynep Özcan — Online VIP Dershane Kurucusu" loading="lazy" width="800" height="1000">
+      <div class="prog-video-layer" aria-hidden="true"></div>
+      <span class="prog-video-badge" aria-hidden="true">▶ Tanıtım</span>
+      <button type="button" class="prog-unmute-btn" aria-label="Sesi aç">🔊 Sesi aç</button>
     </div>
     <div class="about-text">
       <div class="sec-label">Biz kimiz?</div>
@@ -1630,7 +1633,7 @@ document.addEventListener('click',function(e){
 <script src="assets/products.js" defer></script>
 <script src="assets/cart.js" defer></script>
 <script src="assets/teacher-video.js?v=20260813a" defer></script>
-<script src="assets/prog-hover-video.js?v=3" defer></script>
+<script src="assets/prog-hover-video.js?v=4" defer></script>
 <script src="assets/welcome-modal.js" defer></script>
 
 <div class="cb-overlay" id="ovdCallback" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="ovdCallbackTitle">

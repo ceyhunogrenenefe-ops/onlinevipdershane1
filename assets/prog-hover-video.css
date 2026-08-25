@@ -1,0 +1,137 @@
+/* Program kartı / hero / kurucu — hover & autoplay video */
+.prog-thumb.has-prog-video,
+.prog-hero-poster.has-prog-video,
+.about-photo.has-prog-video {
+  position: relative;
+  overflow: hidden;
+}
+
+.prog-video-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: transparent;
+  z-index: 2;
+  transition: opacity 0.35s ease;
+}
+
+.prog-thumb.has-prog-video.is-playing .prog-video-layer,
+.prog-hero-poster.has-prog-video.is-playing .prog-video-layer,
+.about-photo.has-prog-video.is-playing .prog-video-layer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.prog-video-layer iframe,
+.prog-video-layer video,
+.prog-video-layer .teacher-yt-mount {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.prog-thumb.has-prog-video.is-playing > img,
+.prog-hero-poster.has-prog-video.is-playing > img,
+.about-photo.has-prog-video.is-playing > img {
+  opacity: 0;
+  transition: opacity 0.35s ease 0.2s;
+}
+
+.prog-video-badge {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  background: rgba(13, 31, 92, 0.88);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 6px 10px;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.prog-thumb.has-prog-video.is-playing .prog-video-badge,
+.prog-hero-poster.has-prog-video.is-playing .prog-video-badge,
+.about-photo.has-prog-video.is-playing .prog-video-badge {
+  opacity: 0;
+}
+
+.prog-unmute-btn {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 12;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  background: #e8232a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  box-shadow: 0 10px 28px rgba(232, 35, 42, 0.4);
+  pointer-events: auto;
+  animation: prog-unmute-pulse 1.4s ease-in-out infinite;
+}
+
+.prog-thumb.has-prog-video.is-playing.is-muted .prog-unmute-btn,
+.prog-hero-poster.has-prog-video.is-playing.is-muted .prog-unmute-btn,
+.about-photo.has-prog-video.is-playing.is-muted .prog-unmute-btn {
+  display: inline-flex;
+}
+
+.prog-thumb.has-prog-video.has-sound .prog-unmute-btn,
+.prog-hero-poster.has-prog-video.has-sound .prog-unmute-btn,
+.about-photo.has-prog-video.has-sound .prog-unmute-btn {
+  display: none !important;
+}
+
+@keyframes prog-unmute-pulse {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.06);
+  }
+}
+
+.prog-hero-poster.has-prog-video {
+  padding: 0;
+  aspect-ratio: 9 / 16;
+  max-height: 420px;
+  width: min(100%, 260px);
+  justify-self: center;
+}
+
+.prog-hero-poster.has-prog-video > img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .prog-hero-poster.has-prog-video {
+    width: min(100%, 220px);
+    max-height: 360px;
+    margin: 0 auto;
+  }
+}
