@@ -144,7 +144,7 @@
     },
   ];
 
-  var THUMB_VER = '20260826k';
+  var THUMB_VER = '20260826t2';
 
   function thumbSrc(photo) {
     var file = String(photo || '').split('/').pop() || '';
