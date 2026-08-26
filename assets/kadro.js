@@ -12,7 +12,7 @@
     },
     {
       slug: 'merve-matematik',
-      name: 'Merve',
+      name: 'Merve Yurdakul',
       role: 'Matematik Öğretmeni · LGS, TYT · Öğrenci Koçu',
       photo: 'assets/img/kadro/merve-matematik.jpg',
       short:
@@ -24,17 +24,27 @@
       slug: 'gonul-cavusoglu',
       name: 'Gönül Çavuşoğlu',
       role: 'Fen Bilimleri ve Biyoloji Öğretmeni · LGS, TYT, AYT',
-      photo: 'assets/img/kadro/gonul-cavusoglu.png',
+      photo: 'assets/img/kadro/gonul-cavusoglu.jpg',
       short:
         '2014\'ten beri Fen Bilimleri ve Biyoloji öğretmeni. LGS, TYT ve AYT hazırlık; online ve yüz yüze özel ders.',
       bio:
         '13 Eylül 1988, İzmir doğumluyum. Namık Kemal Üniversitesi Fen-Edebiyat Fakültesi Biyoloji Bölümü mezunuyum (2014); İstanbul Üniversitesi Pedagojik Formasyon eğitimimi tamamladım. 2014 yılından bu yana Fen Bilimleri ve Biyoloji öğretmeni olarak aktif görev yapıyorum. Final Eğitim Kurumları, Kolezyum, CMA, Sınav ve Derece Eğitim Kurumları ile çeşitli özel öğretim kurumlarında deneyim kazandım. Ortaokul Fen Bilimleri ve lise Biyoloji derslerinin yanı sıra LGS, TYT ve AYT hazırlık alanlarında birebir ve grup dersleri veriyorum; uzun yıllardır yüz yüze ve online özel ders de sunuyorum. Uzmanlık alanlarım ortaokul Fen Bilimleri, lise Biyoloji, LGS hazırlık, TYT ve AYT Biyoloji, soru çözümü ve sınav hazırlığıdır. 2014\'ten bu yana çok sayıda öğrenciye özel ders verdim; TYT ve AYT Biyoloji netlerini önemli ölçüde yükselten, biyoloji testlerinde tam veya tama yakın başarı elde eden öğrenciler yetiştirdim. Öğrenci merkezli eğitim anlayışıyla seviyelerine uygun çalışma programları hazırlıyor, konu eksiklerini gidererek hedeflerine ulaşmalarına yardımcı oluyorum.',
     },
     {
+      slug: 'tayyibe-ogrenenefe',
+      name: 'Tayyibe Öğrenenefe',
+      role: 'Biyoloji Öğretmeni',
+      photo: 'assets/img/kadro/tayyibe-ogrenenefe-2.jpg',
+      short:
+        '2010\'dan beri öğretmen. Fen bilimlerini ve biyolojiyi doğayla birleştirerek, merak uyandırarak anlatıyor.',
+      bio:
+        '1986 yılında Aydın\'da doğdum. İlkokul, ortaokul ve lise eğitimimi Aydın\'da tamamladım. 2010 yılında Dicle Üniversitesi Biyoloji Öğretmenliğinden mezun oldum. 2010 yılından bu yana öğretmenlik mesleğini sürdürüyorum. Doğayı seven, meraklı, araştırmacı biriyim. Fen bilimleri ve biyoloji dersini doğa ile bütünleştirip çocukların çevrelerinde gelişen olayların farkında olmalarını sağlamak öncelikli hedeflerim arasında.',
+    },
+    {
       slug: 'merve-yetkin',
       name: 'Merve Yetkin',
       role: 'Türkçe Öğretmeni',
-      photo: 'assets/img/kadro/merve-yetkin.png',
+      photo: 'assets/img/kadro/merve-yetkin.jpg',
       short:
         'Çocuk edebiyatı uzmanı. Masal anlatıcılığı, drama ve hızlı okuma ile bireyselleştirilmiş Türkçe dersleri.',
       bio:
@@ -61,6 +71,16 @@
         'Merhaba, ben Ali Aktaş. Atatürk Üniversitesi Kazım Karabekir Eğitim Fakültesi Fizik Öğretmenliği mezunuyum. 1998\'den beri özel öğretim kurumlarında ve dershanelerde fizik öğretmekteyim. Şimdilerde Online VIP Dershane\'de ders vermekteyim. 2015 yılından beri Süleyman Demirel Üniversitesi Liderlik ve Kariyer Araştırma Uygulama Merkezi\'nden öğrenci koçluğu ve eğitim danışmanlığı sertifikasına sahibim. Benim için en büyük motivasyon kaynağı, bir öğrencinin gözündeki "Fizik yapabiliyorum!" mutluluğunu ve özgüvenini görmektir. Bilgiyi paylaşmayı, zor denileni basitleştirmeyi ve gençlerin hayallerindeki üniversitelere giden yolda onlara sağlam bir köprü olmayı bir görevden ziyade tutku olarak görüyorum. Başarıyı bir sonuç değil, birlikte kazanılan bir zafer olarak kabul ediyorum. Sevgili öğrenciler; fizik dersinden korkmayın, sadece doğru kurumu ve rehberi seçin. Başarının anahtarı istikrar ve doğru metodolojidir. Ezberlemek yerine mantığını anlamaya odaklandığınızda, fiziğin aslında doğayı anlama sanatı olduğunu fark edeceksiniz. Unutmayın; doğru kurumla çalıştığınızda başarısızlık bir seçenek değildir.',
     },
     {
+      slug: 'yasin-kandemir',
+      name: 'Yasin Kandemir',
+      role: 'Kimya Öğretmeni · TYT, AYT, YKS',
+      photo: 'assets/img/kadro/yasin-kandemir.jpg',
+      short:
+        'Pamukkale Üniversitesi mezunu. 25 yıllık deneyim; lise kimya, TYT ve AYT hazırlık.',
+      bio:
+        'Online VIP Dershane bünyesinde kimya öğretmeni olarak görev yapmaktadır. 25 yıllık deneyimiyle lise kimya derslerinde ve YKS (TYT–AYT) hazırlıkta konu anlatımı, soru çözümü ve sınav odaklı çalışmayı esas alır.',
+    },
+    {
       slug: 'demet',
       name: 'Demet',
       role: 'İlköğretim Matematik Öğretmeni',
@@ -69,16 +89,6 @@
         '2017 mezunu. Matematiği sevdirmeyi, korkuları gidermeyi ve interaktif yöntemlerle anlatmayı hedefliyor.',
       bio:
         'Merhaba ben Demet öğretmen, İlköğretim Matematik Öğretmenliği 2017 mezunuyum. Temel amacım öğrencilerime matematik dersini sevdirmek ve korkularını gidermek. İnteraktif eğitim metodlarını kullanarak web2 araçlarıyla da anlatımı zenginleştirerek, konunun kavranmasını desteklerim. Ayrıca öğrencilerime özgüven kazandırarak keyifli ve verimli bir ders süreci geçiririm. Ezberci yaklaşımdan kaçınarak onlara bilgiye ulaşmaları için alan tanırım.',
-    },
-    {
-      slug: 'tayyibe-ogrenenefe',
-      name: 'Tayyibe Öğrenenefe',
-      role: 'Biyoloji Öğretmeni',
-      photo: 'assets/img/kadro/tayyibe-ogrenenefe.jpg',
-      short:
-        '2010\'dan beri öğretmen. Fen bilimlerini ve biyolojiyi doğayla birleştirerek, merak uyandırarak anlatıyor.',
-      bio:
-        '1986 yılında Aydın\'da doğdum. İlkokul, ortaokul ve lise eğitimimi Aydın\'da tamamladım. 2010 yılında Dicle Üniversitesi Biyoloji Öğretmenliğinden mezun oldum. 2010 yılından bu yana öğretmenlik mesleğini sürdürüyorum. Doğayı seven, meraklı, araştırmacı biriyim. Fen bilimleri ve biyoloji dersini doğa ile bütünleştirip çocukların çevrelerinde gelişen olayların farkında olmalarını sağlamak öncelikli hedeflerim arasında.',
     },
     {
       slug: 'nadide-akturk',
@@ -126,6 +136,14 @@
     },
   ];
 
+  var THUMB_VER = '20260826m';
+
+  function thumbSrc(photo) {
+    var file = String(photo || '').split('/').pop() || '';
+    file = file.replace(/\.(png|jpeg|webp)$/i, '.jpg');
+    return '/assets/img/kadro/thumbs/' + file + '?v=' + THUMB_VER;
+  }
+
   function splitSentences(text) {
     return String(text || '')
       .replace(/\s+/g, ' ')
@@ -169,7 +187,7 @@
       '">' +
       '<div class="team-photo team-photo--img">' +
       '<img src="' +
-      member.photo +
+      thumbSrc(member.photo) +
       '" alt="' +
       member.name +
       ' — ' +
