@@ -226,7 +226,7 @@
       price: 650,
       grades: ['ortaokul', 'lgs', 'lise'],
       photo: 'assets/img/kadro/turgut-usul.jpg',
-      photoPos: 'center 16%',
+      photoPos: 'center 28%',
       role: 'Türkçe',
     },
     {
