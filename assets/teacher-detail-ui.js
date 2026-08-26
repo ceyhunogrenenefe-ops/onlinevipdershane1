@@ -45,12 +45,21 @@
       .join(' ');
   }
 
+  var PHOTO_OVERRIDES = {
+    'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+    'ali-aktas': '/assets/img/kadro/ali-aktas.jpg',
+    'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
+    'merve-yetkin': '/assets/img/kadro/merve-yetkin.jpg'
+  };
   var PHOTO_FALLBACKS = {
     'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
-    'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg'
+    'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg',
+    'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+    'kaan-inaltekin': '/assets/img/kadro/kaan-inaltekin.jpg'
   };
 
   function youtubeIdFromUrl(url) {
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.youtubeIdFromUrl(url);
     var u = String(url || '').trim();
     if (!u) return '';
     var m = u.match(
@@ -60,6 +69,7 @@
   }
 
   function isDirectVideoUrl(url) {
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.isDirectVideoUrl(url);
     var u = String(url || '').trim();
     if (!u) return false;
     if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
@@ -117,6 +127,28 @@
         '<video src="' +
         escapeHtml(url) +
         '" controls playsinline preload="metadata" class="h-full w-full"></video></div>'
+      );
+    }
+    var driveId = global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.driveFileIdFromUrl(url);
+    if (driveId) {
+      return (
+        '<div class="teacher-profile-video-frame aspect-video overflow-hidden rounded-xl border border-slate-200 bg-black">' +
+        '<iframe src="https://drive.google.com/file/d/' +
+        encodeURIComponent(driveId) +
+        '/preview" title="' +
+        escapeHtml(label) +
+        '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" class="h-full w-full border-0"></iframe></div>'
+      );
+    }
+    var ig = global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.instagramEmbedSrc(url);
+    if (ig) {
+      return (
+        '<div class="teacher-profile-video-frame overflow-hidden rounded-xl border border-slate-200 bg-black" style="aspect-ratio:9/16;max-width:360px">' +
+        '<iframe src="' +
+        escapeHtml(ig) +
+        '" title="' +
+        escapeHtml(label) +
+        '" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" class="h-full w-full border-0"></iframe></div>'
       );
     }
     return (
@@ -279,7 +311,7 @@
     var specs = Array.isArray(t.specialties) ? t.specialties : [];
     var name = titleCaseTr(t.name) || t.name || 'Öğretmen';
     var role = titleCaseTr(t.title || [t.branch, exams.join(' / ')].filter(Boolean).join(' · '));
-    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
+    var rawPhoto = PHOTO_OVERRIDES[t.slug] || upgradeRemotePhotoUrl(t.photo_url);
     var photo = isUsablePhoto(rawPhoto)
       ? rawPhoto
       : PHOTO_FALLBACKS[t.slug] || '/assets/img/ovd-logo.png';
@@ -623,4 +655,15 @@
   }
 
   global.OVD_TEACHER_DETAIL = { init: init };
+
+  if (typeof document !== 'undefined') {
+    function boot() {
+      if (document.getElementById('teacherDetail')) init();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+  }
 })(typeof window !== 'undefined' ? window : global);

@@ -134,9 +134,17 @@
       short: 'Türkçe derslerinde okuma, yazma, dil bilgisi ve anlama becerileri.',
       bio: 'Online VIP Dershane bünyesinde Türkçe öğretmeni olarak görev yapmaktadır. Öğrencilerin dil becerilerini güçlendirmek ve sınavlara hazırlanmalarına destek olmak için canlı derslerde birlikte çalışır.',
     },
+    {
+      slug: 'kaan-inaltekin',
+      name: 'Kaan İnaltekin',
+      role: 'Öğretmen',
+      photo: 'assets/img/kadro/kaan-inaltekin.jpg',
+      short: 'Online VIP Dershane kadrosunda canlı ders ve öğrenci takibi.',
+      bio: 'Online VIP Dershane bünyesinde öğretmen olarak görev yapmaktadır. Öğrencilerin hedeflerine ulaşması için düzenli ders, takip ve bireysel destek sunar.',
+    },
   ];
 
-  var THUMB_VER = '20260826t';
+  var THUMB_VER = '20260826k';
 
   function thumbSrc(photo) {
     var file = String(photo || '').split('/').pop() || '';
