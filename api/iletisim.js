@@ -1,5 +1,6 @@
 const { createKommoLead, splitName } = require('./_lib/kommo');
 const { isValidTrMobile, normalizeTrPhone } = require('./_lib/assessment-phone');
+const { sendCrmLeadSafe } = require('./_lib/crm-lead');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
@@ -98,9 +99,27 @@ module.exports = async function handler(req, res) {
   const validationError = validate(data);
   if (validationError) return res.status(400).json({ error: validationError });
 
-  const results = { email: false, kommo: false };
+  const results = { email: false, kommo: false, crm: false };
   const errors = [];
   const leadName = [data.ad, data.soyad].filter(Boolean).join(' ').trim();
+
+  // Tarayıcı kopyası (crm-site-lead.js) düşmezse yedek; panel aynı kaydı iki kez yazmaz.
+  try {
+    const crm = await sendCrmLeadSafe({
+      form_kind: data.program === 'Sizi Arayalım' ? 'callback' : 'iletisim',
+      ad_soyad: leadName,
+      telefon: data.telefon,
+      email: data.email,
+      sinif: data.sinif,
+      program: data.program,
+      not: data.not,
+      page: String(req.headers.referer || ''),
+    });
+    results.crm = crm.ok;
+    if (!crm.ok && !crm.skipped) errors.push({ channel: 'crm', message: crm.error || 'crm_failed' });
+  } catch (err) {
+    errors.push({ channel: 'crm', message: err.message });
+  }
   const kommoTitle = `${leadName} | ${data.sinif} | ${data.program || 'Tanışma Dersi'}`;
 
   try {
@@ -132,7 +151,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (results.email || results.kommo === true) {
+  if (results.email || results.kommo === true || results.crm) {
     return res.status(200).json({ ok: true, results, errors });
   }
 

@@ -1,4 +1,5 @@
 const { createKommoLead } = require('./_lib/kommo');
+const { sendCrmLeadSafe } = require('./_lib/crm-lead');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
@@ -81,8 +82,25 @@ module.exports = async function handler(req, res) {
   const validationError = validate(data);
   if (validationError) return res.status(400).json({ error: validationError });
 
-  const results = { email: false, kommo: false };
+  const results = { email: false, kommo: false, crm: false };
   const errors = [];
+
+  try {
+    const crm = await sendCrmLeadSafe({
+      form_kind: 'kayit',
+      ad_soyad: [data.ad, data.soyad].filter(Boolean).join(' '),
+      telefon: data.telefon,
+      email: data.email,
+      sinif: data.sinif,
+      program: data.program,
+      not: [data.okul ? 'Okul: ' + data.okul : '', data.not].filter(Boolean).join(' — '),
+      page: String(req.headers.referer || ''),
+    });
+    results.crm = crm.ok;
+    if (!crm.ok && !crm.skipped) errors.push({ channel: 'crm', message: crm.error || 'crm_failed' });
+  } catch (err) {
+    errors.push({ channel: 'crm', message: err.message });
+  }
 
   try {
     await sendFormspreeEmail(data);
@@ -106,7 +124,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  if (results.email || results.kommo === true) {
+  if (results.email || results.kommo === true || results.crm) {
     return res.status(200).json({ ok: true, results, errors });
   }
 
