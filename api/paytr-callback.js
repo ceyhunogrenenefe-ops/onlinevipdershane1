@@ -1,5 +1,6 @@
 const { paytrConfig, verifyCallbackHash } = require('./_lib/paytr');
 const { createKommoLead } = require('./_lib/kommo');
+const { isCommercePaymentRef, notifyCommerceOrderPaid } = require('./_lib/commerce-panel');
 
 async function notifyPanelPaid({ merchantOid, totalAmount }) {
   const url = process.env.KOCLUK_PANEL_URL;
@@ -88,12 +89,25 @@ module.exports = async function handler(req, res) {
 
     if (status === 'success') {
       console.log('paytr-callback: success', merchantOid, totalAmount);
-      notifyPaidOrder({ merchantOid, totalAmount }).catch((err) =>
-        console.error('paytr-callback notify', err)
-      );
-      notifyPanelPaid({ merchantOid, totalAmount }).catch((err) =>
-        console.warn('paytr-callback panel notify', err)
-      );
+      if (isCommercePaymentRef(merchantOid)) {
+        try {
+          await notifyCommerceOrderPaid({
+            merchantOid,
+            totalAmount,
+            provider: 'paytr',
+          });
+        } catch (err) {
+          console.error('paytr-callback commerce', err);
+          return res.status(500).send('ERR');
+        }
+      } else {
+        notifyPaidOrder({ merchantOid, totalAmount }).catch((err) =>
+          console.error('paytr-callback notify', err)
+        );
+        notifyPanelPaid({ merchantOid, totalAmount }).catch((err) =>
+          console.warn('paytr-callback panel notify', err)
+        );
+      }
     } else {
       console.log('paytr-callback: failed', merchantOid, status);
     }

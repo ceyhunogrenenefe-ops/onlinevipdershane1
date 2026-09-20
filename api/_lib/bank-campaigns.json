@@ -1,0 +1,132 @@
+{
+  "title": "Bankaların Eğitime Taksit Avantajları",
+  "disclaimer": "Koşullar, tutar ve katılım bankaya aittir.",
+  "banks": [
+    {
+      "id": "garanti",
+      "name": "Garanti Bonus",
+      "providerIds": ["garanti", "paytr"],
+      "color": "#14944a",
+      "url": "https://www.bonus.com.tr/kampanyalar/secili-okullarda-taksit-kampanyasi",
+      "listUrl": "https://www.bonus.com.tr/kampanyalar/sektor/egitim",
+      "fallback": {
+        "title": "Seçili okullarda +taksit",
+        "summary": "2 taksite +4, 3+ taksite +5 (azami 12).",
+        "installments": [6, 8, 12],
+        "period": "Eylül 2026"
+      }
+    },
+    {
+      "id": "ziraat",
+      "name": "Ziraat Bankkart",
+      "providerIds": ["ziraat", "paytr"],
+      "color": "#e30613",
+      "url": "https://www.bankkart.com.tr/kampanyalar/egitim-kitap-ve-kirtasiye/okul-odemelerinizde-ilave-6ya-varan-taksit",
+      "listUrl": "https://www.bankkart.com.tr/kampanyalar/egitim-kitap-ve-kirtasiye",
+      "fallback": {
+        "title": "Okul ödemesine +5 / +6 taksit",
+        "summary": "2–3 taksite +5, 4+ taksite +6 (azami 12).",
+        "installments": [5, 6, 12],
+        "period": "Ağu–Eyl 2026"
+      }
+    },
+    {
+      "id": "isbank",
+      "name": "İş Maximum",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#003da5",
+      "url": "https://www.isbank.com.tr/kampanyalar/egitim-odemelerinizde-secili-okullarda-faizsiz-taksit-firsati",
+      "listUrl": "https://www.isbank.com.tr/kampanyalar",
+      "fallback": {
+        "title": "Seçili okullarda faizsiz 2–3 taksit",
+        "summary": "Peşin eğitim harcamasını İşCep / Maximum Mobil’den faizsiz 2–3 taksit.",
+        "installments": [2, 3],
+        "period": "Eylül 2026"
+      }
+    },
+    {
+      "id": "akbank",
+      "name": "Akbank Axess",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#e30613",
+      "url": "https://www.axess.com.tr/ticarikartlar/kampanyalar/axess-ile-egitim-kurumlarina-ozel-pesin-harcamalariniza-4-taksit-business",
+      "listUrl": "https://www.axess.com.tr/kampanyalar",
+      "fallback": {
+        "title": "Eğitimde faizsiz 4 / 7 taksit",
+        "summary": "Peşin okul ödemesinde faizsiz taksit (katılım ve kart tipine göre).",
+        "installments": [4, 7],
+        "period": "Eylül 2026"
+      }
+    },
+    {
+      "id": "vakifbank",
+      "name": "VakıfBank",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#f7b500",
+      "url": "https://www.vakifkart.com.tr/kampanyalar/egitim-kurumu-pesin-harcamalariniza-faizsiz-6-taksit-firsati-40562",
+      "listUrl": "https://www.vakifkart.com.tr/kampanyalar",
+      "fallback": {
+        "title": "Eğitimde faizsiz 6 taksit",
+        "summary": "Peşin okul ödemesini faizsiz 6 taksit (TROY / katılım şartı bankada).",
+        "installments": [6],
+        "period": "2026"
+      }
+    },
+    {
+      "id": "halkbank",
+      "name": "Halkbank Paraf",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#1b4e9b",
+      "url": "https://www.parafly.com.tr/tr/kampanyalar/egitim-kirtasiye/ilk-kez-paraf-premiumlu-olanlara-ozel-okul-odemelerinizde-pesin-harcayin-8-taksit-avantajiyla-odeyin.html",
+      "listUrl": "https://www.parafly.com.tr/tr/kampanyalar/egitim-kirtasiye.html",
+      "fallback": {
+        "title": "Okul ödemesinde 8 taksit",
+        "summary": "İlk kez Paraf Premium’da peşin okul ödemesine 8 taksit.",
+        "installments": [8],
+        "period": "Ağu–Eyl 2026"
+      }
+    },
+    {
+      "id": "yapikredi",
+      "name": "Yapı Kredi World",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#002d72",
+      "url": "https://www.worldcard.com.tr/kampanyalar",
+      "listUrl": "https://www.worldcard.com.tr/kampanyalar",
+      "fallback": {
+        "title": "Seçili okullarda +3 ek taksit",
+        "summary": "Seçili okullarda 2–3 taksitli eğitim harcamasına +3 taksit.",
+        "installments": [5, 6],
+        "period": "2026"
+      }
+    },
+    {
+      "id": "qnb",
+      "name": "QNB CardFinans",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#5b2c8b",
+      "url": "https://www.cardfinans.com.tr/kampanyalar",
+      "listUrl": "https://www.cardfinans.com.tr/kampanyalar",
+      "fallback": {
+        "title": "Eğitim kampanyaları",
+        "summary": "CardFinans eğitim / okul taksit kampanyaları banka sayfasında.",
+        "installments": [6, 9],
+        "period": "2026"
+      }
+    },
+    {
+      "id": "denizbank",
+      "name": "DenizBank",
+      "providerIds": ["paytr", "garanti", "ziraat"],
+      "color": "#00a0df",
+      "url": "https://www.denizbank.com/bireysel/kampanyalar",
+      "listUrl": "https://www.denizbank.com/bireysel/kampanyalar",
+      "fallback": {
+        "title": "Eğitim ödemesine 6 taksit",
+        "summary": "Peşin eğitim ödemesinde faizsiz 6 taksit (katılım SMS / uygulama).",
+        "installments": [6],
+        "period": "2026"
+      }
+    }
+  ]
+}

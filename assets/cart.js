@@ -161,14 +161,28 @@
   }
 
   function enhanceProgramPage() {
-    var product = window.VIP_getProductByPath(location.pathname);
-    if (!product) return;
     var priceBox = document.querySelector('.price-box');
-    if (!priceBox || priceBox.querySelector('.btn-add-cart, .btn-education-al')) return;
-    var kayitBtn = priceBox.querySelector('.btn-kayit');
-    var addBtn = makeEducationLink(product.id);
-    if (kayitBtn) priceBox.insertBefore(addBtn, kayitBtn);
-    else priceBox.appendChild(addBtn);
+    if (!priceBox) return;
+
+    var product = window.VIP_getProductByPath(location.pathname);
+    if (product && !priceBox.querySelector('.btn-add-cart, .btn-education-al')) {
+      var kayitBtn = priceBox.querySelector('.btn-kayit');
+      var addBtn = makeEducationLink(product.id);
+      if (kayitBtn) priceBox.insertBefore(addBtn, kayitBtn);
+      else priceBox.appendChild(addBtn);
+    }
+
+    if (!priceBox.querySelector('.btn-basarilarimiz')) {
+      var basari = document.createElement('a');
+      basari.className = 'btn-basarilarimiz';
+      basari.href = pageBase() + 'basarilarimiz.html';
+      basari.innerHTML = '🏆 Başarılarımız';
+      var shareBtn = priceBox.querySelector('.btn-share');
+      var waBtn = priceBox.querySelector('.btn-wa');
+      if (shareBtn) priceBox.insertBefore(basari, shareBtn);
+      else if (waBtn && waBtn.nextSibling) priceBox.insertBefore(basari, waBtn.nextSibling);
+      else priceBox.appendChild(basari);
+    }
   }
 
   function productIdFromHref(href) {
@@ -180,6 +194,7 @@
       'ortaokul.html': 'ortaokul',
       'lise.html': 'lise',
       'ilkokul.html': 'ilkokul',
+      'sinif-2.html': 'sinif2',
       'kamplar.html': 'kamplar',
       'kamp-9-hazirlik.html': 'kamp9Hazirlik',
       'kamp-lgs.html': 'kampLgs',
@@ -189,7 +204,9 @@
       'kamp-tyt.html': 'kampTyt',
       'yazili.html': 'yazili',
       'kitap.html': 'kitap',
+      'kitap-atolyesi.html': 'kitap',
       'start.html': 'start',
+      'kocluk.html': 'kocluk',
     };
     return names[file] || null;
   }

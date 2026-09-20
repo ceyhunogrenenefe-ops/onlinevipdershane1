@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="assets/nav-logo.css">
 <link rel="stylesheet" href="assets/nav-contact.css">
 <link rel="stylesheet" href="assets/checkout-chrome.css">
+<link rel="stylesheet" href="assets/bank-campaigns.css?v=3">
 <style>
 :root{--navy:#1a3fad;--accent:#e8232a;--accent2:#c8191f;--text:#1a1f36;--muted:#6e6e73;--border:#e5e5e7;--light:#f5f5f7;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -40,7 +41,7 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
 .error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:14px;display:none;}
 .back-link{display:inline-block;margin-bottom:20px;color:var(--navy);font-weight:700;font-size:14px;}
 .pay-methods{display:none;gap:10px;margin-bottom:16px;}
-.pay-methods.show{display:grid;grid-template-columns:1fr 1fr;}
+.pay-methods.show{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
 @media(max-width:520px){.pay-methods.show{grid-template-columns:1fr;}}
 .pay-method{display:flex;align-items:center;gap:10px;padding:12px 14px;border:2px solid var(--border);border-radius:12px;cursor:pointer;font-size:13px;font-weight:700;background:#fff;}
 .pay-method:has(input:checked){border-color:var(--navy);background:#f4f7ff;box-shadow:0 0 0 3px rgba(26,63,173,.1);}
@@ -67,6 +68,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="index.html">Ana Sayfa</a>
       <a href="programlar/index.html">Programlar</a>
       <a href="ozel-ders.html" style="color:#e8232a;font-weight:700;">Özel Ders</a>
+      <a href="kitap-atolyesi.html" style="color:#1a3fad;font-weight:700;">Kitap Atölyesi</a>
       <a href="kadromuz.html">Kadromuz</a>
       <div class="contact-dropdown">
         <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
@@ -129,14 +131,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span>Garanti Bonus POS</span>
         </label>
         <label class="pay-method">
+          <input type="radio" name="payProvider" value="ziraat" id="pay-ziraat">
+          <span>Ziraat Sanal POS</span>
+        </label>
+        <label class="pay-method">
           <input type="radio" name="payProvider" value="paytr" id="pay-paytr">
           <span>PayTR</span>
         </label>
       </div>
+      <section class="bank-campaigns is-open" id="bank-campaigns" hidden>
+        <button type="button" class="bank-campaigns-toggle" aria-expanded="true">
+          <span data-campaigns-title>Bankaların Eğitime Taksit Avantajları</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="bank-campaigns-body">
+          <div id="bank-campaigns-list"></div>
+          <p class="bank-campaigns-legal">
+            <span class="bank-campaigns-legal-icon" aria-hidden="true">ℹ️</span>
+            <span><strong>Bilgilendirme:</strong> Bankaların sunduğu eğitim taksit avantajları ve kampanya koşulları ilgili banka ile kart sahibi arasındadır; kurumumuzu bağlamamaktadır. Kampanya şartları bankalar tarafından güncellenebilir.</span>
+          </p>
+        </div>
+      </section>
       <button type="submit" class="btn-pay" id="pay-btn">🔒 Kredi Kartı ile Öde</button>
       <p class="secure" id="pay-secure">256-bit SSL · Güvenli ödeme · Visa, Mastercard, Troy · Garanti Bonus</p>
       <div class="pay-badges" aria-hidden="true">
         <span>Garanti Bonus POS</span>
+        <span>Ziraat Sanal POS</span>
         <span>Visa</span>
         <span>Mastercard</span>
         <span>Troy</span>
@@ -159,87 +179,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){
   var provider='none';
   var selectedTeacherSlug='';
-
-  var coachingCheckout=null;
-
-  function formatKurus(kurus){
-    var lira=(kurus||0)/100;
-    return lira.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+'₺';
-  }
-
-  function decodeCartParam(raw){
-    if(!raw) return null;
-    try{ return JSON.parse(decodeURIComponent(escape(atob(raw)))); }
-    catch(e){ try{ return JSON.parse(atob(raw)); }catch(e2){ return null; } }
-  }
-
-  function applyCoachingCheckout(data){
-    if(!data||!Number.isFinite(data.totalKurus)||data.totalKurus<100) return false;
-    coachingCheckout=data;
-    document.querySelectorAll('.back-link').forEach(function(a){
-      a.href='https://www.dersonlinevipkocluk.com/sepet';
-      a.textContent='← Koçluk sepetine dön';
-    });
-    var lead=document.getElementById('pay-lead');
-    if(lead) lead.textContent='Kitap mağazası sepetiniz için veli bilgilerinizi girin; güvenli ödeme ekranına yönlendirileceksiniz.';
-    return true;
-  }
-
-  function loadCoachingCheckoutFromQuery(){
-    var params=new URLSearchParams(location.search);
-    if(params.get('source')!=='coaching') return false;
-    var tutar=parseInt(params.get('tutar')||'0',10);
-    if(!Number.isFinite(tutar)||tutar<100) return false;
-    var cart=decodeCartParam(params.get('cart')||'');
-    return applyCoachingCheckout({
-      totalKurus:tutar,
-      items:(cart&&cart.items)||[],
-      subtotalKurus:(cart&&cart.subtotal_kurus)||tutar,
-      shippingKurus:(cart&&cart.shipping_kurus)||0,
-      discountKurus:(cart&&cart.discount_kurus)||0,
-      ref:params.get('ref')||'',
-      coupon:params.get('kupon')||'',
-      userId:(cart&&cart.user_id)||null,
-      studentId:(cart&&cart.student_id)||null
-    });
-  }
-
-  async function loadCoachingCheckoutFromToken(){
-    var params=new URLSearchParams(location.search);
-    var token=(params.get('token')||'').trim();
-    if(!token) return false;
-    var tutar=parseInt(params.get('tutar')||'0',10);
-    try{
-      var res=await fetch('https://www.dersonlinevipkocluk.com/api/commerce-checkout-handoff?token='+encodeURIComponent(token),{credentials:'omit'});
-      var data=await res.json();
-      if(!res.ok||!data.ok||!data.checkout){
-        return (params.get('source')==='coaching') ? loadCoachingCheckoutFromQuery() : false;
-      }
-      var cart=data.checkout;
-      var total=parseInt(String(cart.total_kurus||tutar||'0'),10);
-      return applyCoachingCheckout({
-        totalKurus:total,
-        items:cart.items||[],
-        subtotalKurus:cart.subtotal_kurus||total,
-        shippingKurus:cart.shipping_kurus||0,
-        discountKurus:cart.discount_kurus||0,
-        ref:cart.ref||params.get('ref')||'',
-        coupon:cart.coupon_code||params.get('kupon')||'',
-        userId:cart.user_id||null,
-        studentId:cart.student_id||null
-      });
-    }catch(e){
-      return loadCoachingCheckoutFromQuery();
-    }
-  }
-
-  function paymentItems(){
-    if(coachingCheckout){
-      return [{ id:'kitapMagaza', qty:1, amountKurus:coachingCheckout.totalKurus }];
-    }
-    return OVD_CART.read();
-  }
-
 
   function ensurePackageFromQuery(){
     var paket=new URLSearchParams(location.search).get('paket')||'';
@@ -274,25 +213,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   function renderSummary(){
     var box=document.getElementById('order-summary');
-    if(coachingCheckout){
-      var html='';
-      (coachingCheckout.items||[]).forEach(function(item){
-        var line=(item.unit_kurus||0)*(item.qty||1);
-        html+='<div class="order-line"><span>'+(item.title||'Kitap')+' × '+(item.qty||1)+'</span><strong>'+formatKurus(line)+'</strong></div>';
-      });
-      if(!(coachingCheckout.items||[]).length){
-        html+='<div class="order-line"><span>Kitap Mağazası Siparişi</span><strong>'+formatKurus(coachingCheckout.totalKurus)+'</strong></div>';
-      }
-      if(coachingCheckout.shippingKurus>0){
-        html+='<div class="order-line"><span>Kargo</span><strong>'+formatKurus(coachingCheckout.shippingKurus)+'</strong></div>';
-      }
-      if(coachingCheckout.discountKurus>0){
-        html+='<div class="order-line"><span>İndirim</span><strong>-'+formatKurus(coachingCheckout.discountKurus)+'</strong></div>';
-      }
-      html+='<div class="order-total"><span>Toplam</span><strong>'+formatKurus(coachingCheckout.totalKurus)+'</strong></div>';
-      box.innerHTML=html;
-      return;
-    }
     var items=OVD_CART.read();
     if(!items.length){
       location.href='sepet.html';
@@ -315,28 +235,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function customerPayload(){
-    var base={
+    return {
       parentName:document.getElementById('parentName').value.trim(),
       phone:document.getElementById('phone').value.trim(),
       email:document.getElementById('email').value.trim(),
       studentInfo:document.getElementById('studentInfo').value.trim(),
       teacherSlug:selectedTeacherSlug||''
     };
-    if(coachingCheckout){
-      var lines=(coachingCheckout.items||[]).map(function(it){
-        return (it.title||'Kitap')+' × '+(it.qty||1);
-      }).join('; ');
-      var extra=[
-        lines?'Kitaplar: '+lines:'',
-        coachingCheckout.studentId?('Öğrenci ref: '+coachingCheckout.studentId):'',
-        coachingCheckout.ref?('Ref: '+coachingCheckout.ref):'',
-        coachingCheckout.coupon?('Kupon: '+coachingCheckout.coupon):''
-      ].filter(Boolean).join(' · ');
-      if(extra) base.studentInfo=[base.studentInfo,extra].filter(Boolean).join(' · ');
-      base.checkoutSource='coaching';
-      base.checkoutRef=coachingCheckout.ref||'';
-    }
-    return base;
   }
 
   function selectedProvider(){
@@ -365,7 +270,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/paytr-token',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:paymentItems(),customer:customerPayload()})
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'PayTR ödeme başlatılamadı');
@@ -377,7 +282,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/garanti-init',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:paymentItems(),customer:customerPayload()})
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'Garanti Bonus POS başlatılamadı');
@@ -386,11 +291,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     postGarantiForm(data.action, data.fields);
   }
 
+  async function startZiraat(btn){
+    var res=await fetch('/api/ziraat-init',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+    });
+    var data=await res.json();
+    if(!res.ok) throw new Error(data.error||'Ziraat Sanal POS başlatılamadı');
+    if(!data.action||!data.fields) throw new Error('Ziraat ödeme formu alınamadı');
+    btn.textContent='Ziraat Sanal POS sayfasına yönlendiriliyorsunuz…';
+    postGarantiForm(data.action, data.fields);
+  }
+
   async function startStripe(btn){
     var res=await fetch('/api/create-checkout-session',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:paymentItems(),customer:customerPayload()})
+      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'Ödeme başlatılamadı');
@@ -399,28 +317,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   document.addEventListener('DOMContentLoaded',async function(){
-    var loaded=await loadCoachingCheckoutFromToken();
-    if(!loaded) loadCoachingCheckoutFromQuery();
     ensurePackageFromQuery();
     renderSummary();
     try{
       var cfg=await fetch('/api/payment-provider').then(function(r){return r.json();});
       provider=cfg.provider||'none';
       var list=cfg.providers||[];
+      var order=['garanti','ziraat','paytr'];
+      var labels={garanti:'Garanti Bonus POS',ziraat:'Ziraat Sanal POS',paytr:'PayTR'};
+      order.forEach(function(id){
+        var el=document.getElementById('pay-'+id);
+        if(!el) return;
+        var wrap=el.closest('.pay-method');
+        var on=list.indexOf(id)!==-1;
+        if(wrap) wrap.style.display=on?'':'none';
+        el.checked=false;
+      });
       var methods=document.getElementById('pay-methods');
-      if(list.indexOf('garanti')!==-1 && list.indexOf('paytr')!==-1){
-        methods.classList.add('show');
-        var prefer=provider==='garanti'?'garanti':'paytr';
-        var radio=document.getElementById(prefer==='garanti'?'pay-garanti':'pay-paytr');
-        if(radio) radio.checked=true;
-        document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; Garanti Bonus POS veya PayTR ile güvenli ödeyin.';
-        document.getElementById('pay-secure').textContent='Garanti Bonus POS · PayTR · Visa, Mastercard, Troy';
+      if(list.length>=2) methods.classList.add('show');
+      var prefer=order.indexOf(provider)!==-1&&list.indexOf(provider)!==-1
+        ?provider
+        :order.filter(function(id){return list.indexOf(id)!==-1;})[0];
+      if(prefer){
+        var radio=document.getElementById('pay-'+prefer);
+        if(radio){
+          radio.checked=true;
+          radio.dispatchEvent(new Event('change',{bubbles:true}));
+        }
+      }
+      var names=list.map(function(id){return labels[id]||id;});
+      if(list.length>=2){
+        document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; '+names.join(' veya ')+' ile güvenli ödeyin.';
+        document.getElementById('pay-secure').textContent=names.join(' · ')+' · Visa, Mastercard, Troy';
       }else if(provider==='garanti'){
-        document.getElementById('pay-garanti').checked=true;
         document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; Garanti Bonus POS güvenli ödeme sayfasına yönlendirileceksiniz.';
         document.getElementById('pay-secure').textContent='Garanti Bonus POS · 3D Secure · Visa, Mastercard, Troy';
+      }else if(provider==='ziraat'){
+        document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; Ziraat Sanal POS güvenli ödeme sayfasına yönlendirileceksiniz.';
+        document.getElementById('pay-secure').textContent='Ziraat Sanal POS · 3D Secure · Visa, Mastercard, Troy';
       }else if(provider==='paytr'){
-        document.getElementById('pay-paytr').checked=true;
         document.getElementById('pay-lead').textContent='Veli bilgilerinizi girin; PayTR güvenli ödeme sayfasına yönlendirileceksiniz.';
         document.getElementById('pay-secure').textContent='PayTR güvenli ödeme · Visa, Mastercard, Troy';
       }else if(provider==='stripe'){
@@ -428,6 +363,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }else{
         var missing=[];
         if(cfg.garanti&&cfg.garanti.missingEnv) missing=missing.concat(cfg.garanti.missingEnv);
+        if(cfg.ziraat&&cfg.ziraat.missingEnv) missing=missing.concat(cfg.ziraat.missingEnv);
         if(cfg.paytr&&cfg.paytr.missingEnv) missing=missing.concat(cfg.paytr.missingEnv);
         if(missing.length){
           showError('Ödeme sistemi henüz tam yapılandırılmamış. Vercel ortam değişkenlerini kontrol edin. (Eksik: '+missing.join(', ')+')');
@@ -445,6 +381,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       try{
         var p=selectedProvider();
         if(p==='garanti') await startGaranti(btn);
+        else if(p==='ziraat') await startZiraat(btn);
         else if(p==='paytr') await startPaytr(btn);
         else if(p==='stripe') await startStripe(btn);
         else throw new Error('Ödeme sistemi yapılandırılmamış. Lütfen bizimle iletişime geçin.');
@@ -457,7 +394,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
+  <script src="assets/bank-campaigns.js?v=3"></script>
   <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
 <script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>

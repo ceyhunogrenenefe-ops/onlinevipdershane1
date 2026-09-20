@@ -1,0 +1,456 @@
+/* VIP Başarı Kültürü — video galeri bileşeni */
+.ovd-culture-gallery {
+  --ovd-cg-navy: #1a3fad;
+  --ovd-cg-navy-deep: #0d1f5c;
+  --ovd-cg-accent: #e8232a;
+  --ovd-cg-ink: #1a1f36;
+  --ovd-cg-muted: #64748b;
+  --ovd-cg-soft: #f4f7ff;
+  --ovd-cg-border: rgba(26, 63, 173, 0.12);
+  --ovd-cg-shadow: 0 12px 40px rgba(13, 31, 92, 0.08);
+  --ovd-cg-shadow-hover: 0 24px 56px rgba(13, 31, 92, 0.16);
+  position: relative;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26, 63, 173, 0.07), transparent),
+    linear-gradient(180deg, var(--ovd-cg-soft) 0%, #fff 55%, #fff 100%);
+  overflow: hidden;
+}
+
+.ovd-culture-gallery::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(26, 63, 173, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.ovd-culture-gallery__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.ovd-culture-gallery__header {
+  max-width: 680px;
+  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.ovd-culture-gallery__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ovd-cg-navy);
+}
+
+.ovd-culture-gallery__kicker::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--ovd-cg-accent), var(--ovd-cg-navy));
+}
+
+.ovd-culture-gallery__title {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: clamp(1.85rem, 4.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ovd-cg-ink);
+  margin-bottom: 14px;
+}
+
+.ovd-culture-gallery__subtitle {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--ovd-cg-muted);
+}
+
+/* Filtre chip'leri */
+.ovd-culture-gallery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--ovd-cg-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  width: fit-content;
+  max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  .ovd-culture-gallery__filters {
+    border-radius: 18px;
+    width: 100%;
+  }
+}
+
+.ovd-culture-gallery__filter {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ovd-cg-muted);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: transparent;
+  transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.ovd-culture-gallery__filter:hover {
+  color: var(--ovd-cg-navy);
+  background: rgba(26, 63, 173, 0.06);
+}
+
+.ovd-culture-gallery__filter.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--ovd-cg-navy) 0%, var(--ovd-cg-navy-deep) 100%);
+  box-shadow: 0 8px 24px rgba(26, 63, 173, 0.28);
+}
+
+.ovd-culture-gallery__filter:focus-visible {
+  outline: 2px solid var(--ovd-cg-navy);
+  outline-offset: 2px;
+}
+
+/* Grid */
+.ovd-culture-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.5vw, 24px);
+}
+
+@media (max-width: 960px) {
+  .ovd-culture-gallery__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .ovd-culture-gallery__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Kart */
+.ovd-culture-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ovd-cg-border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  box-shadow: var(--ovd-cg-shadow);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    opacity 0.35s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ovd-culture-card.is-hidden {
+  display: none;
+}
+
+.ovd-culture-card.is-leaving {
+  opacity: 0;
+  transform: translateY(10px) scale(0.98);
+  pointer-events: none;
+}
+
+.ovd-culture-card.is-entering {
+  animation: ovdCultureCardIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+@keyframes ovdCultureCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ovd-culture-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--ovd-cg-shadow-hover);
+  border-color: rgba(26, 63, 173, 0.22);
+}
+
+.ovd-culture-card:focus-visible {
+  outline: 2px solid var(--ovd-cg-navy);
+  outline-offset: 3px;
+}
+
+.ovd-culture-card__thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background: var(--ovd-cg-navy-deep);
+  overflow: hidden;
+}
+
+.ovd-culture-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.ovd-culture-card:hover .ovd-culture-card__thumb img {
+  transform: scale(1.05);
+}
+
+.ovd-culture-card__thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(13, 31, 92, 0.55) 100%);
+  pointer-events: none;
+}
+
+.ovd-culture-card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.ovd-culture-card__play span {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(232, 35, 42, 0.94);
+  color: #fff;
+  font-size: 18px;
+  padding-left: 3px;
+  box-shadow: 0 12px 32px rgba(232, 35, 42, 0.45);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ovd-culture-card:hover .ovd-culture-card__play span {
+  transform: scale(1.08);
+  box-shadow: 0 16px 40px rgba(232, 35, 42, 0.55);
+}
+
+.ovd-culture-card__duration {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 3;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(13, 31, 92, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.ovd-culture-card__body {
+  padding: 18px 18px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ovd-culture-card__tag {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ovd-cg-navy);
+  background: rgba(26, 63, 173, 0.08);
+  border: 1px solid rgba(26, 63, 173, 0.12);
+}
+
+.ovd-culture-card__tag[data-cat="dijital"] {
+  color: #0f5c8a;
+  background: rgba(15, 92, 138, 0.08);
+  border-color: rgba(15, 92, 138, 0.14);
+}
+
+.ovd-culture-card__tag[data-cat="sosyal"] {
+  color: #6b21a8;
+  background: rgba(107, 33, 168, 0.08);
+  border-color: rgba(107, 33, 168, 0.14);
+}
+
+.ovd-culture-card__tag[data-cat="zihin"] {
+  color: #b45309;
+  background: rgba(180, 83, 9, 0.08);
+  border-color: rgba(180, 83, 9, 0.14);
+}
+
+.ovd-culture-card__title {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--ovd-cg-ink);
+}
+
+.ovd-culture-card__desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ovd-cg-muted);
+}
+
+.ovd-culture-gallery__empty {
+  display: none;
+  text-align: center;
+  padding: 48px 24px;
+  border-radius: 18px;
+  border: 1px dashed var(--ovd-cg-border);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--ovd-cg-muted);
+  font-size: 14px;
+}
+
+.ovd-culture-gallery__empty.is-visible {
+  display: block;
+}
+
+/* Modal oynatıcı */
+.ovd-culture-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 18, 54, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ovd-culture-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ovd-culture-modal__panel {
+  width: min(920px, 100%);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.ovd-culture-modal.is-open .ovd-culture-modal__panel {
+  transform: translateY(0) scale(1);
+}
+
+.ovd-culture-modal__frame-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ovd-culture-modal__frame-wrap iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.ovd-culture-modal__meta {
+  margin-top: 14px;
+  padding: 0 4px;
+  color: #fff;
+}
+
+.ovd-culture-modal__meta h3 {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.ovd-culture-modal__meta p {
+  font-size: 13px;
+  opacity: 0.82;
+  line-height: 1.55;
+}
+
+.ovd-culture-modal__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  color: #fff;
+  background: var(--ovd-cg-accent);
+  box-shadow: 0 8px 24px rgba(232, 35, 42, 0.4);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ovd-culture-modal__close:hover {
+  transform: scale(1.06);
+  background: #c8191f;
+}
+
+@media (max-width: 560px) {
+  .ovd-culture-modal__close {
+    top: 8px;
+    right: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ovd-culture-card,
+  .ovd-culture-card__thumb img,
+  .ovd-culture-gallery__filter,
+  .ovd-culture-modal,
+  .ovd-culture-modal__panel {
+    transition: none !important;
+    animation: none !important;
+  }
+}

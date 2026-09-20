@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Akademik Ön Analiz Sonucu — Online VIP Dershane</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/nav-logo.css">
+<link rel="stylesheet" href="/assets/checkout-chrome.css">
+<link rel="stylesheet" href="/assets/assessment.css">
+<style>body{font-family:Nunito,sans-serif;background:#f8f9fc;color:#1a1f36;margin:0}</style>
+<script src="/assets/analytics-config.js"></script>
+<script src="/assets/gtag-init.js"></script>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-logo"><img src="/assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68"></a>
+  <a href="/ucretsiz-ogrenci-analizi.html" class="btn-link">Yeni analiz</a>
+</div></nav>
+<main class="assess-wrap" id="reportRoot">
+  <div class="assess-err" data-err></div>
+  <div class="assess-card">
+    <p style="font-size:12px;font-weight:800;color:#1a3fad;letter-spacing:.08em;text-transform:uppercase">Ön değerlendirme raporu</p>
+    <h1 data-name>Öğrenci</h1>
+    <p class="assess-lead" data-meta></p>
+    <div data-scores class="score-grid"></div>
+    <p><strong>Güçlü görünen alanlar:</strong> <span data-strong></span></p>
+    <p><strong>Desteklenmesi gereken alanlar:</strong> <span data-gap></span></p>
+    <p data-summary></p>
+    <p><strong>Sonraki adım:</strong> <span data-next></span></p>
+    <p class="assess-note" data-disc></p>
+    <div class="assess-actions">
+      <a class="btn-navy" data-test-href href="#">Ücretsiz teste katıl</a>
+      <a class="btn-ghost" href="#randevu">Eğitim danışmanıyla görüş</a>
+      <button type="button" class="btn-ghost" onclick="window.print()">Yazdır / PDF</button>
+    </div>
+  </div>
+  <div class="assess-card" data-test-box hidden style="margin-top:16px">
+    <h2>Seviye testi sonucu</h2>
+    <p><strong data-test-pct></strong></p>
+    <p data-test-counts></p>
+    <p><strong>Önerilen çalışma alanları:</strong> <span data-test-weak></span></p>
+    <p><strong>Ders bazlı başarı:</strong> <span data-test-subjects></span></p>
+  </div>
+  <div class="assess-card" id="randevu" style="margin-top:16px">
+    <h2>Ücretsiz eğitim danışmanı görüşmesi</h2>
+    <form data-book>
+      <div class="assess-field"><label>Tarih</label><input type="date" name="date" required></div>
+      <div class="assess-field"><label>Saat</label>
+        <select name="time" required>
+          <option value="18:00">18:00</option>
+          <option value="18:30">18:30</option>
+          <option value="19:00">19:00</option>
+          <option value="19:30">19:30</option>
+          <option value="20:00">20:00</option>
+          <option value="20:30">20:30</option>
+        </select>
+      </div>
+      <div class="assess-field"><label>Görüşme yöntemi</label>
+        <select name="method">
+          <option value="telefon">Telefon</option>
+          <option value="whatsapp">WhatsApp</option>
+          <option value="online">Online görüşme</option>
+        </select>
+      </div>
+      <button class="assess-cta" type="submit" style="width:100%">Randevuyu kaydet</button>
+    </form>
+  </div>
+</main>
+<script src="/assets/assessment-ui.js?v=20260830a"></script>
+<script>
+OVD_ASSESS.initReport(document.getElementById('reportRoot'), OVD_ASSESS.tokenFrom());
+</script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="/assets/wa-float.js" defer></script>
+<script src="/assets/perf-analytics.js" defer></script>
+</body>
+</html>

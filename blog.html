@@ -364,7 +364,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="prog-list" id="progList" onmouseleave="closeProgList()">
         <a href="/programlar/lgs.html">
           <span class="prog-list-icon">🏆</span>
-          <span class="prog-list-info"><span class="prog-list-name">LGS Hazırlık</span><span class="prog-list-price"><span class="prog-list-old">160.000₺</span>112.000₺ / yıl · 8. Sınıf</span></span>
+          <span class="prog-list-info"><span class="prog-list-name">LGS Hazırlık</span><span class="prog-list-price"><span class="prog-list-old">171.429₺</span>120.000₺ / yıl · 8. Sınıf</span></span>
         </a>
         <a href="/programlar/yks.html">
           <span class="prog-list-icon">🎯</span>
@@ -406,7 +406,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 <a href="/blog.html" class="active">Blog</a>
-<a href="/videolar.html" class="">Videolar</a>
+    <div class="contact-dropdown">
+      <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+      <div class="contact-list">
+        <a href="/videolar.html">Tüm Videolar</a>
+        <a href="/videolar.html#veli-yorumlari">Veli Yorumları</a>
+      </div>
+    </div>
 <a href="/basarilarimiz.html" class="">Başarılarımız</a>
     <div class="contact-dropdown">
       <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
@@ -1007,15 +1013,6 @@ function showToast(){
     setTimeout(function(){t.style.display='none';},300);
   },2500);
 }
-// WA floating
-var waf=document.createElement('a');
-waf.href='https://wa.me/908503034014?text=Merhaba%2C%20Online%20VIP%20Dershane%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.';
-waf.target='_blank';waf.rel='noopener';
-waf.style.cssText='position:fixed;bottom:24px;right:24px;z-index:300;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 4px 16px rgba(37,211,102,.4);transition:.25s;text-decoration:none;';
-waf.innerHTML='💬';
-waf.onmouseover=function(){this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 24px rgba(37,211,102,.5)';}
-waf.onmouseout=function(){this.style.transform='scale(1)';this.style.boxShadow='0 4px 16px rgba(37,211,102,.4)';}
-document.body.appendChild(waf);
 </script>
 
 <script>
@@ -1046,6 +1043,8 @@ document.body.appendChild(waf);
 </script>
 
   <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

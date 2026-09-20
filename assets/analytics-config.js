@@ -1,6 +1,6 @@
 window.OVD_ANALYTICS = {
   gtm: 'GTM-NZR5ZLZQ',
-  clarity: 'xfzux9urec',
+  clarity: 'y8rjd2syzm',
   ga4: null,
   googleAds: 'AW-17235832134',
   metaPixel: '2470509843418190',

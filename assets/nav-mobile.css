@@ -1,0 +1,97 @@
+/* Mobil üst bar: Giriş + Sizi Arayalım + Kayıt birlikte sığsın */
+@media (max-width: 960px) {
+  .nav-in {
+    gap: 8px;
+    height: auto;
+    min-height: 68px;
+    flex-wrap: nowrap;
+  }
+
+  .nav-logo img {
+    max-height: 44px;
+    width: auto;
+  }
+
+  .nav-right {
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .nav-right .btn-login,
+  .nav-right .btn-call,
+  .nav-right .btn-cta {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 8px;
+    font-size: 11px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .nav-long {
+    display: none;
+  }
+
+  .nav-short {
+    display: inline;
+  }
+
+  .nav-mobile-actions {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e5e7;
+  }
+
+  .nav-links.open .nav-mobile-actions {
+    display: flex;
+  }
+
+  .nav-mobile-actions a {
+    display: block !important;
+    width: 100%;
+    text-align: center;
+    padding: 12px 14px !important;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px !important;
+  }
+
+  .nav-mobile-actions .nav-mobile-call {
+    border: 1.5px solid #1a3fad;
+    color: #1a3fad;
+    background: #fff;
+  }
+
+  .nav-mobile-actions .nav-mobile-login {
+    border: 1.5px solid #e5e5e7;
+    background: #fff;
+    color: #1a1f36;
+  }
+
+  .nav-mobile-actions .nav-mobile-kayit {
+    background: #e8232a;
+    color: #fff !important;
+    border: none;
+  }
+}
+
+@media (min-width: 961px) {
+  .nav-short {
+    display: none;
+  }
+
+  .nav-long {
+    display: inline;
+  }
+
+  .nav-mobile-actions {
+    display: none !important;
+  }
+}

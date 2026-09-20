@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -8,15 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/cart.css?v=3">
+<link rel="stylesheet" href="assets/cart.css?v=4">
 <link rel="stylesheet" href="assets/nav-logo.css">
+<link rel="stylesheet" href="assets/nav-contact.css">
+<link rel="stylesheet" href="assets/checkout-chrome.css">
 <link rel="stylesheet" href="assets/welcome-modal.css">
 <style>
 .cart-page{font-family:'Nunito',sans-serif;background:#f8f9fc;color:#1a1f36;line-height:1.6;margin:0}
-.cart-page-nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.98);border-bottom:1px solid #e5e5e7}
-.cart-page-nav-in{max-width:1100px;margin:0 auto;padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
-.cart-page-nav .nav-right{display:flex;align-items:center;gap:8px}
-.cart-page-nav .btn-link{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;border:1.5px solid #e5e5e7;color:#1a1f36;text-decoration:none;background:#fff}
 .cart-page-container{max-width:1100px;margin:0 auto;padding:36px 5% 80px}
 .cart-page-header{margin-bottom:28px}
 .cart-page-header h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,38px);font-weight:800;margin:0 0 8px}
@@ -30,15 +28,45 @@
 </head>
 <body class="cart-page">
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<nav class="cart-page-nav">
-  <div class="cart-page-nav-in">
+<nav class="nav">
+  <div class="nav-in">
     <a href="index.html" class="nav-logo"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68" decoding="async"></a>
-    <div class="nav-right">
-      <a href="programlar/index.html" class="btn-link">Programlar</a>
-      <a href="index.html" class="btn-link">Ana Sayfa</a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="programlar/index.html">Programlar</a>
+      <a href="ozel-ders.html" style="color:#e8232a;font-weight:700;">Özel Ders</a>
+      <a href="kitap-atolyesi.html" style="color:#1a3fad;font-weight:700;">Kitap Atölyesi</a>
+      <a href="kadromuz.html">Kadromuz</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
+        </div>
+      </div>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="iletisim.html">İletişim</a>
+          <a href="kariyer.html">Kariyer</a>
+        </div>
+      </div>
     </div>
+    <div class="nav-right">
+      <a href="tel:08503034014" class="nav-phone">0850 303 40 14</a>
+      <a href="odeme.html" class="btn-cta">Ödeme</a>
+    </div>
+    <button class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+<div class="trust-strip">
+  <span>🔒 256-bit SSL</span>
+  <span>3D Secure</span>
+  <span>Garanti Bonus · PayTR</span>
+  <span>KVKK uyumlu ödeme</span>
+</div>
 <main class="cart-page-container">
   <header class="cart-page-header">
     <h1>Sepetim</h1>
@@ -46,6 +74,11 @@
   </header>
   <div id="cart-root"><div class="cart-loading">Sepet yükleniyor…</div></div>
 </main>
+<footer class="checkout-footer">
+  <p><strong>ONLİNE VIP DERSHANECİLİK EĞİTİM VE DANIŞMANLIK HİZMETLERİ LTD. ŞTİ.</strong></p>
+  <p><a href="tel:08503034014">0850 303 40 14</a> · <a href="mailto:info@onlinevipdershane.com">info@onlinevipdershane.com</a></p>
+  <p><a href="gizlilik.html">Gizlilik</a> · <a href="satis.html">Mesafeli Satış</a> · <a href="iade.html">İade &amp; İptal</a></p>
+</footer>
 <script src="assets/products.js?v=3"></script>
 <script src="assets/cart.js?v=3"></script>
 <script>
@@ -63,6 +96,8 @@
 })();
 </script>
 <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

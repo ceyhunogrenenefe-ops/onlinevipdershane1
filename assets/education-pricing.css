@@ -1,0 +1,116 @@
+/* 10 aylık eğitim — aylık maliyet vurgusu (taksit/vade dili yok) */
+
+.price-edu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.price-edu-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1a3fad;
+  background: rgba(26, 63, 173, 0.08);
+  border: 1px solid rgba(26, 63, 173, 0.15);
+}
+
+.price-edu-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.price-edu-old {
+  font-size: 12px;
+  color: #6e6e73;
+  text-decoration: line-through;
+}
+
+.price-edu-discount {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e8232a;
+  background: rgba(232, 35, 42, 0.08);
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.price-edu-hero {
+  font-family: "Bricolage Grotesque", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1a3fad;
+  letter-spacing: -0.02em;
+}
+
+.price-edu-per {
+  font-size: 0.45em;
+  font-weight: 700;
+  color: #6e6e73;
+  letter-spacing: 0;
+}
+
+.price-edu-sub {
+  font-size: 13px;
+  font-weight: 600;
+  color: #424245;
+}
+
+.price-edu-total {
+  font-size: 12px;
+  color: #6e6e73;
+  line-height: 1.4;
+  max-width: 220px;
+}
+
+.price-box--education .price-edu {
+  margin-bottom: 16px;
+}
+
+.price-box--education .price-edu-hero {
+  font-size: 36px;
+}
+
+/* Kart (prog-card) kompakt görünüm */
+.prog-price--education {
+  align-items: flex-start;
+  text-align: left;
+  gap: 4px;
+}
+
+.price-edu--compact .price-edu-badge {
+  font-size: 10px;
+  padding: 3px 8px;
+}
+
+.price-edu--compact .price-edu-hero {
+  font-size: 22px;
+}
+
+.price-edu--compact .price-edu-total {
+  font-size: 11px;
+  max-width: none;
+}
+
+.prog-price--education .price-edu-top {
+  justify-content: flex-start;
+}
+
+.prog-price--education .price-edu-old {
+  font-size: 11px;
+}
+
+.prog-price--education .price-edu-discount {
+  font-size: 10px;
+}

@@ -45,15 +45,26 @@ function titleCaseTr(s) {
     .join(' ');
 }
 
+var PHOTO_OVERRIDES = {
+  'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+  'ali-aktas': '/assets/img/kadro/ali-aktas.jpg',
+  'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
+  'merve-yetkin': '/assets/img/kadro/merve-yetkin.jpg'
+};
+
 /** Panel foto_url bozuk/boşsa site kadro görselleri */
 var PHOTO_FALLBACKS = {
   'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
-  'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg'
+  'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg',
+  'tayyibe-ogrenenefe': '/assets/img/kadro/tayyibe-ogrenenefe-2.jpg',
+  'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+  'kaan-inaltekin': '/assets/img/kadro/kaan-inaltekin.jpg'
 };
 
 var DISPLAY_FALLBACKS = {
   'yilmaz-isik': { name: 'Yılmaz Işık', title: 'Matematik Öğretmeni', branch: 'Matematik' },
-  'sultan-kurt': { name: 'Sultan Kurt' }
+  'sultan-kurt': { name: 'Sultan Kurt' },
+  'kaan-inaltekin': { name: 'Kaan İnaltekin', title: 'Öğretmen' }
 };
 
 /** Liste API video_url eksik olsa bile bilinen oynatılabilir tanıtım videoları */
@@ -94,7 +105,7 @@ function normalizeTeacher(t) {
   if (!t || typeof t !== 'object') return t;
   var slug = String(t.slug || '');
   var fb = DISPLAY_FALLBACKS[slug] || {};
-  var photo = upgradeRemotePhotoUrl(t.photo_url);
+  var photo = PHOTO_OVERRIDES[slug] || upgradeRemotePhotoUrl(t.photo_url);
   if (!isUsablePhoto(photo)) photo = PHOTO_FALLBACKS[slug] || photo || '';
   var videos = normalizeVideos(t.videos, t.video_url);
   if (!videos.length && VIDEO_FALLBACKS[slug]) {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Ücretsiz Öğrenci Analizi — Admin</title>
+<link rel="stylesheet" href="/assets/assessment.css">
+<style>
+body{font-family:Nunito,sans-serif;margin:0;background:#f8f9fc;color:#1a1f36}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 4%}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+th,td{border-bottom:1px solid #e5e5e7;padding:8px;text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#6e6e73}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+.kpi{background:#fff;border:1px solid #e5e5e7;border-radius:12px;padding:12px}
+.kpi b{display:block;font-size:22px}
+input,select,button{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid #e5e5e7}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ücretsiz Öğrenci Analizi</h1>
+  <p class="assess-lead">Bu sayfa pazarlama sitesindeki hafif listedir. Tam danışman paneli Smart Koçluk sistemindedir. <code>ASSESSMENT_ADMIN_KEY</code> ve Supabase gerekir.</p>
+  <form id="gate">
+    <label>Admin anahtarı <input type="password" id="key" autocomplete="off"></label>
+    <button type="submit">Aç</button>
+  </form>
+  <div id="dash" hidden>
+    <div class="kpis" id="kpis"></div>
+    <p><button type="button" id="csv">CSV dışa aktar</button></p>
+    <div style="overflow:auto"><table><thead><tr>
+      <th>Öğrenci</th><th>Veli</th><th>Telefon</th><th>Sınıf</th><th>Hedef</th><th>Kaynak</th><th>Skor</th><th>Test</th><th>Görüşme</th><th>CRM</th><th>Tarih</th>
+    </tr></thead><tbody id="rows"></tbody></table></div>
+  </div>
+</div>
+<script>
+var data = { leads: [] };
+document.getElementById('gate').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var key = document.getElementById('key').value;
+  fetch('/api/assessment?op=admin', { headers: { 'x-admin-key': key } })
+    .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+    .then(function (x) {
+      if (!x.ok) throw new Error(x.j.error || 'Yetkisiz');
+      data = x.j;
+      document.getElementById('dash').hidden = false;
+      var c = x.j.counts || {};
+      var map = {
+        assessment_offer_view: 'Sayfa görüntüleme',
+        assessment_start: 'Analize başlayan',
+        contact_submit: 'Telefon bırakan',
+        placement_test_start: 'Teste başlayan',
+        placement_test_complete: 'Testi bitiren',
+        counseling_booking_complete: 'Randevu',
+      };
+      document.getElementById('kpis').innerHTML = Object.keys(map).map(function (k) {
+        return '<div class="kpi"><b>' + (c[k] || 0) + '</b>' + map[k] + '</div>';
+      }).join('');
+      document.getElementById('rows').innerHTML = (x.j.leads || []).map(function (L) {
+        var sc = L.scores || {};
+        var avg = Math.round(((sc.academic || 0) + (sc.routine || 0) + (sc.examPrep || 0) + (sc.coaching || 0)) / 4);
+        return '<tr><td>' + (L.student_name || '') + '</td><td>' + (L.parent_name || '') + '</td><td>' + (L.phone || '') + '</td><td>' + (L.grade || '') + '</td><td>' + (L.target_exam || '') + '</td><td>' + (L.utm_source || L.source || '') + '</td><td>' + avg + '</td><td>' + (L.test_status || '') + '</td><td>' + (L.appointment_status || '') + '</td><td>' + (L.crm_status || '') + '</td><td>' + (L.created_at || '') + '</td></tr>';
+      }).join('');
+    })
+    .catch(function (err) { alert(err.message); });
+});
+document.getElementById('csv').addEventListener('click', function () {
+  var lines = [['ogrenci','veli','telefon','sinif','hedef','kaynak','test','gorusme','crm','tarih'].join(',')];
+  (data.leads || []).forEach(function (L) {
+    lines.push([L.student_name, L.parent_name, L.phone, L.grade, L.target_exam, L.utm_source || L.source, L.test_status, L.appointment_status, L.crm_status, L.created_at].map(function (v) {
+      return '"' + String(v || '').replace(/"/g, '') + '"';
+    }).join(','));
+  });
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'analiz-leadleri.csv';
+  a.click();
+});
+</script>
+</body>
+</html>

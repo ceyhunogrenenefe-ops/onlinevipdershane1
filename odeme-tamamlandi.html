@@ -6,33 +6,216 @@
 <title>Ödeme Başarılı — Online VIP Dershane</title>
 <meta name="robots" content="noindex,follow">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nav-logo.css">
+<link rel="stylesheet" href="assets/nav-contact.css">
+<link rel="stylesheet" href="assets/checkout-chrome.css">
 <style>
-body{font-family:Nunito,sans-serif;background:#f0fdf4;color:#1a1f36;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;}
-.card{max-width:480px;background:#fff;border:1px solid #bbf7d0;border-radius:20px;padding:40px 32px;text-align:center;box-shadow:0 8px 32px rgba(16,185,129,.12);}
-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;color:#047857;margin:16px 0 8px;}
-p{color:#6e6e73;line-height:1.7;font-size:15px;}
-a{display:inline-block;margin-top:24px;padding:12px 24px;background:#1a3fad;color:#fff;border-radius:11px;font-weight:700;text-decoration:none;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Nunito,sans-serif;background:#f8f9fc;color:#1a1f36;min-height:100vh;}
+.result-card{border-color:#bbf7d0;box-shadow:0 8px 32px rgba(16,185,129,.12);}
+.result-card h1{color:#047857;}
+.kitap-box{margin-top:20px;text-align:left;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;}
+.kitap-box h2{font-size:14px;margin:0 0 8px;color:#0f172a;}
+.kitap-box ul{margin:0;padding-left:18px;}
+.kitap-box li{font-size:14px;margin:4px 0;}
+.kitap-box .set{font-size:12px;color:#475569;margin:2px 0 8px;}
+.kitap-meta{font-size:12px;color:#64748b;margin-top:8px;}
 </style>
   <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
 <script src="assets/analytics-config.js"></script>
 <script src="assets/gtag-init.js"></script>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div class="card">
-  <div style="font-size:48px;">✅</div>
-  <h1>Ödemeniz alındı</h1>
-  <p>Teşekkür ederiz. Ekibimiz en kısa sürede sizinle iletişime geçecektir.</p>
-  <a href="index.html">Ana Sayfaya Dön</a>
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68" decoding="async"></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="programlar/index.html">Programlar</a>
+      <a href="ozel-ders.html" style="color:#e8232a;font-weight:700;">Özel Ders</a>
+      <a href="kitap-atolyesi.html" style="color:#1a3fad;font-weight:700;">Kitap Atölyesi</a>
+      <a href="kadromuz.html">Kadromuz</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
+        </div>
+      </div>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="iletisim.html">İletişim</a>
+          <a href="kariyer.html">Kariyer</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a href="tel:08503034014" class="nav-phone">0850 303 40 14</a>
+      <a href="index.html" class="btn-cta">Ana Sayfa</a>
+    </div>
+    <button class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="trust-strip">
+  <span>🔒 256-bit SSL</span>
+  <span>3D Secure</span>
+  <span>Garanti Bonus · PayTR</span>
+  <span>KVKK uyumlu ödeme</span>
 </div>
+<main class="result-main">
+  <div class="result-card">
+    <div style="font-size:48px;">✅</div>
+    <h1>Ödemeniz alındı</h1>
+    <p>Teşekkür ederiz. Ekibimiz en kısa sürede sizinle iletişime geçecektir.</p>
+    <p id="auth-line" hidden style="font-size:13px;color:#047857;margin-top:8px;"></p>
+    <div id="kitap-summary" class="kitap-box" hidden></div>
+    <div class="result-actions">
+      <a href="index.html" class="btn-primary">Ana Sayfaya Dön</a>
+      <a href="iletisim.html" class="btn-secondary">İletişim</a>
+    </div>
+  </div>
+</main>
+<footer class="checkout-footer">
+  <p><strong>ONLİNE VIP DERSHANECİLİK EĞİTİM VE DANIŞMANLIK HİZMETLERİ LTD. ŞTİ.</strong></p>
+  <p><a href="tel:08503034014">0850 303 40 14</a> · <a href="mailto:info@onlinevipdershane.com">info@onlinevipdershane.com</a></p>
+  <p><a href="gizlilik.html">Gizlilik</a> · <a href="satis.html">Mesafeli Satış</a> · <a href="iade.html">İade &amp; İptal</a></p>
+</footer>
 <script>
 try{localStorage.removeItem('ovd_cart_v1');}catch(e){}
+(function(){
+  var params=new URLSearchParams(location.search);
+  var auth=(params.get('auth')||'').trim();
+  var provider=(params.get('provider')||'').trim().toLowerCase();
+  var authOk=/^[A-Za-z0-9]{4,10}$/.test(auth) && !/^0+$/.test(auth);
+  if(provider==='garanti' && !authOk){
+    var card=document.querySelector('.result-card');
+    var h1=document.querySelector('.result-card h1');
+    var p=document.querySelector('.result-card p');
+    var icon=document.querySelector('.result-card div');
+    if(card){ card.style.borderColor='#fecaca'; card.style.boxShadow='none'; }
+    if(h1){ h1.style.color='#b91c1c'; h1.textContent='Ödeme tamamlanmadı'; }
+    if(p) p.textContent='Karttan tahsilat olmadı. Kitap gönderilmez. Lütfen Ziraat ile tekrar deneyin veya 0850 303 40 14 arayın.';
+    if(icon) icon.textContent='⚠️';
+    document.title='Ödeme İptal — Online VIP Dershane';
+    try{
+      sessionStorage.removeItem('kitap_checkout_token');
+      sessionStorage.removeItem('kitap_payment_ref');
+    }catch(e){}
+    return;
+  }
+  var el=document.getElementById('auth-line');
+  if(!el||!authOk) return;
+  el.hidden=false;
+  el.textContent='Banka onay kodu: '+auth;
+})();
+(function(){
+  var params=new URLSearchParams(location.search);
+  if(params.get('source')!=='kitap') return;
+  var provider=(params.get('provider')||'').trim().toLowerCase();
+  var auth=(params.get('auth')||'').trim();
+  var authOk=/^[A-Za-z0-9]{4,10}$/.test(auth) && !/^0+$/.test(auth);
+  if(provider==='garanti' && !authOk) return;
+  var note=document.querySelector('.result-card p');
+  var box=document.getElementById('kitap-summary');
+
+  function esc(s){
+    return String(s==null?'':s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+  function fmt(kurus){
+    return (Number(kurus||0)/100).toLocaleString('tr-TR',{style:'currency',currency:'TRY'});
+  }
+  function itemLabel(it){
+    var contents=it.package_contents||[];
+    if(contents.length){
+      var setName=it.package_name||String(it.title_snapshot||'Set');
+      var books=contents.map(function(c){
+        return esc(c.title)+(Number(c.quantity)>1?' ×'+c.quantity:'');
+      }).join(', ');
+      return '<strong>'+esc(setName)+(Number(it.quantity)>1?' ×'+it.quantity:'')+'</strong><div class="set">Gönderilecek: '+books+'</div>';
+    }
+    return esc(it.title_snapshot||'Kitap')+' × '+esc(it.quantity||1);
+  }
+  function renderOrder(o, paid){
+    if(!box||!o) return;
+    var html='<h2>Gönderilecek kitaplar</h2><ul>';
+    (o.items||[]).forEach(function(it){ html+='<li>'+itemLabel(it)+'</li>'; });
+    html+='</ul>';
+    html+='<div class="kitap-meta">Sipariş no: <strong>'+esc(o.order_number||'')+'</strong>';
+    if(o.total_kurus) html+=' · '+fmt(o.total_kurus);
+    html+=' · '+(paid?'Ödendi':'Ödeme bankada alındı, sipariş kısa sürede onaylanacak');
+    html+='</div>';
+    box.innerHTML=html;
+    box.hidden=false;
+  }
+
+  var cached=null;
+  try{cached=JSON.parse(sessionStorage.getItem('kitap_order_summary')||'null');}catch(e){}
+  if(cached) renderOrder(cached, false);
+
+  var token='';
+  try{token=sessionStorage.getItem('kitap_checkout_token')||'';}catch(e){}
+  if(!token){
+    if(note&&cached) note.textContent='Teşekkür ederiz. Aşağıdaki kitaplar kargoya hazırlanacaktır.';
+    return;
+  }
+
+  function confirmOnce(){
+    return fetch('/api/commerce-checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({op:'confirm_paid',token:token})
+    }).then(function(r){return r.json().then(function(d){return {ok:r.ok,d:d};});});
+  }
+
+  var attempts=0;
+  function tick(){
+    confirmOnce().then(function(res){
+      var d=res.d||{};
+      var paid=!!(res.ok && d.ok!==false && d.paid);
+      if(d.order) renderOrder(d.order, paid);
+      if(paid){
+        if(note) note.textContent='Teşekkür ederiz. Ödemeniz alındı; kitapçılara iletildi. Siparişlerim bölümünden takip edebilirsiniz.';
+        try{
+          sessionStorage.removeItem('kitap_checkout_token');
+          sessionStorage.removeItem('kitap_payment_ref');
+        }catch(e){}
+        return;
+      }
+      attempts+=1;
+      if(attempts<8){
+        if(note) note.textContent='Ödemeniz bankada alındı. Sipariş onayı bekleniyor…';
+        setTimeout(tick, 2000);
+        return;
+      }
+      if(note) note.textContent='Ödemeniz alındı. Sipariş birkaç dakika içinde kitapçılara yansıyacaktır; yansımazsa 0850 303 40 14 numarasından bize ulaşın.';
+      try{
+        sessionStorage.removeItem('kitap_checkout_token');
+        sessionStorage.removeItem('kitap_payment_ref');
+      }catch(e){}
+    }).catch(function(){
+      attempts+=1;
+      if(attempts<8){
+        setTimeout(tick, 2000);
+        return;
+      }
+      if(note) note.textContent='Ödemeniz alındı. Sipariş birkaç dakika içinde güncellenecektir; güncellenmezse 0850 303 40 14 numarasından bize ulaşın.';
+    });
+  }
+  tick();
+})();
 </script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

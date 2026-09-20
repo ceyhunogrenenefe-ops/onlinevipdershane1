@@ -1,6 +1,10 @@
 {
   "name": "onlinevipdershane1",
   "private": true,
+  "scripts": {
+    "test": "node scripts/test-assessment.js",
+    "campaigns:refresh": "node scripts/fetch-bank-campaigns.js"
+  },
   "dependencies": {
     "stripe": "^17.7.0"
   }

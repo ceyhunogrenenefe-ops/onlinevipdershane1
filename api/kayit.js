@@ -36,7 +36,7 @@ function normalize(payload) {
 function validate(data) {
   if (!data.ad || !data.soyad) return 'Ad ve soyad zorunludur.';
   if (!data.telefon) return 'Telefon zorunludur.';
-  if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return 'Geçerli e-posta girin.';
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return 'Geçerli e-posta girin veya boş bırakın.';
   if (!data.sinif) return 'Sınıf seçin.';
   if (!data.program) return 'Program seçin.';
   return null;
@@ -54,13 +54,13 @@ async function sendFormspreeEmail(data) {
       ad: data.ad,
       soyad: data.soyad,
       telefon: data.telefon,
-      email: data.email,
+      email: data.email || '',
       sinif: data.sinif,
       program: data.program,
       okul: data.okul,
       not: data.not,
       _subject: 'Yeni Kayıt Talebi — Online VIP Dershane',
-      _replyto: data.email,
+      ...(data.email ? { _replyto: data.email } : {}),
     }),
   });
 

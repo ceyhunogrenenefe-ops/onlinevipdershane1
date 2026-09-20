@@ -6,33 +6,143 @@
 <title>Ödeme İptal — Online VIP Dershane</title>
 <meta name="robots" content="noindex,follow">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/nav-logo.css">
+<link rel="stylesheet" href="assets/nav-contact.css">
+<link rel="stylesheet" href="assets/checkout-chrome.css">
 <style>
-body{font-family:Nunito,sans-serif;background:#fef2f2;color:#1a1f36;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:24px;}
-.card{max-width:480px;background:#fff;border:1px solid #fecaca;border-radius:20px;padding:40px 32px;text-align:center;}
-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;color:#b91c1c;margin:16px 0 8px;}
-p{color:#6e6e73;line-height:1.7;font-size:15px;}
-a{display:inline-block;margin:12px 8px 0;padding:12px 24px;border-radius:11px;font-weight:700;text-decoration:none;}
-.btn-primary{background:#1a3fad;color:#fff;}
-.btn-secondary{background:#f5f5f7;color:#1a1f36;border:1px solid #e5e5e7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:Nunito,sans-serif;background:#f8f9fc;color:#1a1f36;min-height:100vh;}
+.result-card{border-color:#fecaca;}
+.result-card h1{color:#b91c1c;}
+#fail-detail{display:none;font-size:13px;color:#991b1b;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 12px;margin-top:8px;}
 </style>
   <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
 <script src="assets/analytics-config.js"></script>
 <script src="assets/gtag-init.js"></script>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZR5ZLZQ"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<div class="card">
-  <div style="font-size:48px;">⚠️</div>
-  <h1>Ödeme tamamlanmadı</h1>
-  <p>İşlem iptal edildi veya başarısız oldu. Sepetiniz korunmuştur; tekrar deneyebilirsiniz.</p>
-  <a href="odeme.html" class="btn-primary">Ödemeyi Tekrar Dene</a>
-  <a href="sepet.html" class="btn-secondary">Sepete Dön</a>
+<nav class="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane" width="280" height="68" decoding="async"></a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="programlar/index.html">Programlar</a>
+      <a href="ozel-ders.html" style="color:#e8232a;font-weight:700;">Özel Ders</a>
+      <a href="kitap-atolyesi.html" style="color:#1a3fad;font-weight:700;">Kitap Atölyesi</a>
+      <a href="kadromuz.html">Kadromuz</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
+        </div>
+      </div>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="iletisim.html">İletişim</a>
+          <a href="kariyer.html">Kariyer</a>
+        </div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a href="tel:08503034014" class="nav-phone">0850 303 40 14</a>
+      <a href="sepet.html" class="btn-link">Sepet</a>
+    </div>
+    <button class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="trust-strip">
+  <span>🔒 256-bit SSL</span>
+  <span>3D Secure</span>
+  <span>Garanti Bonus · PayTR</span>
+  <span>KVKK uyumlu ödeme</span>
 </div>
+<main class="result-main">
+  <div class="result-card">
+    <div style="font-size:48px;">⚠️</div>
+    <h1>Ödeme tamamlanmadı</h1>
+    <p id="fail-msg">İşlem iptal edildi veya başarısız oldu. Sepetiniz korunmuştur; tekrar deneyebilirsiniz.</p>
+    <p id="fail-detail"></p>
+    <div class="result-actions">
+      <a href="odeme.html" class="btn-primary">Ödemeyi Tekrar Dene</a>
+      <a href="sepet.html" class="btn-secondary">Sepete Dön</a>
+    </div>
+  </div>
+</main>
+<footer class="checkout-footer">
+  <p><strong>ONLİNE VIP DERSHANECİLİK EĞİTİM VE DANIŞMANLIK HİZMETLERİ LTD. ŞTİ.</strong></p>
+  <p><a href="tel:08503034014">0850 303 40 14</a> · <a href="mailto:info@onlinevipdershane.com">info@onlinevipdershane.com</a></p>
+  <p><a href="gizlilik.html">Gizlilik</a> · <a href="satis.html">Mesafeli Satış</a> · <a href="iade.html">İade &amp; İptal</a></p>
+</footer>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var reason = (q.get('reason') || '').trim();
+  var code = (q.get('code') || '').trim();
+  var md = (q.get('md') || '').trim();
+  var el = document.getElementById('fail-detail');
+  var msgEl = document.getElementById('fail-msg');
+  if (!el) return;
+  var parts = [];
+  if (reason) parts.push(reason);
+  if (code) parts.push('Kod: ' + code);
+  if (md) parts.push('3D: ' + md);
+  if (!parts.length) return;
+  el.style.display = 'block';
+  el.textContent = parts.join(' · ');
+
+  var isGarantiUsageType =
+    /isyeri|işyeri|kullanim tipi|kullanım tipi/i.test(reason) || (code === '99' && md === '7' && /kullanim tipi|kullanım tipi/i.test(reason));
+  var isGarantiSecurityCode = /guvenlik kodu|güvenlik kodu/i.test(reason);
+  var isTroyPaid =
+    /troy gateway result/i.test(reason) &&
+    /message:\s*'success'/i.test(reason) &&
+    (/^0+$/.test(code) || !code) &&
+    (!md || md === '1' || md === '2' || md === '3' || md === '4');
+  var isBankApproved = isTroyPaid || ((code === '00' || code === '000' || code === '0') && (md === '1' || md === '2' || md === '3' || md === '4'));
+
+  if (isBankApproved && msgEl) {
+    msgEl.innerHTML =
+      '3D doğrulama geçti (TROY Success). Bu <strong>karttan çekim</strong> demek olmayabilir. ' +
+      'Önce Garanti Sanal POS → İşlemler ekranında bu siparişi kontrol edin. ' +
+      '<strong>Satış yoksa</strong> bir kez deneyebilirsiniz; satış varsa tekrar denemeyin. ' +
+      'Şüpheniz varsa <a href="tel:08503034014" style="color:#1a3fad;font-weight:700;">0850 303 40 14</a>.';
+    el.innerHTML = parts.join(' · ');
+    var retry = document.querySelector('.btn-primary');
+    if (retry) {
+      retry.textContent = 'Ana sayfa';
+      retry.setAttribute('href', 'index.html');
+    }
+  } else if (isGarantiSecurityCode && msgEl) {
+    msgEl.innerHTML =
+      'Garanti <strong>güvenlik kodu (hash)</strong> doğrulaması başarısız. ' +
+      'Genelde <strong>3D Secure anahtarı</strong> veya <strong>PROVOOS şifresi</strong> paneldeki değerle uyuşmaz. ' +
+      'Şimdilik <a href="odeme.html" style="color:#1a3fad;font-weight:700;">PayTR</a> ile devam edebilirsiniz.';
+    el.innerHTML =
+      parts.join(' · ') +
+      '<br><br><span style="color:#424245;">Yapılacaklar: Garanti Sanal POS panelinde ' +
+      '<strong>PROVOOS şifresi</strong> ve <strong>3D Secure Key</strong> sıfırlayıp Vercel ortam değişkenlerini güncelleyin.</span>';
+  } else if (isGarantiUsageType && msgEl) {
+    msgEl.innerHTML =
+      'Garanti tarafında <strong>ortak ödeme (3D_OOS_PAY)</strong> modeli henüz terminalinize tanımlı değil. ' +
+      'Bu bir site hatası değil; bankanın terminal ayarından açılması gerekir. ' +
+      'Şimdilik ödeme yöntemi olarak <a href="odeme.html" style="color:#1a3fad;font-weight:700;">PayTR</a> seçebilirsiniz.';
+    el.innerHTML =
+      parts.join(' · ') +
+      '<br><br><span style="color:#424245;">Garanti destek: Terminal <strong>10410839</strong>, Üye işyeri <strong>3267918</strong> için ' +
+      '<strong>3D_OOS_PAY + PROVOOS</strong> (ortak ödeme sayfası) tanımı talep edin → ' +
+      '<a href="mailto:eticaretdestek@garantibbva.com.tr" style="color:#1a3fad;">eticaretdestek@garantibbva.com.tr</a></span>';
+  }
+})();
+</script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>
