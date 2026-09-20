@@ -241,7 +241,23 @@
         escapeAttr(directSrc) +
         '" type="video/mp4">' +
         '</video>';
-      kickHtmlVideo(layer.querySelector('video'));
+      var driveVideo = layer.querySelector('video');
+      // Akıtılamazsa (ör. dosya paylaşımı kapalı) Drive'ın kendi oynatıcısına düş
+      if (driveVideo) {
+        driveVideo.addEventListener(
+          'error',
+          function () {
+            if (layer._drivePreviewTried) return;
+            layer._drivePreviewTried = true;
+            layer.innerHTML =
+              '<iframe src="https://drive.google.com/file/d/' +
+              encodeURIComponent(driveId) +
+              '/preview" title="Tanıtım videosu" allow="autoplay" allowfullscreen loading="eager"></iframe>';
+          },
+          true
+        );
+      }
+      kickHtmlVideo(driveVideo);
       return true;
     }
 
