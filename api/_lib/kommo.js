@@ -1,3 +1,5 @@
+const { normalizeTrPhone } = require('./assessment-phone');
+
 function sanitizeToken(raw) {
   return String(raw || '')
     .trim()
@@ -22,11 +24,7 @@ function kommoConfig() {
 }
 
 function phoneValue(raw) {
-  const digits = String(raw || '').replace(/\D/g, '');
-  if (!digits) return '';
-  if (digits.startsWith('90')) return '+' + digits;
-  if (digits.startsWith('0')) return '+9' + digits;
-  return '+90' + digits;
+  return normalizeTrPhone(raw);
 }
 
 function splitName(adSoyad) {
@@ -115,4 +113,89 @@ async function createKommoLead(payload, options = {}) {
   return { ok: true, data };
 }
 
-module.exports = { kommoConfig, sanitizeToken, splitName, createKommoLead };
+async function kommoFetch(path, options) {
+  const cfg = kommoConfig();
+  if (!cfg) return { skipped: true, reason: 'Kommo not configured' };
+  const url = `https://${cfg.subdomain}.kommo.com/api/v4${path}`;
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${cfg.token}`,
+      'Content-Type': 'application/json',
+      ...(options && options.headers),
+    },
+  });
+  const text = await res.text();
+  let data = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch (_) {
+    data = { raw: text };
+  }
+  if (!res.ok) {
+    const err = new Error('Kommo API error');
+    err.status = res.status;
+    err.details = data;
+    throw err;
+  }
+  return { ok: true, data };
+}
+
+async function findKommoContactsByPhone(phone) {
+  const cfg = kommoConfig();
+  if (!cfg || !phone) return { skipped: !cfg, contacts: [] };
+  const q = encodeURIComponent(phone);
+  try {
+    const r = await kommoFetch('/contacts?query=' + q + '&with=leads&limit=5');
+    const contacts = (r.data && r.data._embedded && r.data._embedded.contacts) || [];
+    return { ok: true, contacts: contacts };
+  } catch (err) {
+    return { ok: false, contacts: [], error: err.message };
+  }
+}
+
+async function addKommoNote(leadId, text) {
+  if (!leadId) return { skipped: true };
+  return kommoFetch('/leads/' + encodeURIComponent(leadId) + '/notes', {
+    method: 'POST',
+    body: JSON.stringify([
+      {
+        note_type: 'common',
+        params: { text: String(text || '').slice(0, 30000) },
+      },
+    ]),
+  });
+}
+
+function extractKommoLeadId(data) {
+  if (!data) return null;
+  if (Array.isArray(data) && data[0]) return data[0].id || data[0].lead_id || null;
+  if (data._embedded && data._embedded.leads && data._embedded.leads[0]) {
+    return data._embedded.leads[0].id;
+  }
+  return data.id || null;
+}
+
+async function pingKommo() {
+  var cfg = kommoConfig();
+  if (!cfg) return { ok: false, configured: false };
+  try {
+    var r = await kommoFetch('/account');
+    var name = r.data && (r.data.name || r.data.id);
+    return { ok: true, configured: true, account: name || true };
+  } catch (e) {
+    return { ok: false, configured: true, error: String(e.message || '').slice(0, 120) };
+  }
+}
+
+module.exports = {
+  kommoConfig,
+  sanitizeToken,
+  splitName,
+  createKommoLead,
+  phoneValue,
+  findKommoContactsByPhone,
+  addKommoNote,
+  extractKommoLeadId,
+  pingKommo,
+};

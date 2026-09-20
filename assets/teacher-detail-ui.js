@@ -45,12 +45,21 @@
       .join(' ');
   }
 
+  var PHOTO_OVERRIDES = {
+    'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+    'ali-aktas': '/assets/img/kadro/ali-aktas.jpg',
+    'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
+    'merve-yetkin': '/assets/img/kadro/merve-yetkin.jpg'
+  };
   var PHOTO_FALLBACKS = {
     'sultan-kurt': '/assets/img/kadro/sultan-kurt.jpg',
-    'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg'
+    'yilmaz-isik': '/assets/img/kadro/yilmaz-isik.jpg',
+    'yasin-kandemir': '/assets/img/kadro/yasin-kandemir.jpg',
+    'kaan-inaltekin': '/assets/img/kadro/kaan-inaltekin.jpg'
   };
 
   function youtubeIdFromUrl(url) {
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.youtubeIdFromUrl(url);
     var u = String(url || '').trim();
     if (!u) return '';
     var m = u.match(
@@ -60,6 +69,7 @@
   }
 
   function isDirectVideoUrl(url) {
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.isDirectVideoUrl(url);
     var u = String(url || '').trim();
     if (!u) return false;
     if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
@@ -117,6 +127,28 @@
         '<video src="' +
         escapeHtml(url) +
         '" controls playsinline preload="metadata" class="h-full w-full"></video></div>'
+      );
+    }
+    var driveId = global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.driveFileIdFromUrl(url);
+    if (driveId) {
+      return (
+        '<div class="teacher-profile-video-frame aspect-video overflow-hidden rounded-xl border border-slate-200 bg-black">' +
+        '<iframe src="https://drive.google.com/file/d/' +
+        encodeURIComponent(driveId) +
+        '/preview" title="' +
+        escapeHtml(label) +
+        '" allow="autoplay; encrypted-media" allowfullscreen loading="lazy" class="h-full w-full border-0"></iframe></div>'
+      );
+    }
+    var ig = global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.instagramEmbedSrc(url);
+    if (ig) {
+      return (
+        '<div class="teacher-profile-video-frame overflow-hidden rounded-xl border border-slate-200 bg-black" style="aspect-ratio:9/16;max-width:360px">' +
+        '<iframe src="' +
+        escapeHtml(ig) +
+        '" title="' +
+        escapeHtml(label) +
+        '" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" class="h-full w-full border-0"></iframe></div>'
       );
     }
     return (
@@ -191,6 +223,98 @@
     if (status === 'busy') return 'Dolu';
     if (status === 'closed') return 'Kapalı';
     return 'Geçmiş';
+  }
+
+  function formatReviewDate(iso) {
+    if (!iso) return '';
+    try {
+      return new Intl.DateTimeFormat('tr-TR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'Europe/Istanbul'
+      }).format(new Date(iso));
+    } catch (e) {
+      return String(iso).slice(0, 10);
+    }
+  }
+
+  function starsHtml(value) {
+    var v = Math.max(0, Math.min(5, Number(value) || 0));
+    var html = '<span class="inline-flex items-center gap-0.5" aria-label="' + escapeHtml(String(v)) + ' yıldız">';
+    for (var i = 1; i <= 5; i++) {
+      html +=
+        '<span class="' +
+        (i <= Math.round(v) ? 'text-amber-500' : 'text-slate-300') +
+        '">★</span>';
+    }
+    return html + '</span>';
+  }
+
+  function renderReviewsSection(t) {
+    var avg = t.average_rating != null ? Number(t.average_rating) : null;
+    if (avg != null && !isFinite(avg)) avg = null;
+    var total = Number(t.total_reviews) || 0;
+    var reviews = Array.isArray(t.reviews) ? t.reviews : [];
+    if (!reviews.length && !(avg != null && total > 0)) {
+      return (
+        '<div class="mt-8 scroll-mt-24 rounded-2xl border border-dashed border-slate-200 bg-soft/40 p-6" id="reviewsSection">' +
+        '<h2 class="font-display text-lg font-bold text-ink">Öğrenci ve veli yorumları</h2>' +
+        '<p class="mt-2 text-sm text-mute">Henüz herkese açık değerlendirme yok. Ders sonrası panelden verilen yorumlar burada görünür.</p></div>'
+      );
+    }
+    var summary =
+      avg != null && total > 0
+        ? '<p class="mt-2 flex flex-wrap items-center gap-2 text-sm text-mute">' +
+          '<span class="text-2xl font-extrabold text-ink">' +
+          escapeHtml(avg.toFixed(1)) +
+          '</span>' +
+          starsHtml(avg) +
+          '<span>· ' +
+          escapeHtml(String(total)) +
+          ' değerlendirme</span></p>'
+        : '';
+    var list = '';
+    if (reviews.length) {
+      list = '<ul class="mt-5 space-y-4">';
+      reviews.forEach(function (r) {
+        if (!r) return;
+        var who = r.reviewer_name || (String(r.reviewer_type || '').toUpperCase() === 'PARENT' ? 'Veli' : 'Öğrenci');
+        var kind = String(r.reviewer_type || '').toUpperCase() === 'PARENT' ? 'Veli' : 'Öğrenci';
+        var comment = String(r.comment || '').trim();
+        list +=
+          '<li class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">' +
+          '<div class="flex flex-wrap items-center gap-2 text-sm">' +
+          '<span class="font-bold text-ink">' +
+          escapeHtml(who) +
+          '</span>' +
+          '<span class="rounded-md bg-soft px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-mute">' +
+          escapeHtml(kind) +
+          '</span>' +
+          starsHtml(r.rating) +
+          '<span class="ml-auto text-[11px] text-mute">' +
+          escapeHtml(formatReviewDate(r.created_at)) +
+          '</span></div>' +
+          (comment
+            ? '<p class="mt-3 text-[15px] leading-relaxed text-ink">' + escapeHtml(comment) + '</p>'
+            : '<p class="mt-3 text-sm italic text-mute">Yazılı yorum eklenmemiş · ' +
+              escapeHtml(String(r.rating || '')) +
+              ' yıldız verdi.</p>') +
+          '</li>';
+      });
+      list += '</ul>';
+    } else if (avg != null && total > 0) {
+      list =
+        '<p class="mt-4 text-sm text-mute">Puan ortalaması yayınlandı; ayrıntılı yorum metinleri yakında listelenecek.</p>';
+    }
+    return (
+      '<div class="mt-8 scroll-mt-24 rounded-2xl border border-navy/15 bg-soft/50 p-5 sm:p-6" id="reviewsSection">' +
+      '<h2 class="font-display text-lg font-bold text-ink sm:text-xl">Öğrenci ve veli yorumları</h2>' +
+      '<p class="mt-1 text-sm text-mute">Panelden verilen herkese açık değerlendirmeler</p>' +
+      summary +
+      list +
+      '</div>'
+    );
   }
 
   function renderAvailability(t, slots) {
@@ -279,7 +403,7 @@
     var specs = Array.isArray(t.specialties) ? t.specialties : [];
     var name = titleCaseTr(t.name) || t.name || 'Öğretmen';
     var role = titleCaseTr(t.title || [t.branch, exams.join(' / ')].filter(Boolean).join(' · '));
-    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
+    var rawPhoto = PHOTO_OVERRIDES[t.slug] || upgradeRemotePhotoUrl(t.photo_url);
     var photo = isUsablePhoto(rawPhoto)
       ? rawPhoto
       : PHOTO_FALLBACKS[t.slug] || '/assets/img/ovd-logo.png';
@@ -302,7 +426,8 @@
               ? '<div class="teacher-video-layer" aria-hidden="true"></div><span class="teacher-video-badge" aria-hidden="true">Tanıtım videosu</span><button type="button" class="teacher-unmute-btn" aria-label="Sesi aç">🔊 Sesi aç</button>'
               : '') +
           '</div>' +
-          '<a href="#availSection" class="mt-4 flex w-full items-center justify-center rounded-xl border border-navy px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Müsait Saatleri Gör</a>' +
+          '<a href="#reviewsSection" class="mt-4 flex w-full items-center justify-center rounded-xl border border-navy px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Yorumları Oku</a>' +
+          '<a href="#availSection" class="mt-2 flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Müsait Saatleri Gör</a>' +
           '<a href="' + buy + '" class="mt-2 flex w-full items-center justify-center rounded-xl bg-accent px-4 py-3.5 text-sm font-bold text-white shadow-lift hover:bg-accent-2">Özel Ders Al</a>' +
           '<a href="/ozel-ders.html#ogretmenler" class="mt-2 flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Tüm öğretmenler</a>' +
         '</aside>' +
@@ -315,8 +440,16 @@
             '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Deneyim</dt><dd class="mt-1 text-sm font-extrabold">' + (t.experience_years != null ? escapeHtml(t.experience_years) + ' yıl' : '—') + '</dd></div>' +
             '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Şehir</dt><dd class="mt-1 text-sm font-extrabold">' + escapeHtml(t.city || 'Online') + '</dd></div>' +
             '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Format</dt><dd class="mt-1 text-sm font-extrabold">' + escapeHtml(t.lesson_format || 'online') + '</dd></div>' +
-            '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Müsait</dt><dd class="mt-1 text-sm font-extrabold">' + (t.accepting_students === false ? 'Dolu' : 'Evet') + '</dd></div>' +
+            (t.average_rating != null && Number(t.total_reviews) > 0
+              ? '<div class="rounded-xl bg-amber-50 px-3 py-3 text-center ring-1 ring-amber-200/80"><dt class="text-[10px] font-bold uppercase text-amber-800/80">Puan</dt><dd class="mt-1 text-sm font-extrabold text-ink"><a href="#reviewsSection" class="hover:underline">★ ' +
+                Number(t.average_rating).toFixed(1) +
+                (t.total_reviews ? ' · ' + t.total_reviews + ' yorum' : '') +
+                '</a></dd></div>'
+              : '<div class="rounded-xl bg-soft px-3 py-3 text-center"><dt class="text-[10px] font-bold uppercase text-mute">Müsait</dt><dd class="mt-1 text-sm font-extrabold">' +
+                (t.accepting_students === false ? 'Dolu' : 'Evet') +
+                '</dd></div>') +
           '</dl>' +
+          renderReviewsSection(t) +
           (grades.length ? '<div class="mt-8"><h2 class="font-display text-lg font-bold">Seviyeler</h2>' + chips(grades) + '</div>' : '') +
           (exams.length ? '<div class="mt-6"><h2 class="font-display text-lg font-bold">Sınav alanları</h2>' + chips(exams) + '</div>' : '') +
           (specs.length ? '<div class="mt-6"><h2 class="font-display text-lg font-bold">Uzmanlık</h2>' + chips(specs) + '</div>' : '') +
@@ -614,6 +747,14 @@
           box.classList.remove('hidden');
           bindHoverVideo();
           bindBooking(t.slug);
+          if (location.hash === '#reviewsSection') {
+            var rev = document.getElementById('reviewsSection');
+            if (rev) {
+              setTimeout(function () {
+                rev.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }, 80);
+            }
+          }
         }
       })
       .catch(function () {
@@ -623,4 +764,15 @@
   }
 
   global.OVD_TEACHER_DETAIL = { init: init };
+
+  if (typeof document !== 'undefined') {
+    function boot() {
+      if (document.getElementById('teacherDetail')) init();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+  }
 })(typeof window !== 'undefined' ? window : global);

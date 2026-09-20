@@ -1,0 +1,30 @@
+{
+  "updatedAt": "2026-09-07T19:12:44.096Z",
+  "banks": {
+    "garanti": {
+      "title": "Seçili Okullarda +Taksit Fırsatı!",
+      "summary": "2 taksite +4 taksit ve 3 ve üzeri taksite +5 taksit verilir.",
+      "installments": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "period": "1 – 30 Eylül 2026",
+      "source": "live",
+      "fetchedAt": "2026-09-07T19:12:43.899Z"
+    },
+    "ziraat": {
+      "title": "Okul Ödemelerinizde İlave 6",
+      "summary": "2 veya 3 taksitli okul ödemelerinizde +5 taksit , 4 ve üzeri taksitli okul ödemelerinizde +6 taksit fırsatından faydalanabilirsiniz.",
+      "installments": [
+        3,
+        5,
+        6
+      ],
+      "period": "14 Ağustos – 30 Eylül 2026",
+      "source": "live",
+      "fetchedAt": "2026-09-07T19:12:44.096Z"
+    }
+  }
+}

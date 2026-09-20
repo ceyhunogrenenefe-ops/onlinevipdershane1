@@ -1,14 +1,25 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/",
       "has": [
         {
           "type": "host",
           "value": "www.onlinevipdershane.com"
         }
       ],
-      "destination": "https://onlinevipdershane.com/:path*",
+      "destination": "https://onlinevipdershane.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.onlinevipdershane.com"
+        }
+      ],
+      "destination": "https://onlinevipdershane.com/:path",
       "permanent": true
     },
     {
@@ -37,6 +48,11 @@
       "permanent": true
     },
     {
+      "source": "/sinif-2.html",
+      "destination": "/programlar/sinif-2.html",
+      "permanent": true
+    },
+    {
       "source": "/kamplar.html",
       "destination": "/programlar/kamplar.html",
       "permanent": true
@@ -54,6 +70,11 @@
     {
       "source": "/start.html",
       "destination": "/programlar/start.html",
+      "permanent": true
+    },
+    {
+      "source": "/kocluk.html",
+      "destination": "/programlar/kocluk.html",
       "permanent": true
     },
     {
@@ -527,6 +548,26 @@
       "permanent": true
     },
     {
+      "source": "/kitap-atolyesi",
+      "destination": "/kitap-atolyesi.html",
+      "permanent": true
+    },
+    {
+      "source": "/kitap-atolyesi/",
+      "destination": "/kitap-atolyesi.html",
+      "permanent": true
+    },
+    {
+      "source": "/kitap-okuma-atolyesi",
+      "destination": "/kitap-atolyesi.html",
+      "permanent": true
+    },
+    {
+      "source": "/kitap-okuma-atolyesi/",
+      "destination": "/kitap-atolyesi.html",
+      "permanent": true
+    },
+    {
       "source": "/premium-ozel-ders",
       "destination": "/ozel-ders.html",
       "permanent": true
@@ -577,17 +618,82 @@
       "permanent": true
     },
     {
+      "source": "/ucretsiz-ogrenci-analizi",
+      "destination": "/ucretsiz-ogrenci-analizi.html",
+      "permanent": true
+    },
+    {
+      "source": "/ucretsiz-ogrenci-analizi/",
+      "destination": "/ucretsiz-ogrenci-analizi.html",
+      "permanent": true
+    },
+    {
+      "source": "/seviye-testi",
+      "destination": "/seviye-testi.html",
+      "permanent": true
+    },
+    {
+      "source": "/seviye-testi/",
+      "destination": "/seviye-testi.html",
+      "permanent": true
+    },
+    {
+      "source": "/analiz-sonucu",
+      "destination": "/analiz-sonucu.html",
+      "permanent": true
+    },
+    {
+      "source": "/analiz-sonucu/",
+      "destination": "/analiz-sonucu.html",
+      "permanent": true
+    },
+    {
+      "source": "/odeme",
+      "destination": "/odeme.html",
+      "permanent": true
+    },
+    {
+      "source": "/odeme/",
+      "destination": "/odeme.html",
+      "permanent": true
+    },
+    {
       "source": "/sepet",
-      "destination": "/kayit.html",
+      "destination": "/sepet.html",
       "permanent": true
     },
     {
       "source": "/sepet/",
-      "destination": "/kayit.html",
+      "destination": "/sepet.html",
       "permanent": true
     }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
     {
       "source": "/(.*)\\.html",
       "headers": [
@@ -624,6 +730,14 @@
     {
       "source": "/ozel-ders/ogretmen/:slug/",
       "destination": "/ozel-ders-ogretmen.html?slug=:slug"
+    },
+    {
+      "source": "/odeme/kitap",
+      "destination": "/odeme-kitap.html"
+    },
+    {
+      "source": "/odeme/kitap/",
+      "destination": "/odeme-kitap.html"
     }
   ]
 }

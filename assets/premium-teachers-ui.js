@@ -3,16 +3,44 @@
  * Kaynak: panel yayınlı + panelde kaydı olmayan statik katalog. Panel pasifi statikten bile düşer.
  */
 (function (global) {
-  function upgradeRemotePhotoUrl(url, minSize) {
-    minSize = minSize || 800;
+  function upgradeRemotePhotoUrl(url, opts) {
+    opts = opts || {};
+    var minSize = opts.minSize || 640;
+    var width = opts.width || 640;
     var u = String(url || '').trim();
     if (!u) return u;
-    if (!/ggpht\.com|googleusercontent\.com/i.test(u)) return u;
-    return u.replace(/=s(\d+)/i, function (match, n) {
-      var size = parseInt(n, 10);
-      if (!Number.isFinite(size) || size === 0 || size >= minSize) return match;
-      return '=s' + minSize;
-    });
+
+    // Supabase Storage: sunucu tarafı resize (transform açıksa)
+    if (/supabase\.co\/storage\/v1\/object\/public\//i.test(u)) {
+      var base = u.split('?')[0].replace(
+        '/storage/v1/object/public/',
+        '/storage/v1/render/image/public/'
+      );
+      return base + '?width=' + width + '&quality=70&resize=contain';
+    }
+
+    // YouTube / Google CDN thumbnails
+    if (/ggpht\.com|googleusercontent\.com/i.test(u)) {
+      return u.replace(/=s(\d+)/i, function (match, n) {
+        var size = parseInt(n, 10);
+        if (!Number.isFinite(size) || size === 0 || size >= minSize) return match;
+        return '=s' + minSize;
+      });
+    }
+    return u;
+  }
+
+  /** Transform URL bozulursa orijinal object URL'ye dön. */
+  function originalPhotoUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return u;
+    if (/supabase\.co\/storage\/v1\/render\/image\/public\//i.test(u)) {
+      return u.split('?')[0].replace(
+        '/storage/v1/render/image/public/',
+        '/storage/v1/object/public/'
+      );
+    }
+    return u;
   }
 
   /** Panel bazen dosya adı yazar; yalnızca URL / assets yolu kabul. */
@@ -39,62 +67,39 @@
   }
 
   function youtubeIdFromUrl(url) {
-    var u = String(url || '').trim();
-    if (!u) return '';
-    // Tek video URL'leri (shorts / watch / youtu.be / embed)
-    var m = u.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{6,11})/i
-    );
-    if (m) return m[1];
-    // ?v= parametresi
-    try {
-      var q = new URL(u).searchParams.get('v');
-      if (q && /^[A-Za-z0-9_-]{6,11}$/.test(q)) return q;
-    } catch (e) {
-      /* ignore */
-    }
-    return '';
+    return (global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.youtubeIdFromUrl(url)) || '';
   }
 
   function isPlayableVideoUrl(url) {
-    return !!(youtubeIdFromUrl(url) || isDirectVideoUrl(url));
+    return !!(global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.isPlayableVideoUrl(url));
   }
 
-  function isDirectVideoUrl(url) {
-    var u = String(url || '').trim();
-    if (!u) return false;
-    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
-    if (/\/storage\/v1\/object\//i.test(u) && /video/i.test(u)) return true;
-    return false;
-  }
-
-  /** İlk video = hover tanıtımı (videos[0] veya video_url) */
+  /** İlk oynatılabilir video = hover tanıtımı */
   function primaryVideoUrl(t) {
-    if (Array.isArray(t.videos)) {
-      for (var i = 0; i < t.videos.length; i++) {
-        var item = t.videos[i];
-        var url =
-          typeof item === 'string'
-            ? String(item || '').trim()
-            : String((item && (item.url || item.public_url || item.video_url)) || '').trim();
-        if (url) return url;
-      }
-    }
-    return String(t.video_url || '').trim();
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.primaryVideoUrl(t);
+    return String((t && (t.video_url || t.video)) || '').trim();
   }
 
   function mapApiTeacher(t) {
     var exams = Array.isArray(t.exam_areas) ? t.exam_areas.join(' / ') : '';
-    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url);
+    var rawPhoto = upgradeRemotePhotoUrl(t.photo_url, { width: 640 });
     var roleRaw = t.title || [t.branch, exams].filter(Boolean).join(' · ');
+    var avg = t.average_rating != null ? Number(t.average_rating) : null;
+    if (avg != null && !isFinite(avg)) avg = null;
     return {
       slug: t.slug,
       name: titleCaseTr(t.name) || 'Öğretmen',
       branch: titleCaseTr(t.branch) || '',
       university: t.university || '',
       experience: Number(t.experience_years) || 0,
-      rating: null,
-      lessons: null,
+      rating: avg,
+      total_reviews: Number(t.total_reviews) || 0,
+      lessons:
+        t.completed_lessons_count != null
+          ? Number(t.completed_lessons_count)
+          : t.lessons != null
+            ? Number(t.lessons)
+            : null,
       live: t.online_lessons !== false,
       available: t.accepting_students !== false,
       price: null,
@@ -196,6 +201,10 @@
       return '/' + u.replace(/^\.\//, '');
     }
 
+    function photoUrl(url, width) {
+      return upgradeRemotePhotoUrl(absoluteAssetUrl(url), { width: width || 640 });
+    }
+
     var AVATAR_COLORS = [
       ['#ff7a45', '#ff9f43'],
       ['#6c5ce7', '#a29bfe'],
@@ -211,7 +220,7 @@
 
     function avatarStripHtml(t, idx) {
       var colors = AVATAR_COLORS[idx % AVATAR_COLORS.length];
-      var photo = absoluteAssetUrl(t.photo);
+      var photo = photoUrl(t.photo, 160);
       var pos = t.photoPos || 'center 20%';
       var branch = t.branch || t.role || '';
       return (
@@ -231,7 +240,7 @@
         escapeHtml(t.name) +
         '" width="76" height="76" loading="lazy" decoding="async" style="object-position:' +
         escapeHtml(pos) +
-        '" onerror="this.onerror=null;this.src=\'/assets/img/ovd-logo.png\'">' +
+        '" onerror="window.__ovdPhotoErr&&window.__ovdPhotoErr(this)">' +
         '</div>' +
         '<div class="teacher-avatar-name">' +
         escapeHtml(t.name) +
@@ -262,7 +271,11 @@
         ? '<span class="inline-flex rounded-full bg-navy/10 px-2.5 py-1 text-[11px] font-bold text-navy">Müsait</span>'
         : '<span class="inline-flex rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">Dolu</span>';
       var pos = t.photoPos || 'center 20%';
-      var ratingTxt = t.rating != null ? '★ ' + Number(t.rating).toFixed(1) : '—';
+      var hasReviews = t.rating != null && Number(t.total_reviews) > 0;
+      var ratingTxt = hasReviews
+        ? '★ ' + Number(t.rating).toFixed(1) + (t.total_reviews ? ' (' + t.total_reviews + ')' : '')
+        : '—';
+      var reviewsHref = profileHref(t.slug) + '#reviewsSection';
       var lessonsTxt = t.lessons != null ? Number(t.lessons).toLocaleString('tr-TR') : '—';
       var videoUrl = String(t.video || '').trim();
       var canHoverVideo = isPlayableVideoUrl(videoUrl);
@@ -278,7 +291,7 @@
           '"' +
           (canHoverVideo ? ' data-video="' + escapeHtml(videoUrl) + '"' : '') +
           '>' +
-            '<img data-src="' + escapeHtml(absoluteAssetUrl(t.photo)) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async">' +
+            '<img data-src="' + escapeHtml(photoUrl(t.photo, 640)) + '" alt="' + escapeHtml(t.name) + ' — ' + escapeHtml(t.branch) + '" width="480" height="600" class="lazy-img teacher-photo" style="object-position:' + escapeHtml(pos) + '" decoding="async" loading="lazy" onerror="window.__ovdPhotoErr&&window.__ovdPhotoErr(this)">' +
             (canHoverVideo ? '<div class="teacher-video-layer" aria-hidden="true"></div>' + videoBadge : '') +
             '<div class="absolute left-3 top-3 z-[2] flex flex-wrap gap-1.5">' + liveBadge + availBadge + '</div>' +
           '</div>' +
@@ -287,9 +300,22 @@
             '<p class="mt-1 text-base font-bold text-navy sm:text-lg">' + escapeHtml(t.role || t.branch) + '</p>' +
             '<dl class="mt-4 grid grid-cols-3 gap-2 text-center">' +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Deneyim</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + (t.experience || '—') + (t.experience ? ' yıl' : '') + '</dd></div>' +
-              '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + ratingTxt + '</dd></div>' +
+              (hasReviews
+                ? '<div class="rounded-xl bg-amber-50 px-2 py-2 ring-1 ring-amber-200/70"><dt class="text-[10px] font-bold uppercase tracking-wide text-amber-800/80">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink"><a href="' +
+                  reviewsHref +
+                  '" class="hover:underline">' +
+                  ratingTxt +
+                  '</a></dd></div>'
+                : '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Puan</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' +
+                  ratingTxt +
+                  '</dd></div>') +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Ders</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + lessonsTxt + '</dd></div>' +
             '</dl>' +
+            (hasReviews
+              ? '<a href="' +
+                reviewsHref +
+                '" class="mt-3 inline-flex text-sm font-bold text-navy underline-offset-2 hover:underline">Yorumları oku →</a>'
+              : '') +
             '<div class="mt-auto flex flex-col gap-2 pt-4">' +
               '<div class="flex gap-2">' +
                 '<a href="' + profileHref(t.slug) + '" class="inline-flex flex-1 items-center justify-center rounded-xl border border-slate-200 px-3 py-2.5 text-sm font-bold text-navy hover:border-navy hover:bg-soft">Profili İncele</a>' +
@@ -308,17 +334,9 @@
         clearTimeout(box._videoInjectTimer);
         box._videoInjectTimer = null;
       }
-      if (box._videoClearTimer) {
-        clearTimeout(box._videoClearTimer);
-        box._videoClearTimer = null;
-      }
       box.classList.remove('is-playing', 'is-muted', 'has-sound', 'is-touch-playing');
       var layer = box.querySelector('.teacher-video-layer');
-      // Dönüş animasyonu bitsin, sonra videoyu temizle
-      box._videoClearTimer = setTimeout(function () {
-        box._videoClearTimer = null;
-        if (!box.classList.contains('is-playing') && layer) layer.innerHTML = '';
-      }, 700);
+      if (global.OVD_TEACHER_VIDEO) global.OVD_TEACHER_VIDEO.pauseMedia(layer);
     }
 
     function ytEmbedSrc(id, muted) {
@@ -383,37 +401,19 @@
     }
 
     function injectVideoMedia(box, layer, url, muted) {
-      var yt = youtubeIdFromUrl(url);
-      if (yt) {
+      var ok = false;
+      if (global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.injectHoverMedia) {
+        ok = !!global.OVD_TEACHER_VIDEO.injectHoverMedia(layer, url, muted);
+      } else {
+        var yt = youtubeIdFromUrl(url);
+        if (!yt) return false;
         layer.innerHTML =
           '<iframe src="' +
           ytEmbedSrc(yt, muted) +
           '" title="Tanıtım videosu" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe>';
-      } else if (isDirectVideoUrl(url)) {
-        layer.innerHTML =
-          '<video src="' +
-          escapeHtml(url) +
-          '" autoplay loop playsinline controls' +
-          (muted ? ' muted' : '') +
-          '></video>';
-        var video = layer.querySelector('video');
-        if (video) {
-          video.muted = !!muted;
-          video.volume = 1;
-          var playPromise = video.play();
-          if (playPromise && playPromise.catch) {
-            playPromise.catch(function () {
-              video.muted = true;
-              box.classList.add('is-muted');
-              video.play().catch(function () {
-                video.controls = true;
-              });
-            });
-          }
-        }
-      } else {
-        return false;
+        ok = true;
       }
+      if (!ok) return false;
       if (muted) {
         box.classList.add('is-muted');
         box.classList.remove('has-sound');
@@ -427,7 +427,7 @@
     function startHoverVideo(box, opts) {
       opts = opts || {};
       var restart = !!opts.restart;
-      var muted = !!opts.muted;
+      var muted = opts.muted !== false;
       if (!box) return;
       if (box.classList.contains('is-playing') && !restart) {
         if (!muted) enableSound(box);
@@ -438,33 +438,25 @@
       if (!layer || !url) return;
       if (!isPlayableVideoUrl(url)) return;
 
-      if (box._videoClearTimer) {
-        clearTimeout(box._videoClearTimer);
-        box._videoClearTimer = null;
-      }
-      if (box._videoInjectTimer) {
-        clearTimeout(box._videoInjectTimer);
-        box._videoInjectTimer = null;
-      }
-
-      if (box.classList.contains('is-playing') && !opts.fromUnmute) {
-        box.classList.remove('is-playing');
-        void box.offsetWidth;
-      }
-      if (restart) layer.innerHTML = '';
-      box.classList.add('is-playing');
-      if (muted) box.classList.add('is-muted');
-      else box.classList.remove('is-muted');
-
-      var reduceMotion =
-        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var delay = reduceMotion || opts.fromUnmute ? 0 : 160;
-
-      box._videoInjectTimer = setTimeout(function () {
-        box._videoInjectTimer = null;
-        if (!box.classList.contains('is-playing')) return;
+      if (restart && global.OVD_TEACHER_VIDEO) layer.innerHTML = '';
+      if (global.OVD_TEACHER_VIDEO) {
+        if (!global.OVD_TEACHER_VIDEO.hasMedia(layer) || restart) {
+          global.OVD_TEACHER_VIDEO.injectHoverMedia(layer, url, muted);
+        } else {
+          global.OVD_TEACHER_VIDEO.resumeMedia(layer, muted);
+        }
+      } else {
         injectVideoMedia(box, layer, url, muted);
-      }, delay);
+      }
+
+      box.classList.add('is-playing');
+      if (muted) {
+        box.classList.add('is-muted');
+        box.classList.remove('has-sound');
+      } else {
+        markSoundOn(box);
+        forceUnmute(box);
+      }
     }
 
     function stopOtherVideos(exceptBox) {
@@ -485,6 +477,9 @@
         }
         if (box.dataset.videoBound === '1') return;
         box.dataset.videoBound = '1';
+        var layer = box.querySelector('.teacher-video-layer');
+        var url = box.getAttribute('data-video') || '';
+        if (global.OVD_TEACHER_VIDEO) global.OVD_TEACHER_VIDEO.preloadHoverMedia(layer, url);
 
         var unmuteBtn = box.querySelector('.teacher-unmute-btn');
         if (unmuteBtn) {
@@ -507,6 +502,8 @@
           box.addEventListener('mouseleave', function (e) {
             // iframe/iç elemana geçişte kapanmasın
             if (e.relatedTarget && box.contains(e.relatedTarget)) return;
+            var layer = box.querySelector('.teacher-video-layer');
+            if (!e.relatedTarget && layer && layer.getAttribute('data-platform') === 'instagram') return;
             stopHoverVideo(box);
           });
         } else {
@@ -771,7 +768,10 @@
           role: t.role || base.role || t.branch || base.branch || '',
           university: t.university || base.university || '',
           branch: t.branch || base.branch || '',
-          video: t.video || base.video || ''
+          video: t.video || base.video || '',
+          rating: t.rating != null ? t.rating : base.rating,
+          total_reviews: t.total_reviews != null ? t.total_reviews : base.total_reviews,
+          lessons: t.lessons != null ? t.lessons : base.lessons
         });
       });
       return Object.keys(bySlug).map(function (k) { return bySlug[k]; });
@@ -795,6 +795,19 @@
         /* ag hatasi: statik katalog kalir */
       });
   }
+
+  global.__ovdPhotoErr = function (img) {
+    if (!img) return;
+    var cur = String(img.getAttribute('src') || '');
+    var orig = originalPhotoUrl(cur);
+    if (orig && orig !== cur && img.getAttribute('data-fb') !== '1') {
+      img.setAttribute('data-fb', '1');
+      img.src = orig;
+      return;
+    }
+    img.onerror = null;
+    img.src = '/assets/img/ovd-logo.png';
+  };
 
   global.OVD_PREMIUM_TEACHERS_UI = { init: initPremiumTeachersUi };
 })(typeof window !== 'undefined' ? window : global);

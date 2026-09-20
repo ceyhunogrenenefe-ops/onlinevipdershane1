@@ -4,9 +4,10 @@
       id: 'lgs',
       name: 'LGS Hazırlık',
       subtitle: '8. Sınıf · Yıllık program',
-      price: 112000,
-      listPrice: 160000,
+      price: 120000,
+      listPrice: 171429,
       period: 'yıl',
+      educationMonths: 10,
       slug: 'programlar/lgs.html',
     },
     yks: {
@@ -16,6 +17,7 @@
       price: 119000,
       listPrice: 170000,
       period: 'yıl',
+      educationMonths: 10,
       slug: 'programlar/yks.html',
     },
     ortaokul: {
@@ -25,6 +27,7 @@
       price: 98000,
       listPrice: 140000,
       period: 'yıl',
+      educationMonths: 10,
       slug: 'programlar/ortaokul.html',
     },
     lise: {
@@ -34,6 +37,7 @@
       price: 112000,
       listPrice: 160000,
       period: 'yıl',
+      educationMonths: 10,
       slug: 'programlar/lise.html',
     },
     ilkokul: {
@@ -43,7 +47,16 @@
       price: 84000,
       listPrice: 120000,
       period: 'yıl',
+      educationMonths: 10,
       slug: 'programlar/ilkokul.html',
+    },
+    sinif2: {
+      id: 'sinif2',
+      name: '2. Sınıf Canlı Dönem Programı',
+      subtitle: 'İlkokul 2. Sınıf · Yıllık paket',
+      price: 59900,
+      period: 'yıl',
+      slug: 'programlar/sinif-2.html',
     },
     kamplar: {
       id: 'kamplar',
@@ -115,7 +128,7 @@
       subtitle: '8 haftalık program',
       price: 12000,
       period: 'program',
-      slug: 'programlar/kitap.html',
+      slug: 'kitap-atolyesi.html',
     },
     start: {
       id: 'start',
@@ -124,6 +137,14 @@
       price: 28000,
       period: 'paket',
       slug: 'programlar/start.html',
+    },
+    kocluk: {
+      id: 'kocluk',
+      name: 'Yıllık Premium Eğitim Koçluğu',
+      subtitle: 'Yıllık birebir koçluk · Tek çekim veya taksit',
+      price: 39900,
+      period: 'yıl',
+      slug: 'programlar/kocluk.html',
     },
     'ders-1': {
       id: 'ders-1',
@@ -145,7 +166,7 @@
       id: 'ders-5',
       name: 'Premium Özel Ders — 5 Ders',
       subtitle: 'Birebir canlı özel ders paketi',
-      price: 4500,
+      price: 4900,
       period: 'paket',
       slug: 'premium-paketler.html',
     },
@@ -153,7 +174,7 @@
       id: 'ders-10',
       name: 'Premium Özel Ders — 10 Ders',
       subtitle: 'En avantajlı birebir paket',
-      price: 8500,
+      price: 9500,
       period: 'paket',
       slug: 'premium-paketler.html',
     },
@@ -165,6 +186,7 @@
     'ortaokul.html': 'ortaokul',
     'lise.html': 'lise',
     'ilkokul.html': 'ilkokul',
+    'sinif-2.html': 'sinif2',
     'kamplar.html': 'kamplar',
     'kamp-9-hazirlik.html': 'kamp9Hazirlik',
     'kamp-lgs.html': 'kampLgs',
@@ -174,7 +196,9 @@
     'kamp-tyt.html': 'kampTyt',
     'yazili.html': 'yazili',
     'kitap.html': 'kitap',
+    'kitap-atolyesi.html': 'kitap',
     'start.html': 'start',
+    'kocluk.html': 'kocluk',
   };
 
   /** Sepetteki urunlere gore onerilecek ilgili programlar */
@@ -189,10 +213,12 @@
     kamp56: ['ortaokul', 'kampLgs', 'yazili'],
     lise: ['kamp9Hazirlik', 'kamp910', 'kampMaarifTyt'],
     kamp910: ['lise', 'kamp9Hazirlik', 'kampTyt'],
-    ilkokul: ['ortaokul', 'kamp56'],
+    ilkokul: ['sinif2', 'ortaokul', 'kamp56'],
+    sinif2: ['ilkokul', 'start'],
     yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
     kitap: ['yazili', 'start', 'lgs'],
-    start: ['yks', 'lgs', 'lise'],
+    start: ['yks', 'lgs', 'kocluk'],
+    kocluk: ['start', 'lgs', 'yks'],
     kamplar: ['kamp9Hazirlik', 'kampLgs', 'kamp56', 'kamp910'],
   };
 
@@ -202,6 +228,22 @@
 
   function getProduct(id) {
     return PRODUCTS[id] || null;
+  }
+
+  function getEducationPricing(id) {
+    var p = PRODUCTS[id];
+    if (!p || !p.educationMonths) return null;
+    var months = p.educationMonths;
+    var monthly = Math.round(p.price / months);
+    return {
+      months: months,
+      monthly: monthly,
+      total: p.price,
+      listPrice: p.listPrice || null,
+      monthlyFormatted: formatPrice(monthly),
+      totalFormatted: formatPrice(p.price),
+      listFormatted: p.listPrice ? formatPrice(p.listPrice) : null,
+    };
   }
 
   function getProductByPath(pathname) {
@@ -234,9 +276,96 @@
       });
   }
 
+  function educationDiscountPct(listPrice, price) {
+    if (!listPrice || listPrice <= price) return null;
+    return Math.round((1 - price / listPrice) * 100);
+  }
+
+  function renderEducationPricingHtml(pricing, compact) {
+    var html = '<div class="price-edu' + (compact ? ' price-edu--compact' : '') + '">';
+    html += '<span class="price-edu-badge">' + pricing.months + ' Aylık Kapsamlı Program</span>';
+
+    if (pricing.listFormatted) {
+      var pct = educationDiscountPct(pricing.listPrice, pricing.total);
+      html += '<div class="price-edu-top">';
+      html += '<s class="price-edu-old">' + pricing.listFormatted + '</s>';
+      if (pct) html += '<span class="price-edu-discount">%' + pct + ' indirim</span>';
+      html += '</div>';
+    }
+
+    html += '<div class="price-edu-hero">' + pricing.monthlyFormatted + ' <span class="price-edu-per">/ ay</span></div>';
+    html += '<div class="price-edu-sub">' + pricing.months + ' Ay × ' + pricing.monthlyFormatted + '</div>';
+    html +=
+      '<div class="price-edu-total">' +
+      pricing.months +
+      ' Aylık Toplam Eğitim Bedeli: ' +
+      pricing.totalFormatted +
+      '</div>';
+    html += '</div>';
+    return html;
+  }
+
+  function hydrateEducationPrices() {
+    if (typeof document === 'undefined') return;
+
+    document.querySelectorAll('[data-vip-education-price]').forEach(function (el) {
+      var id = el.getAttribute('data-vip-education-price');
+      var pricing = getEducationPricing(id);
+      if (!pricing) return;
+
+      var isPriceBox = el.classList.contains('price-box');
+      var html = renderEducationPricingHtml(pricing, !isPriceBox);
+      var mount = el.querySelector('.price-edu-mount');
+
+      if (mount) {
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        var block = tmp.firstElementChild;
+        if (block) {
+          mount.className = 'price-edu-mount ' + block.className;
+          mount.innerHTML = block.innerHTML;
+        }
+      } else if (isPriceBox) {
+        var actions = [];
+        Array.from(el.children).forEach(function (child) {
+          actions.push(child);
+        });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'price-edu-mount';
+        wrapper.innerHTML = html;
+        el.insertBefore(wrapper, el.firstChild);
+      } else {
+        el.innerHTML = html;
+        el.classList.add('prog-price--education');
+      }
+
+      if (isPriceBox) {
+        var kayit = el.querySelector('.btn-kayit');
+        if (kayit && !kayit.dataset.eduCta) {
+          kayit.textContent = '📋 Programa Başvur';
+          kayit.dataset.eduCta = '1';
+        }
+      }
+    });
+  }
+
   global.VIP_PRODUCTS = PRODUCTS;
   global.VIP_getProduct = getProduct;
+  global.VIP_getEducationPricing = getEducationPricing;
   global.VIP_getProductByPath = getProductByPath;
   global.VIP_getRelatedProducts = getRelatedProducts;
   global.VIP_formatPrice = formatPrice;
+  global.VIP_renderEducationPricingHtml = renderEducationPricingHtml;
+  global.VIP_hydrateEducationPrices = hydrateEducationPrices;
+
+  if (typeof document !== 'undefined') {
+    function scheduleEducationPricing() {
+      hydrateEducationPrices();
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', scheduleEducationPricing);
+    } else {
+      scheduleEducationPricing();
+    }
+  }
 })(typeof window !== 'undefined' ? window : global);

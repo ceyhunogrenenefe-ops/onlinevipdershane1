@@ -33,45 +33,16 @@
   }
 
   function youtubeIdFromUrl(url) {
-    var u = String(url || '').trim();
-    if (!u) return '';
-    var m = u.match(
-      /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{6,11})/i
-    );
-    if (m) return m[1];
-    try {
-      var q = new URL(u).searchParams.get('v');
-      if (q && /^[A-Za-z0-9_-]{6,11}$/.test(q)) return q;
-    } catch (e) {
-      /* ignore */
-    }
-    return '';
-  }
-
-  function isDirectVideoUrl(url) {
-    var u = String(url || '').trim();
-    if (!u) return false;
-    if (/\.(mp4|webm|ogg)(\?|#|$)/i.test(u)) return true;
-    if (/\/storage\/v1\/object\//i.test(u) && /video/i.test(u)) return true;
-    return false;
+    return (global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.youtubeIdFromUrl(url)) || '';
   }
 
   function isPlayableVideoUrl(url) {
-    return !!(youtubeIdFromUrl(url) || isDirectVideoUrl(url));
+    return !!(global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.isPlayableVideoUrl(url));
   }
 
   function primaryVideoUrl(t) {
-    if (Array.isArray(t.videos)) {
-      for (var i = 0; i < t.videos.length; i++) {
-        var item = t.videos[i];
-        var url =
-          typeof item === 'string'
-            ? String(item || '').trim()
-            : String((item && (item.url || item.public_url || item.video_url)) || '').trim();
-        if (url) return url;
-      }
-    }
-    return String(t.video_url || '').trim();
+    if (global.OVD_TEACHER_VIDEO) return global.OVD_TEACHER_VIDEO.primaryVideoUrl(t);
+    return String((t && t.video_url) || '').trim();
   }
 
   function colsForCount(n) {
@@ -132,16 +103,9 @@
         clearTimeout(box._videoInjectTimer);
         box._videoInjectTimer = null;
       }
-      if (box._videoClearTimer) {
-        clearTimeout(box._videoClearTimer);
-        box._videoClearTimer = null;
-      }
       box.classList.remove('is-playing', 'is-muted', 'has-sound', 'is-touch-playing');
       var layer = box.querySelector('.teacher-video-layer');
-      box._videoClearTimer = setTimeout(function () {
-        box._videoClearTimer = null;
-        if (!box.classList.contains('is-playing') && layer) layer.innerHTML = '';
-      }, 700);
+      if (global.OVD_TEACHER_VIDEO) global.OVD_TEACHER_VIDEO.pauseMedia(layer);
     }
 
     function ytEmbedSrc(id, muted) {
@@ -198,35 +162,19 @@
     }
 
     function inject(box, layer, url, muted) {
-      var yt = youtubeIdFromUrl(url);
-      if (yt) {
+      var ok = false;
+      if (global.OVD_TEACHER_VIDEO && global.OVD_TEACHER_VIDEO.injectHoverMedia) {
+        ok = !!global.OVD_TEACHER_VIDEO.injectHoverMedia(layer, url, muted);
+      } else {
+        var yt = youtubeIdFromUrl(url);
+        if (!yt) return false;
         layer.innerHTML =
           '<iframe src="' +
           ytEmbedSrc(yt, muted) +
           '" title="Tanıtım videosu" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe>';
-      } else if (isDirectVideoUrl(url)) {
-        layer.innerHTML =
-          '<video src="' +
-          escapeHtml(url) +
-          '" autoplay loop playsinline controls' +
-          (muted ? ' muted' : '') +
-          '></video>';
-        var video = layer.querySelector('video');
-        if (video) {
-          video.muted = !!muted;
-          video.volume = 1;
-          var playPromise = video.play();
-          if (playPromise && playPromise.catch) {
-            playPromise.catch(function () {
-              video.muted = true;
-              box.classList.add('is-muted');
-              video.play().catch(function () {
-                video.controls = true;
-              });
-            });
-          }
-        }
-      } else return false;
+        ok = true;
+      }
+      if (!ok) return false;
       if (muted) {
         box.classList.add('is-muted');
         box.classList.remove('has-sound');
@@ -240,44 +188,41 @@
     function start(box, opts) {
       opts = opts || {};
       var restart = !!opts.restart;
-      var muted = !!opts.muted;
+      var muted = opts.muted !== false;
       var fromUnmute = !!opts.fromUnmute;
       if (!box) return;
-      if (box.classList.contains('is-playing') && !restart) {
-        if (!muted) start(box, { restart: true, muted: false, fromUnmute: true });
-        return;
-      }
       var url = box.getAttribute('data-video') || '';
       var layer = box.querySelector('.teacher-video-layer');
       if (!layer || !url || !isPlayableVideoUrl(url)) return;
-      if (box._videoClearTimer) {
-        clearTimeout(box._videoClearTimer);
-        box._videoClearTimer = null;
-      }
-      if (box._videoInjectTimer) {
-        clearTimeout(box._videoInjectTimer);
-        box._videoInjectTimer = null;
-      }
       root.querySelectorAll('.teacher-photo-box.has-video.is-playing').forEach(function (other) {
         if (other !== box) stop(other);
       });
-      if (restart) layer.innerHTML = '';
+      if (restart && global.OVD_TEACHER_VIDEO) layer.innerHTML = '';
+      if (global.OVD_TEACHER_VIDEO) {
+        if (!global.OVD_TEACHER_VIDEO.hasMedia(layer) || restart) {
+          global.OVD_TEACHER_VIDEO.injectHoverMedia(layer, url, muted);
+        } else {
+          global.OVD_TEACHER_VIDEO.resumeMedia(layer, muted);
+        }
+      } else {
+        inject(box, layer, url, muted);
+      }
       box.classList.add('is-playing');
-      if (muted) box.classList.add('is-muted');
-      else box.classList.remove('is-muted');
-      var reduceMotion =
-        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var delay = reduceMotion || fromUnmute ? 0 : 140;
-      box._videoInjectTimer = setTimeout(function () {
-        box._videoInjectTimer = null;
-        if (!box.classList.contains('is-playing')) return;
-        inject(box, layer, url, !!muted);
-      }, delay);
+      if (muted) {
+        box.classList.add('is-muted');
+        box.classList.remove('has-sound');
+      } else {
+        markSoundOn(box);
+        forceUnmute(box);
+      }
     }
 
     root.querySelectorAll('.teacher-photo-box.has-video').forEach(function (box) {
       if (box.dataset.heroVideoBound === '1') return;
       box.dataset.heroVideoBound = '1';
+      var layer = box.querySelector('.teacher-video-layer');
+      var url = box.getAttribute('data-video') || '';
+      if (global.OVD_TEACHER_VIDEO) global.OVD_TEACHER_VIDEO.preloadHoverMedia(layer, url);
       var unmuteBtn = box.querySelector('.teacher-unmute-btn');
       if (unmuteBtn) {
         unmuteBtn.addEventListener('click', function (e) {
@@ -290,12 +235,7 @@
         window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (hoverCapable) {
         box.addEventListener('mouseenter', function () {
-          start(box, { muted: false });
-          setTimeout(function () {
-            if (box.classList.contains('is-playing') && !box.classList.contains('has-sound')) {
-              box.classList.add('is-muted');
-            }
-          }, 800);
+          start(box, { muted: true });
         });
         box.addEventListener('mouseleave', function () {
           stop(box);

@@ -10,8 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/kadro.css">
-<link rel="stylesheet" href="assets/cart.css">
+<link rel="stylesheet" href="assets/kadro.css?v=20260818k">
+<link rel="stylesheet" href="assets/cart.css?v=4">
 <link rel="stylesheet" href="assets/nav-contact.css">
 <style>
 :root{--navy:#1a3fad;--accent:#e8232a;--text:#1a1f36;--muted:#64748b;--border:#e2e8f4;--light:#f4f7ff;}
@@ -61,7 +61,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="index.html">Ana Sayfa</a>
       <a href="programlar/index.html">Programlar</a>
       <a href="kadromuz.html" class="active">Kadromuz</a>
-      <a href="videolar.html">Videolar</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
+        </div>
+      </div>
       <a href="blog.html">Blog</a>
       <a href="basarilarimiz.html">Başarılarımız</a>
       <div class="contact-dropdown">
@@ -102,10 +108,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>© 2025 Online VIP Dershane · <a href="index.html" style="color:var(--navy);font-weight:700;">Ana Sayfa</a> · <a href="iletisim.html" style="color:var(--navy);font-weight:700;">İletişim</a></p>
 </footer>
 
-<script src="assets/kadro.js"></script>
+<script src="assets/kadro.js?v=20260818r"></script>
 <script src="assets/products.js"></script>
 <script src="assets/cart.js"></script>
   <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

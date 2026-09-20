@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/cart.css">
+<link rel="stylesheet" href="assets/cart.css?v=4">
 <link rel="stylesheet" href="assets/nav-contact.css">
-<link rel="stylesheet" href="assets/icons.css">
+<link rel="stylesheet" href="assets/video-gallery.css?v=1">
 <style>
 :root{--navy:#1a3fad;--accent:#e8232a;--accent2:#c8191f;--text:#1a1f36;--muted:#6e6e73;--border:#e5e5e7;--light:#f5f5f7;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -105,7 +105,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="index.html">Ana Sayfa</a>
       <a href="programlar/index.html">Programlar</a>
       <a href="kadromuz.html">Kadromuz</a>
-      <a href="videolar.html" class="active">Videolar</a>
+      <div class="contact-dropdown">
+        <button type="button" class="contact-dropdown-btn active" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
+        <div class="contact-list">
+          <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#basari-kulturu">Başarı Kültürü</a>
+          <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
+        </div>
+      </div>
       <a href="blog.html">Blog</a>
       <a href="basarilarimiz.html">Başarılarımız</a>
       <div class="contact-dropdown">
@@ -131,7 +138,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="lead">Canlı dersler, maksimum 10 kişilik VIP gruplar, birebir koçluk ve 7/24 soru desteği — sistemimizi tanıtım videosuyla keşfedin.</p>
       <div class="hero-btns">
         <a href="kayit.html" class="btn-primary">Ücretsiz Tanışma Dersi Al</a>
-        <a href="#ornek-dersler" class="btn-outline">Örnek Ders Videoları v</a>
+        <a href="#ornek-dersler" class="btn-outline">Örnek Ders Videoları ↓</a>
       </div>
     </div>
     <div class="video-shell video-shell--portrait">
@@ -140,8 +147,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </section>
 
+<!-- Başarı Kültürü — VIP video galeri bileşeni -->
+<section class="ovd-culture-gallery" id="basari-kulturu" data-culture-gallery aria-label="Başarı Kültürü video galerisi">
+  <div class="ovd-culture-gallery__inner">
+    <header class="ovd-culture-gallery__header">
+      <p class="ovd-culture-gallery__kicker">Mentorluk &amp; Yaşam</p>
+      <h2 class="ovd-culture-gallery__title">Başarı Kültürü</h2>
+      <p class="ovd-culture-gallery__subtitle">Gerçek başarı sadece masada kazanılmaz. Doğru alışkanlıklar, dijital denge ve sağlıklı çevre yönetimiyle potansiyeli performansa dönüştürüyoruz.</p>
+    </header>
+    <div class="ovd-culture-gallery__filters" data-culture-filters role="tablist" aria-label="Video kategorileri">
+      <button type="button" class="ovd-culture-gallery__filter is-active" data-filter="all" role="tab" aria-selected="true">Tümü</button>
+      <button type="button" class="ovd-culture-gallery__filter" data-filter="dijital" role="tab" aria-selected="false">Dijital Denge &amp; Odak</button>
+      <button type="button" class="ovd-culture-gallery__filter" data-filter="sosyal" role="tab" aria-selected="false">Sosyal Çevre &amp; İlişkiler</button>
+      <button type="button" class="ovd-culture-gallery__filter" data-filter="zihin" role="tab" aria-selected="false">Zihin &amp; Performans</button>
+    </div>
+    <div class="ovd-culture-gallery__grid" data-culture-grid></div>
+    <p class="ovd-culture-gallery__empty" data-culture-empty>Bu kategoride henüz video bulunmuyor.</p>
+  </div>
+</section>
+
+<div class="ovd-culture-modal" data-culture-modal aria-hidden="true" role="dialog" aria-modal="true" aria-label="Video oynatıcı">
+  <div class="ovd-culture-modal__panel">
+    <div class="ovd-culture-modal__frame-wrap">
+      <button type="button" class="ovd-culture-modal__close" data-culture-modal-close aria-label="Kapat">×</button>
+      <iframe data-culture-modal-frame title="Video oynatıcı" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="ovd-culture-modal__meta">
+      <h3 data-culture-modal-title></h3>
+      <p data-culture-modal-desc></p>
+    </div>
+  </div>
+</div>
+
 <section class="section" id="ornek-dersler" style="background:var(--light);">
   <div class="container">
+    <div id="veli-yorumlari"></div>
     <div class="section-head">
       <div class="sec-label">Video Galerisi</div>
       <h2>Yaz Kampları, Veli Rehberleri & Memnuniyet</h2>
@@ -149,9 +189,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="filters" id="videoFilters">
       <button type="button" class="filter-btn active" data-filter="all">Tümü</button>
+      <button type="button" class="filter-btn" data-filter="programlar">Programlar</button>
       <button type="button" class="filter-btn" data-filter="kamplar">Yaz Kampları</button>
       <button type="button" class="filter-btn" data-filter="veli">Veli & Motivasyon</button>
-      <button type="button" class="filter-btn" data-filter="veli-memnuniyet">Veli Memnuniyet</button>
+      <button type="button" class="filter-btn" data-filter="veli-memnuniyet">Veli Yorumları</button>
     </div>
     <div class="video-grid" id="videoGrid"></div>
     <div class="cta-box">
@@ -177,7 +218,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p>© 2025 Online VIP Dershane · <a href="index.html" style="color:var(--navy);font-weight:700;">Ana Sayfa</a> · <a href="iletisim.html" style="color:var(--navy);font-weight:700;">İletişim</a></p>
 </footer>
 
-<script src="assets/videos.js"></script>
+<script src="assets/videos.js?v=20260910sait"></script>
+<script src="assets/video-gallery.js?v=1"></script>
 <script src="assets/products.js"></script>
 <script src="assets/icons.js"></script>
 <script src="assets/cart.js"></script>
@@ -185,13 +227,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){
   var CAT_LABELS = {
     intro: 'Tanıtım',
+    programlar: 'Programlar',
     kamplar: 'Yaz Kampı',
     veli: 'Veli & Motivasyon',
-    'veli-memnuniyet': 'Veli Memnuniyet'
+    'veli-memnuniyet': 'Veli Yorumları'
   };
   var grid = document.getElementById('videoGrid');
   var filters = document.getElementById('videoFilters');
   var activeFilter = 'all';
+
+  function applyHashFilter(){
+    var hash = (location.hash || '').replace('#', '');
+    if (hash === 'veli-yorumlari' || hash === 'veli-memnuniyet') {
+      activeFilter = 'veli-memnuniyet';
+      filters.querySelectorAll('.filter-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.filter === 'veli-memnuniyet');
+      });
+    }
+  }
 
   function thumb(id){
     return 'https://www.youtube.com/embed/' + id + '?rel=0&modestbranding=1';
@@ -250,7 +303,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     window.open('https://www.youtube.com/watch?v=' + id, '_blank', 'noopener');
   });
 
+  applyHashFilter();
   renderVideos();
+  window.addEventListener('hashchange', function () {
+    applyHashFilter();
+    renderVideos();
+  });
 
   (function renderFromYou(){
     var host = document.getElementById('fromYouGrid');
@@ -271,6 +329,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
   <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

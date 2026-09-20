@@ -59,7 +59,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="form-container">
   <div class="form-card">
     <h2>📋 Kayıt Bilgileri</h2>
-    <p>Tüm alanları eksiksiz doldurun. En kısa sürede sizinle iletişime geçeceğiz.</p>
+    <p>En az ad, telefon, sınıf ve program yeterli. Diğer alanlar isteğe bağlıdır.</p>
     <form id="kayit-form" action="https://formspree.io/f/mpqnjdwd" method="POST">
       <div class="form-row">
         <div class="fg"><label>Ad *</label><input type="text" name="ad" placeholder="Adınız" required></div>
@@ -67,11 +67,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="form-row">
         <div class="fg"><label>Telefon *</label><input type="tel" name="telefon" placeholder="05XX XXX XX XX" required></div>
-        <div class="fg"><label>E-posta *</label><input type="email" name="email" placeholder="ornek@email.com" required></div>
+        <div class="fg"><label>E-posta (isteğe bağlı)</label><input type="email" name="email" placeholder="ornek@email.com"></div>
       </div>
       <div class="fg"><label>Öğrencinin Sınıfı *</label>
         <select name="sinif" required>
           <option value="">Seçiniz...</option>
+          <option>2. Sınıf</option>
           <option>3. Sınıf</option><option>4. Sınıf</option>
           <option>5. Sınıf</option><option>6. Sınıf</option><option>7. Sınıf</option>
           <option>8. Sınıf (LGS)</option>
@@ -87,11 +88,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option>YKS TYT-AYT Hazırlık Programı</option>
           <option>5-6-7. Sınıf VIP Paketi</option>
           <option>9-10-11. Sınıf Programı</option>
+          <option>2. Sınıf Canlı Dönem Programı</option>
           <option>3-4. Sınıf İlkokul Programı</option>
           <option>Yaz Kampı</option>
           <option>Yazılıya Hazırlık</option>
           <option>Kitap Okuma Atölyesi</option>
           <option>VIP Start Paketi</option>
+          <option>Yıllık Premium Eğitim Koçluğu</option>
         </select>
       </div>
       <div class="fg"><label>Mevcut Okul</label>
@@ -128,6 +131,29 @@ if(form){
       if(heroH1) heroH1.textContent="Premium Özel Derse Kayıt Olun";
       if(heroP) heroP.textContent="Formu doldurun; özel ders ekibimiz en kısa sürede sizi arasın.";
     }
+    if(programSel && (program==="sinif-2"||program==="2-sinif"||program==="sinif2")){
+      programSel.value="2. Sınıf Canlı Dönem Programı";
+      var heroH12=document.querySelector(".page-hero h1");
+      var heroP2=document.querySelector(".page-hero p");
+      if(heroH12) heroH12.textContent="2. Sınıf Canlı Dönem Programına Ön Kayıt";
+      if(heroP2) heroP2.textContent="Formu doldurun; ekibimiz en kısa sürede sizi arasın.";
+      var sinifSel=form.querySelector('select[name="sinif"]');
+      if(sinifSel && !sinifSel.value) sinifSel.value="2. Sınıf";
+    }
+    if(programSel && (program==="kocluk"||program==="kocluk-paketi"||program==="egitim-koclugu")){
+      programSel.value="Yıllık Premium Eğitim Koçluğu";
+      var heroH1c=document.querySelector(".page-hero h1");
+      var heroPc=document.querySelector(".page-hero p");
+      if(heroH1c) heroH1c.textContent="Yıllık Premium Eğitim Koçluğuna Kayıt";
+      if(heroPc) heroPc.textContent="Formu doldurun; koçluk ekibimiz en kısa sürede sizi arasın.";
+    }
+    if(programSel && (program==="kitap"||program==="kitap-atolyesi")){
+      programSel.value="Kitap Okuma Atölyesi";
+      var heroH1k=document.querySelector(".page-hero h1");
+      var heroPk=document.querySelector(".page-hero p");
+      if(heroH1k) heroH1k.textContent="Kitap Okuma Atölyesine Kayıt Olun";
+      if(heroPk) heroPk.textContent="Formu doldurun; yaz programı ekibimiz en kısa sürede sizi arasın.";
+    }
     if(teacher){
       var notEl=form.querySelector('textarea[name="not"]');
       if(notEl && !notEl.value){
@@ -154,6 +180,8 @@ if(form){
 }
 </script>
   <script src="assets/welcome-modal.js"></script>
+<script src="https://www.dersonlinevipkocluk.com/crm-site-lead.js" defer></script>
+<script src="assets/wa-float.js" defer></script>
 <script src="assets/perf-analytics.js" defer></script>
 </body>
 </html>

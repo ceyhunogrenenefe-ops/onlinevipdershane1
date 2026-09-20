@@ -1,4 +1,5 @@
 const { createKommoLead, splitName } = require('./_lib/kommo');
+const { isValidTrMobile, normalizeTrPhone } = require('./_lib/assessment-phone');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
@@ -23,26 +24,39 @@ function parseBody(req) {
 function normalize(payload) {
   const adSoyad = String(payload.ad_soyad || '').trim();
   const name = splitName(adSoyad);
+  const type = String(payload.type || '').trim();
+  const isFreeTrial = type === 'free_trial_3_days';
   return {
     ad: name.ad,
     soyad: name.soyad,
-    telefon: String(payload.telefon || '').trim(),
+    telefon: normalizeTrPhone(payload.telefon) || String(payload.telefon || '').trim(),
     email: String(payload.email || '').trim().toLowerCase(),
     sinif: String(payload.sinif || '').trim(),
-    program: String(payload.program || '').trim(),
+    program: isFreeTrial
+      ? '3 Günlük Ücretsiz Deneme Dersi'
+      : String(payload.program || '').trim(),
     not: String(payload.not || '').trim(),
+    type: type,
   };
 }
 
 function validate(data) {
   if (!data.ad && !data.soyad) return 'Ad soyad zorunludur.';
   if (!data.telefon) return 'Telefon zorunludur.';
-  if (!data.sinif) return 'Sınıf seçin.';
+  if (!isValidTrMobile(data.telefon)) return 'Geçerli cep telefonu girin.';
+  if (data.program === 'Sizi Arayalım') {
+    if (!data.sinif) data.sinif = 'Belirtilmedi';
+  } else if (data.type === 'free_trial_3_days') {
+    if (!data.sinif) return 'Sınıf seçin.';
+  } else if (!data.sinif) {
+    return 'Sınıf seçin.';
+  }
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return 'Geçerli e-posta girin.';
   return null;
 }
 
 async function sendFormspreeEmail(data) {
+  const isFreeTrial = data.type === 'free_trial_3_days';
   const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
     method: 'POST',
     headers: {
@@ -50,14 +64,19 @@ async function sendFormspreeEmail(data) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      form: 'iletisim',
+      form: isFreeTrial ? 'free_trial_3_days' : 'iletisim',
+      type: data.type || '',
       ad_soyad: [data.ad, data.soyad].filter(Boolean).join(' '),
       telefon: data.telefon,
       email: data.email,
       sinif: data.sinif,
       program: data.program,
       not: data.not,
-      _subject: 'Yeni Tanışma Dersi Talebi — Online VIP Dershane',
+      _subject: isFreeTrial
+        ? '3 Günlük Ücretsiz Deneme — Online VIP Dershane'
+        : data.program === 'Sizi Arayalım'
+          ? 'Sizi Arayalım — Online VIP Dershane'
+          : 'Yeni Tanışma Dersi Talebi — Online VIP Dershane',
       _replyto: data.email || undefined,
     }),
   });
@@ -92,8 +111,14 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    const kommoTag =
+      data.type === 'free_trial_3_days'
+        ? '3 Gün Ücretsiz Deneme'
+        : data.program === 'Sizi Arayalım'
+          ? 'Sizi Arayalım'
+          : 'İletişim Formu';
     const kommo = await createKommoLead(data, {
-      tag: 'İletişim Formu',
+      tag: kommoTag,
       title: kommoTitle,
     });
     results.kommo = kommo.skipped ? 'skipped' : true;

@@ -141,7 +141,6 @@ function campPage(camp) {
   </div>
 </div>
 <footer style="background:#0a1a4e;color:rgba(255,255,255,.5);padding:32px 5%;text-align:center;font-size:12px;">© 2025 Online VIP Dershane</footer>
-<a href="https://wa.me/908503034014" target="_blank" rel="noopener" style="position:fixed;bottom:24px;right:24px;z-index:300;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(37,211,102,.4);text-decoration:none;">💬</a>
 <div id="copy-toast" style="position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(16px);background:#1a3fad;color:#fff;padding:11px 22px;border-radius:12px;font-size:13px;font-weight:700;z-index:99999;display:none;opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap;">✅ Link kopyalandı!</div>
 <script>
 function copyURL(url){
@@ -162,6 +161,7 @@ function showToast(){
 <script src="../assets/cart.js"></script>
 <script src="../assets/camps-data.js"></script>
 <script src="../assets/camp-detail.js"></script>
+<script src="../assets/wa-float.js" defer></script>
 <script src="../assets/perf-analytics.js" defer></script>
 </body>
 </html>`;

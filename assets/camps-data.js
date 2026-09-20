@@ -9,7 +9,7 @@
       icon: 'trophy',
       theme: 'kampLgs',
       price: 24000,
-      image: '../assets/img/programlar/kamplar.png',
+      image: '../assets/img/programlar/kamplar.jpg',
       banner: '../assets/img/hero/slide-yaz-kampi.jpg',
       metaDescription:
         '8. sınıf öğrencileri için 9 haftalık LGS Yaz Kampı. Canlı dersler, haftalık denemeler, konu tekrarları, soru çözümü ve birebir koçluk.',
@@ -83,7 +83,7 @@
       icon: 'graduation-cap',
       theme: 'kamp9Hazirlik',
       price: 5000,
-      image: '../assets/img/programlar/kamp-9-hazirlik.png',
+      image: '../assets/img/programlar/kamp-9-hazirlik.jpg',
       banner: '../assets/img/hero/slide-vip-start.jpg',
       metaDescription:
         '9. sınıfa hazırlık kampı: 10 Ağustos başlangıç, 4 hafta, haftada 5 saat toplam 20 saat matematik dersi. 10 kişilik sınıf, birebir koçluk, seminerler ve 2 deneme sınavı.',
