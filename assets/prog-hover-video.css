@@ -135,3 +135,15 @@
     margin: 0 auto;
   }
 }
+
+/* Instagram reel: gömmenin üst başlığını ve alt yorum şeridini kırp, videoyu ortala */
+.has-prog-video.is-instagram .prog-video-layer {
+  background: #000;
+}
+.has-prog-video.is-instagram .prog-video-layer iframe.prog-ig-frame {
+  height: calc(100% + 150px);
+  margin-top: -56px;
+}
+.has-prog-video.is-instagram .prog-unmute-btn {
+  display: none !important;
+}
