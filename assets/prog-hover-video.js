@@ -16,6 +16,12 @@
     return m ? m[1] : '';
   }
 
+  /** Instagram reel / gönderi kısa kodu (instagram.com/reel/XXXX) */
+  function instagramCode(url) {
+    var m = String(url || '').match(/instagram\.com\/(?:reel|reels|p|tv)\/([A-Za-z0-9_-]+)/i);
+    return m ? m[1] : '';
+  }
+
   function isFinePointer() {
     return !!(global.matchMedia && global.matchMedia('(hover: hover) and (pointer: fine)').matches);
   }
@@ -78,11 +84,20 @@
       '" title="Program tanıtım videosu" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="eager"></iframe>';
   }
 
+  // Instagram gömmesi otomatik/sessiz oynatmayı desteklemez: kart üzerinde
+  // Instagram'ın kendi oynatıcısı açılır, izleyici tek dokunuşla oynatır.
+  function injectInstagram(layer, code) {
+    layer.innerHTML =
+      '<iframe class="prog-ig-frame" src="https://www.instagram.com/reel/' +
+      encodeURIComponent(code) +
+      '/embed/" title="Program tanıtım videosu" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" scrolling="no" loading="eager"></iframe>';
+  }
+
   function stopVideo(box) {
     clearTimer(box, '_dwellTimer');
     var layer = box.querySelector('.prog-video-layer');
     if (layer) layer.innerHTML = '';
-    box.classList.remove('is-playing', 'is-muted', 'has-sound', 'is-touch-playing');
+    box.classList.remove('is-playing', 'is-muted', 'has-sound', 'is-touch-playing', 'is-instagram');
   }
 
   function startVideo(box, opts) {
@@ -91,8 +106,17 @@
     var restart = !!opts.restart;
     var url = videoUrl(box);
     var id = youtubeId(url);
+    var igCode = id ? '' : instagramCode(url);
     var layer = ensureChrome(box);
-    if (!id || !layer) return false;
+    if ((!id && !igCode) || !layer) return false;
+
+    if (igCode) {
+      if (box.classList.contains('is-playing')) return true;
+      injectInstagram(layer, igCode);
+      box.classList.add('is-playing', 'is-instagram');
+      box.classList.remove('is-muted', 'has-sound');
+      return true;
+    }
 
     if (box.classList.contains('is-playing') && !restart) {
       if (!muted) return startVideo(box, { restart: true, muted: false });
