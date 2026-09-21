@@ -230,13 +230,9 @@
       actions.className = 'prog-card-actions';
       var detail = document.createElement('a');
       detail.className = 'btn-detail';
-      if (href.indexOf('/') === 0 && href.indexOf('/programlar/') === 0) {
-        detail.href = href;
-      } else if (href.indexOf('/') === 0) {
-        detail.href = 'programlar/' + href.replace(/^\//, '');
-      } else {
-        detail.href = href;
-      }
+      // Kök yollu linkler (/programlar/..., /kitap-atolyesi.html) zaten tam adres;
+      // başına programlar/ eklemek /programlar/kitap-atolyesi.html gibi 404 üretiyordu.
+      detail.href = href;
       detail.textContent = 'Detaylar →';
       actions.appendChild(detail);
       actions.appendChild(makeEducationLink(productId));
