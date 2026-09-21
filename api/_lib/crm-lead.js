@@ -10,10 +10,17 @@
  * sayar; tarayıcı kopyası da gelse ikinci kez yazılmaz.
  */
 const PANEL_FALLBACK = 'https://www.dersonlinevipkocluk.com';
+const SITE_FALLBACK = 'https://www.onlinevipdershane.com';
 
 function panelBase() {
   const raw = String(process.env.KOCLUK_PANEL_URL || PANEL_FALLBACK).trim();
   return raw.replace(/\/$/, '');
+}
+
+/** Panelin izinli listesindeki alan adı; SITE_URL başka bir yeri gösteriyorsa yedeğe döner. */
+function siteOrigin() {
+  const raw = String(process.env.SITE_URL || '').trim().replace(/\/$/, '');
+  return /^https:\/\/(www\.)?onlinevipdershane\.com$/i.test(raw) ? raw : SITE_FALLBACK;
 }
 
 function clean(v) {
@@ -36,8 +43,16 @@ async function sendCrmLead(lead) {
   if (!payload.telefon) return { ok: false, skipped: true, error: 'telefon_yok' };
 
   const url = `${panelBase()}/api/site-leads`;
-  const secret = String(process.env.SITE_LEAD_WEBHOOK_SECRET || '').trim();
-  const headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
+  // Panel çağıranı Origin ya da gizli anahtarla tanır. Origin olarak sitenin kendi
+  // alan adını yolluyoruz (isteği gerçekten o site yapıyor); anahtar tanımlıysa o da eklenir.
+  const secret = String(
+    process.env.SITE_LEAD_WEBHOOK_SECRET || process.env.OZEL_DERS_WEBHOOK_SECRET || ''
+  ).trim();
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    Origin: siteOrigin(),
+  };
   if (secret) headers['x-site-lead-secret'] = secret;
 
   try {
