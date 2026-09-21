@@ -5,6 +5,7 @@ const { validateContact } = require('./_lib/assessment-validate');
 const { signPayload, openPayload, randomId } = require('./_lib/assessment-token');
 const { pickBank, publicQuestions, gradeAttempt } = require('./_lib/assessment-questions');
 const store = require('./_lib/assessment-store');
+const { sendCrmLeadSafe } = require('./_lib/crm-lead');
 const { sendWhatsApp, messageFor, twilioConfigured } = require('./_lib/assessment-whatsapp');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
@@ -187,8 +188,31 @@ async function submitLead(req, body, origin) {
   };
   if (!duplicate) record.created_at = now;
 
-  var integrations = { email: false, kommo: false, whatsapp: false, supabase: false };
+  var integrations = { email: false, kommo: false, whatsapp: false, supabase: false, crm: false };
   var errors = [];
+
+  // Tarayıcı kopyası (crm-site-lead.js) düşmezse yedek; panel aynı kaydı iki kez yazmaz.
+  try {
+    var crm = await sendCrmLeadSafe({
+      form_kind: 'assessment',
+      ad_soyad: String(contact.parentName || '').trim(),
+      ogrenci: answers.studentName,
+      telefon: phone,
+      email: record.email || '',
+      sinif: answers.grade,
+      program: answers.targetExam || '',
+      page: record.landing_page || '',
+      referrer: record.referrer || '',
+      utm_source: record.utm_source || '',
+      utm_medium: record.utm_medium || '',
+      utm_campaign: record.utm_campaign || '',
+      utm_content: record.utm_content || '',
+    });
+    integrations.crm = crm.ok;
+    if (!crm.ok && !crm.skipped) errors.push({ channel: 'crm', message: crm.error || 'crm_failed' });
+  } catch (e) {
+    errors.push({ channel: 'crm', message: String(e.message || 'crm hatası').slice(0, 180) });
+  }
 
   try {
     var saved;
