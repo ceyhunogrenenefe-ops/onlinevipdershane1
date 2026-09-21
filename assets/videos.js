@@ -66,6 +66,13 @@
         portrait: true,
       },
       {
+        id: 'bbG3RapeRpc',
+        title: 'Bir Annenin Gözünden: Tereddütten Tavsiyeye',
+        desc: 'Bir velimizin tereddütle başlayıp tavsiyeye dönüşen Online VIP Dershane deneyimi.',
+        category: 'veli-memnuniyet',
+        portrait: true,
+      },
+      {
         id: 'uEv0Lo2KiX0',
         title: 'Veli Memnuniyet',
         desc: 'Velilerimizin Online VIP Dershane deneyiminden bir paylaşım.',
