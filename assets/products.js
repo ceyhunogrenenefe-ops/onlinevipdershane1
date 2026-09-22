@@ -58,6 +58,14 @@
       period: 'yıl',
       slug: 'programlar/sinif-2.html',
     },
+    yksMatGeo: {
+      id: 'yksMatGeo',
+      name: 'YKS Matematik & Geometri VIP Grup',
+      subtitle: 'YKS 2027 · 4 saat/hafta · Sınava kadar',
+      price: 44900,
+      period: 'dönem',
+      slug: 'programlar/yks-matematik-geometri.html',
+    },
     kamplar: {
       id: 'kamplar',
       name: 'Yaz Kampları',
@@ -215,6 +223,7 @@
     kamp910: ['lise', 'kamp9Hazirlik', 'kampTyt'],
     ilkokul: ['sinif2', 'ortaokul', 'kamp56'],
     sinif2: ['ilkokul', 'start'],
+    yksMatGeo: ['yks', 'kocluk', 'start'],
     yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
     kitap: ['yazili', 'start', 'lgs'],
     start: ['yks', 'lgs', 'kocluk'],

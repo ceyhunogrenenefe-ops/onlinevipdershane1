@@ -4,6 +4,7 @@ const PRODUCTS = {
   ortaokul: { id: 'ortaokul', name: '5-6-7. Sınıf VIP Paketi', price: 98000 },
   lise: { id: 'lise', name: '9-10-11. Sınıf Programı', price: 112000 },
   ilkokul: { id: 'ilkokul', name: '3-4. Sınıf Programı', price: 84000 },
+  yksMatGeo: { id: 'yksMatGeo', name: 'YKS Matematik & Geometri VIP Grup', price: 44900 },
   kamplar: { id: 'kamplar', name: 'Yaz Kampları', price: 5000 },
   kamp9Hazirlik: { id: 'kamp9Hazirlik', name: '9. Sınıfa Hazırlık Kampı', price: 5000 },
   kampLgs: { id: 'kampLgs', name: 'LGS Yaz Kampı', price: 24000 },

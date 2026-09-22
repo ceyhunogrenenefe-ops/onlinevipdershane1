@@ -195,6 +195,7 @@
       'lise.html': 'lise',
       'ilkokul.html': 'ilkokul',
       'sinif-2.html': 'sinif2',
+      'yks-matematik-geometri.html': 'yksMatGeo',
       'kamplar.html': 'kamplar',
       'kamp-9-hazirlik.html': 'kamp9Hazirlik',
       'kamp-lgs.html': 'kampLgs',

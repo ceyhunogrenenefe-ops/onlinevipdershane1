@@ -86,6 +86,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option>Premium Özel Ders</option>
           <option>LGS Hazırlık Programı</option>
           <option>YKS TYT-AYT Hazırlık Programı</option>
+          <option>YKS Matematik &amp; Geometri VIP Grup</option>
           <option>5-6-7. Sınıf VIP Paketi</option>
           <option>9-10-11. Sınıf Programı</option>
           <option>2. Sınıf Canlı Dönem Programı</option>
@@ -130,6 +131,11 @@ if(form){
       var heroP=document.querySelector(".page-hero p");
       if(heroH1) heroH1.textContent="Premium Özel Derse Kayıt Olun";
       if(heroP) heroP.textContent="Formu doldurun; özel ders ekibimiz en kısa sürede sizi arasın.";
+    }
+    if(programSel && (program==="yks-matematik"||program==="yks-matematik-geometri")){
+      programSel.value="YKS Matematik & Geometri VIP Grup";
+      var heroH1m=document.querySelector(".page-hero h1");
+      if(heroH1m) heroH1m.textContent="YKS Matematik & Geometri VIP Grubuna Ön Kayıt";
     }
     if(programSel && (program==="sinif-2"||program==="2-sinif"||program==="sinif2")){
       programSel.value="2. Sınıf Canlı Dönem Programı";
