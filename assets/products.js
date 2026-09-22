@@ -64,6 +64,9 @@
       subtitle: 'YKS 2027 · 4 saat/hafta · Sınava kadar',
       price: 44900,
       period: 'dönem',
+      educationMonths: 9,
+      // 44.900 / 9 = 4.988,9 → aylık 4.990₺ gösterilir; toplam 44.900₺ kalır
+      monthlyRoundTo: 10,
       slug: 'programlar/yks-matematik-geometri.html',
     },
     kamplar: {
@@ -243,10 +246,12 @@
     var p = PRODUCTS[id];
     if (!p || !p.educationMonths) return null;
     var months = p.educationMonths;
-    var monthly = Math.round(p.price / months);
+    var roundTo = p.monthlyRoundTo || 1;
+    var monthly = Math.round(p.price / months / roundTo) * roundTo;
     return {
       months: months,
       monthly: monthly,
+      exactSplit: monthly * months === p.price,
       total: p.price,
       listPrice: p.listPrice || null,
       monthlyFormatted: formatPrice(monthly),
@@ -303,7 +308,13 @@
     }
 
     html += '<div class="price-edu-hero">' + pricing.monthlyFormatted + ' <span class="price-edu-per">/ ay</span></div>';
-    html += '<div class="price-edu-sub">' + pricing.months + ' Ay × ' + pricing.monthlyFormatted + '</div>';
+    // Yuvarlanmış aylıkta çarpım toplamı tutmaz → çarpım yerine ödeme planı yazılır
+    html +=
+      '<div class="price-edu-sub">' +
+      (pricing.exactSplit === false
+        ? pricing.months + ' aylık ödeme planı'
+        : pricing.months + ' Ay × ' + pricing.monthlyFormatted) +
+      '</div>';
     html +=
       '<div class="price-edu-total">' +
       pricing.months +
