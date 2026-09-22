@@ -502,10 +502,6 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 .hero-visual--face-left .hero-visual-img { object-position:32% 38%; }
 .hero-visual--subject-left .hero-visual-img { object-position:18% 42%; }
 .hero-visual--erken .hero-visual-img { object-position:center 40%; }
-/* Dikey afiş slaytı: kırpmadan göster */
-.hero-visual--poster { background:#0b2a8a; }
-.hero-visual--poster::after { display:none; }
-.hero-visual--poster .hero-visual-img { object-fit:contain; object-position:center; }
 /* Fotoğrafın üstünü kaplamasın: ince alt şerit */
 .hero-visual-overlay {
   position:absolute;
@@ -982,8 +978,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <a href="kayit.html?program=yks-matematik" class="hbtn-outline" style="color:#1a3fad;border-color:#1a3fad;">Ön Kayıt →</a>
             </div>
           </div>
-          <div class="hero-visual hero-visual--poster">
-            <img src="assets/img/programlar/yks-matematik-geometri.jpg" alt="YKS 2027 Matematik ve Geometri VIP Grup Dersleri afişi" class="hero-visual-img" loading="lazy" decoding="async" width="960" height="1200">
+          <div class="hero-visual">
+            <img src="assets/img/hero/slide-yks-matematik.jpg" alt="YKS matematik ve geometri — öğrenci masada ders çalışıyor" class="hero-visual-img" loading="lazy" decoding="async" width="1200" height="800">
+            <div class="hero-visual-overlay">
+              <div class="hero-feature-box hero-feature-box--deep hero-overlay-strip">
+                <strong>YKS Matematik &amp; Geometri</strong>
+                <span class="hero-feature-chip">4 saat / hafta</span>
+                <span class="hero-feature-chip hero-feature-chip--accent">44.900₺</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
