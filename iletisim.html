@@ -465,6 +465,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option>LGS Hazırlık</option>
           <option>YKS TYT-AYT Hazırlık</option>
           <option>YKS Matematik &amp; Geometri VIP Grup</option>
+          <option>VIP Branş Dersleri</option>
           <option>5-6-7. Sınıf VIP Paketi</option>
           <option>9-10-11. Sınıf Programı</option>
           <option>2. Sınıf Canlı Dönem Programı</option>
@@ -539,6 +540,9 @@ if(cf){
     if((program==='sinif-2' || program==='2-sinif' || program==='sinif2') && p){
       p.value='2. Sınıf Canlı Dönem Programı';
       if(s && !s.value) s.value='2. Sınıf';
+    }
+    if((program==='brans-dersleri' || program==='brans') && p){
+      p.value='VIP Branş Dersleri';
     }
     if((program==='yks-matematik' || program==='yks-matematik-geometri') && p){
       p.value='YKS Matematik & Geometri VIP Grup';

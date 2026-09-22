@@ -49,11 +49,22 @@
     }, 0);
   }
 
-  function addToCart(productId, qty) {
+  function addToCart(productId, qty, extra) {
     var product = window.VIP_getProduct(productId);
     if (!product) return false;
     qty = Math.max(1, parseInt(qty, 10) || 1);
     var items = readCart();
+    // Branş paketi: sepette tek branş paketi olur; yenisi (seçilen branşlarla) eskisinin yerine geçer
+    if (product.branchCount) {
+      items = items.filter(function (item) {
+        var p = window.VIP_getProduct(item.id);
+        return !(p && p.branchCount);
+      });
+      items.push({ id: productId, qty: 1, branches: (extra && extra.branches) || [] });
+      writeCart(items);
+      showToast(product.name + ' sepete eklendi');
+      return true;
+    }
     var found = false;
     items = items.map(function (item) {
       if (item.id === productId) {
@@ -74,7 +85,12 @@
       if (item.id !== productId) return true;
       return qty > 0;
     }).map(function (item) {
-      if (item.id === productId) return { id: productId, qty: qty };
+      if (item.id === productId) {
+        var next = {};
+        for (var k in item) next[k] = item[k];
+        next.qty = qty;
+        return next;
+      }
       return item;
     });
     writeCart(items);
@@ -298,11 +314,15 @@
         html += '<div class="cart-item-info">';
         html += '<div class="cart-item-name">' + escHtml(p.name) + '</div>';
         html += '<div class="cart-item-sub">' + escHtml(p.subtitle) + '</div>';
+        if (item.branches && item.branches.length) {
+          html += '<div class="cart-item-sub"><strong>Branşlar:</strong> ' + escHtml(item.branches.join(', ')) + '</div>';
+        }
         html +=
           '<button type="button" class="btn-remove" data-remove="' +
           escHtml(p.id) +
           '">Kald\u0131r</button>';
         html += '</div>';
+        if (!p.branchCount) {
         html += '<div class="qty-wrap">';
         html +=
           '<button type="button" class="qty-btn" data-qty="' +
@@ -314,6 +334,7 @@
           escHtml(p.id) +
           '" data-delta="1" aria-label="Artir">+</button>';
         html += '</div>';
+        }
         html += '<div class="cart-item-price">' + window.VIP_formatPrice(line) + '</div>';
         html += '</article>';
       });

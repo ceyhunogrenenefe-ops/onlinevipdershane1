@@ -222,7 +222,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     items.forEach(function(item){
       var p=VIP_getProduct(item.id);
       if(!p)return;
-      html+='<div class="order-line"><span>'+p.name+' × '+item.qty+'</span><strong>'+VIP_formatPrice(p.price*item.qty)+'</strong></div>';
+      var nm=p.name+(item.branches&&item.branches.length?' ('+item.branches.join(', ')+')':'');
+      html+='<div class="order-line"><span>'+nm+' × '+item.qty+'</span><strong>'+VIP_formatPrice(p.price*item.qty)+'</strong></div>';
     });
     html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(OVD_CART.total())+'</strong></div>';
     box.innerHTML=html;

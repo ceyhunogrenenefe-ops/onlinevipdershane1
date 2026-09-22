@@ -5,6 +5,9 @@ const PRODUCTS = {
   lise: { id: 'lise', name: '9-10-11. Sınıf Programı', price: 112000 },
   ilkokul: { id: 'ilkokul', name: '3-4. Sınıf Programı', price: 84000 },
   yksMatGeo: { id: 'yksMatGeo', name: 'YKS Matematik & Geometri VIP Grup', price: 44900 },
+  brans1: { id: 'brans1', name: 'VIP Branş Dersleri — 1 Branş', price: 25000, branchCount: 1 },
+  brans2: { id: 'brans2', name: 'VIP Branş Dersleri — 2 Branş', price: 40000, branchCount: 2 },
+  brans3: { id: 'brans3', name: 'VIP Branş Dersleri — 3 Branş', price: 50000, branchCount: 3 },
   kamplar: { id: 'kamplar', name: 'Yaz Kampları', price: 5000 },
   kamp9Hazirlik: { id: 'kamp9Hazirlik', name: '9. Sınıfa Hazırlık Kampı', price: 5000 },
   kampLgs: { id: 'kampLgs', name: 'LGS Yaz Kampı', price: 24000 },
@@ -22,15 +25,30 @@ const PRODUCTS = {
   'ders-10': { id: 'ders-10', name: 'Premium Özel Ders — 10 Ders', price: 9500 },
 };
 
+const BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
+
+/** Branş paketinde seçilen branşları doğrular; fiyat paketten gelir (branş sayısı = paket). */
+function withBranches(product, rawBranches) {
+  if (!product.branchCount) return product;
+  const list = Array.isArray(rawBranches) ? rawBranches : [];
+  const picked = [...new Set(list.map((b) => String(b || '').trim()).filter((b) => BRANS_BRANCHES.includes(b)))];
+  if (picked.length !== product.branchCount) {
+    throw new Error(product.branchCount + ' branş seçilmelidir.');
+  }
+  return { ...product, branches: picked, name: product.name + ' (' + picked.join(', ') + ')' };
+}
+
 function resolveLineItems(items) {
   if (!Array.isArray(items) || !items.length) {
     throw new Error('Sepet boş.');
   }
 
   return items.map((item) => {
-    const product = PRODUCTS[item.id];
-    const qty = Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));
-    if (!product) throw new Error('Geçersiz ürün: ' + item.id);
+    const base = PRODUCTS[item.id];
+    if (!base) throw new Error('Geçersiz ürün: ' + item.id);
+    const product = withBranches(base, item.branches);
+    // Branş paketi öğrenci başına tek adet
+    const qty = product.branchCount ? 1 : Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));
     return {
       product,
       qty,
@@ -39,4 +57,4 @@ function resolveLineItems(items) {
   });
 }
 
-module.exports = { PRODUCTS, resolveLineItems };
+module.exports = { PRODUCTS, BRANS_BRANCHES, resolveLineItems };

@@ -69,6 +69,36 @@
       monthlyRoundTo: 10,
       slug: 'programlar/yks-matematik-geometri.html',
     },
+    brans1: {
+      id: 'brans1',
+      name: 'VIP Branş Dersleri — 1 Branş',
+      subtitle: '10 aylık eğitim programı · 1 branş',
+      price: 25000,
+      period: 'yıl',
+      educationMonths: 10,
+      branchCount: 1,
+      slug: 'programlar/brans-dersleri.html',
+    },
+    brans2: {
+      id: 'brans2',
+      name: 'VIP Branş Dersleri — 2 Branş',
+      subtitle: '10 aylık eğitim programı · 2 branş',
+      price: 40000,
+      period: 'yıl',
+      educationMonths: 10,
+      branchCount: 2,
+      slug: 'programlar/brans-dersleri.html',
+    },
+    brans3: {
+      id: 'brans3',
+      name: 'VIP Branş Dersleri — 3 Branş',
+      subtitle: '10 aylık eğitim programı · 3 branş',
+      price: 50000,
+      period: 'yıl',
+      educationMonths: 10,
+      branchCount: 3,
+      slug: 'programlar/brans-dersleri.html',
+    },
     kamplar: {
       id: 'kamplar',
       name: 'Yaz Kampları',
@@ -198,6 +228,7 @@
     'lise.html': 'lise',
     'ilkokul.html': 'ilkokul',
     'sinif-2.html': 'sinif2',
+    'yks-matematik-geometri.html': 'yksMatGeo',
     'kamplar.html': 'kamplar',
     'kamp-9-hazirlik.html': 'kamp9Hazirlik',
     'kamp-lgs.html': 'kampLgs',
@@ -227,6 +258,9 @@
     ilkokul: ['sinif2', 'ortaokul', 'kamp56'],
     sinif2: ['ilkokul', 'start'],
     yksMatGeo: ['yks', 'kocluk', 'start'],
+    brans1: ['kocluk', 'start', 'yazili'],
+    brans2: ['kocluk', 'start', 'yazili'],
+    brans3: ['kocluk', 'start', 'yazili'],
     yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
     kitap: ['yazili', 'start', 'lgs'],
     start: ['yks', 'lgs', 'kocluk'],
@@ -369,6 +403,8 @@
     });
   }
 
+  /** VIP Branş Dersleri: seçilebilir branşlar (sunucu listesiyle aynı olmalı) */
+  global.VIP_BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
   global.VIP_PRODUCTS = PRODUCTS;
   global.VIP_getProduct = getProduct;
   global.VIP_getEducationPricing = getEducationPricing;
