@@ -368,9 +368,9 @@ function showToast(){
 <script src="../assets/program-nav.js" defer></script>
 <script src="../assets/icons.js" defer></script>
 <script src="../assets/prog-hover-video.js?v=3"></script>
-<script src="../assets/products.js?v=20260910b"></script>
+<script src="../assets/products.js?v=20260922c"></script>
 <script src="../assets/education-pricing.js?v=2"></script>
-<script src="../assets/cart.js"></script>
+<script src="../assets/cart.js?v=20260922c"></script>
   <script src="../assets/welcome-modal.js"></script>
 <script>
 (function(){
@@ -418,7 +418,11 @@ function showToast(){
   addBtn.addEventListener('click', function(e){
     e.preventDefault();
     if (!picked.length || !window.OVD_CART) return;
-    OVD_CART.add('brans' + picked.length, 1, { branches: picked.slice() });
+    // Tarayıcıda eski ürün listesi kalmışsa ekleme başarısız olur: boş sepete gönderme
+    if (!OVD_CART.add('brans' + picked.length, 1, { branches: picked.slice() })) {
+      OVD_CART.showToast('Sayfa güncellendi, lütfen sayfayı yenileyip tekrar deneyin.');
+      return;
+    }
     location.href = '../sepet.html';
   });
   render();

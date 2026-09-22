@@ -157,8 +157,8 @@ function showToast(){
 </script>
 <script src="../assets/program-nav.js" defer></script>
 <script src="../assets/icons.js" defer></script>
-<script src="../assets/products.js"></script>
-<script src="../assets/cart.js"></script>
+<script src="../assets/products.js?v=20260922c"></script>
+<script src="../assets/cart.js?v=20260922c"></script>
 <script src="../assets/camps-data.js"></script>
 <script src="../assets/camp-detail.js"></script>
 <script src="../assets/wa-float.js" defer></script>
