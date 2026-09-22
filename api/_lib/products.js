@@ -25,7 +25,7 @@ const PRODUCTS = {
   'ders-10': { id: 'ders-10', name: 'Premium Özel Ders — 10 Ders', price: 9500 },
 };
 
-const BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
+const BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Fizik', 'Kimya', 'Biyoloji', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
 
 /** Branş paketinde seçilen branşları doğrular; fiyat paketten gelir (branş sayısı = paket). */
 function withBranches(product, rawBranches) {

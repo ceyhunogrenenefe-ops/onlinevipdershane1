@@ -404,7 +404,7 @@
   }
 
   /** VIP Branş Dersleri: seçilebilir branşlar (sunucu listesiyle aynı olmalı) */
-  global.VIP_BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
+  global.VIP_BRANS_BRANCHES = ['Matematik', 'Geometri', 'Fen Bilimleri', 'Fizik', 'Kimya', 'Biyoloji', 'Türkçe', 'Sosyal Bilimler', 'İngilizce'];
   global.VIP_PRODUCTS = PRODUCTS;
   global.VIP_getProduct = getProduct;
   global.VIP_getEducationPricing = getEducationPricing;
