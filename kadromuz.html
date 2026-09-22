@@ -26,7 +26,7 @@ a{text-decoration:none;color:inherit;}
 .nav-links a:hover,.nav-links a.active{color:var(--navy);background:var(--light);}
 .nav-right{display:flex;align-items:center;gap:8px;}
 .btn-link{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;border:1.5px solid var(--border);}
-.btn-cta{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;background:var(--accent);color:#fff;}
+.btn-cta{white-space:nowrap;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;background:var(--accent);color:#fff;}
 .container{max-width:1100px;margin:0 auto;padding:0 5%;}
 .hero{padding:48px 0 24px;}
 .sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:10px;}
@@ -60,15 +60,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="nav-links">
       <a href="index.html">Ana Sayfa</a>
       <a href="programlar/index.html">Programlar</a>
+      <a href="ozel-ders.html" style="color:#e8232a;font-weight:700;">Özel Ders</a>
+      <a href="kitap-atolyesi.html" style="color:#1a3fad;font-weight:700;">Kitap Atölyesi</a>
+      <a href="blog.html">Blog</a>
       <a href="kadromuz.html" class="active">Kadromuz</a>
       <div class="contact-dropdown">
         <button type="button" class="contact-dropdown-btn" aria-haspopup="true">Videolar <span class="contact-arrow">▾</span></button>
         <div class="contact-list">
           <a href="videolar.html">Tüm Videolar</a>
+          <a href="videolar.html#basari-kulturu">Başarı Kültürü</a>
           <a href="videolar.html#veli-yorumlari">Veli Yorumları</a>
         </div>
       </div>
-      <a href="blog.html">Blog</a>
       <a href="basarilarimiz.html">Başarılarımız</a>
       <div class="contact-dropdown">
         <button type="button" class="contact-dropdown-btn" aria-haspopup="true">İletişim <span class="contact-arrow">▾</span></button>
@@ -79,7 +82,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="nav-right">
-      <a href="programlar/index.html" class="btn-link">Programlar</a>
       <a href="kayit.html" class="btn-cta">Kayıt Ol</a>
     </div>
   </div>

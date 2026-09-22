@@ -1,4 +1,9 @@
 /* Program lander — mobile nav + footer fixes */
+@media (min-width: 1181px) {
+  .prog-site-nav > div { max-width: 1320px !important; gap: 12px !important; }
+  #navLinks { flex-wrap: nowrap !important; gap: 0 !important; }
+  #navLinks > a, #pdBtn { padding: 7px 9px !important; font-size: 13.5px !important; }
+}
 body.prog-lander-page {
   overflow-x: hidden;
 }
@@ -50,7 +55,8 @@ body.prog-lander-page {
   z-index: 1;
 }
 
-@media (max-width: 960px) {
+/* Menü 9 bağlantı: 1180px altında hamburger menüye geçer */
+@media (max-width: 1180px) {
   .prog-nav-toggle {
     display: inline-flex;
     order: 2;
@@ -128,7 +134,9 @@ body.prog-lander-page {
     border: 1px solid #e5e5e7 !important;
     z-index: 1 !important;
   }
+}
 
+@media (max-width: 960px) {
   .prog-site-footer > div:first-child {
     grid-template-columns: 1fr !important;
     gap: 28px !important;

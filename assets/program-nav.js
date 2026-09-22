@@ -65,7 +65,7 @@
   }
 
   function isMobile() {
-    return window.matchMedia('(max-width: 960px)').matches;
+    return window.matchMedia('(max-width: 1180px)').matches;
   }
 
   window.openPD = function () {

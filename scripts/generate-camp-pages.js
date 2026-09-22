@@ -81,7 +81,7 @@ function campPage(camp) {
 <link rel="stylesheet" href="../assets/icons.css">
 <link rel="stylesheet" href="../assets/nav-logo.css">
 <link rel="stylesheet" href="../assets/program-page.css">
-<link rel="stylesheet" href="../assets/program-nav.css">
+<link rel="stylesheet" href="../assets/program-nav.css?v=20260922d">
 <link rel="stylesheet" href="../assets/camp-detail.css">
 <link rel="stylesheet" href="../assets/camp-page.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
@@ -155,7 +155,7 @@ function showToast(){
   t._t=setTimeout(function(){t.style.opacity="0";t.style.transform="translateX(-50%) translateY(16px)";setTimeout(function(){t.style.display="none";},300);},2500);
 }
 </script>
-<script src="../assets/program-nav.js" defer></script>
+<script src="../assets/program-nav.js?v=20260922d" defer></script>
 <script src="../assets/icons.js" defer></script>
 <script src="../assets/products.js?v=20260922c"></script>
 <script src="../assets/cart.js?v=20260922c"></script>
