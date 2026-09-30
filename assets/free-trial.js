@@ -285,12 +285,22 @@
     });
   }
 
+  // Instagram vb. linklerden doğrudan açılış: /#deneme-dersi-formu, /#deneme veya ?deneme=1
+  function wantsTrialFromUrl() {
+    if (/^#deneme(-dersi(-formu)?)?$/i.test(location.hash || '')) return true;
+    return /(^|[?&])deneme=1(&|$)/.test(location.search || '');
+  }
+
   function boot() {
     loadCss();
     ensureModal();
     ensureFab();
     bind();
     setupExitIntent();
+    if (wantsTrialFromUrl()) openModal();
+    window.addEventListener('hashchange', function () {
+      if (wantsTrialFromUrl()) openModal();
+    });
     // Eski WhatsApp deneme float'ını gizle (çakışmayı önle)
     var legacy = document.getElementById('ovd-trial-float');
     if (legacy) legacy.style.display = 'none';

@@ -13,6 +13,10 @@
   }
 
   function shouldShow() {
+    // Deneme dersi linkiyle gelen ziyaretçide deneme formu açılır; karşılama penceresi çakışmasın
+    if (/^#deneme(-dersi(-formu)?)?$/i.test(location.hash || '') || /(^|[?&])deneme=1(&|$)/.test(location.search || '')) {
+      return false;
+    }
     try {
       if (localStorage.getItem(STORAGE_KEY) || localStorage.getItem('ovd_video_welcome_dismissed')) {
         return false;
