@@ -127,14 +127,6 @@
       bio: 'Online VIP Dershane\'de İngilizce öğretmeni olarak görev almaktadır. Öğrencilerin dinleme, konuşma, okuma ve yazma becerilerini adım adım geliştirmeye odaklanır.',
     },
     {
-      slug: 'turgut-usul',
-      name: 'Turgut Usul',
-      role: 'Türkçe Öğretmeni',
-      photo: 'assets/img/kadro/turgut-usul.jpg',
-      short: 'Türkçe derslerinde okuma, yazma, dil bilgisi ve anlama becerileri.',
-      bio: 'Online VIP Dershane bünyesinde Türkçe öğretmeni olarak görev yapmaktadır. Öğrencilerin dil becerilerini güçlendirmek ve sınavlara hazırlanmalarına destek olmak için canlı derslerde birlikte çalışır.',
-    },
-    {
       slug: 'kaan-inaltekin',
       name: 'Kaan İnaltekin',
       role: 'Öğretmen',

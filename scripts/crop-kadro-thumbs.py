@@ -21,7 +21,6 @@ CROPS = {
     "nadide-akturk.jpg": (0.78, 0.42, 0.48),
     "mustafa-kozan-studio.jpg": (0.50, 0.36, 0.88),
     "mustafa-ozturk.jpg": (0.42, 0.36, 0.70),
-    "turgut-usul.jpg": (0.50, 0.28, 0.80),
     "yasin-kandemir.jpg": (0.50, 0.36, 0.88),
     "yilmaz-isik.jpg": (0.50, 0.32, 0.64),
 }
