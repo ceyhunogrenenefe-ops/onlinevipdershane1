@@ -23,6 +23,16 @@
       "permanent": true
     },
     {
+      "source": "/deneme-dersi-formu",
+      "destination": "/?deneme=1",
+      "permanent": false
+    },
+    {
+      "source": "/deneme-dersi",
+      "destination": "/?deneme=1",
+      "permanent": false
+    },
+    {
       "source": "/lgs.html",
       "destination": "/programlar/lgs.html",
       "permanent": true
