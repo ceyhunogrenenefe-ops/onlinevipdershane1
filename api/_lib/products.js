@@ -1,13 +1,22 @@
+const academicPricing = require('../../assets/academic-pricing.js');
+
+/**
+ * Fiyatlar Eylül'deki TAM DÖNEM bedelidir ve sabit kalır.
+ * `dynamicAcademicPricing: true` olan paketlerde ödemeye giden tutar, kalan
+ * eğitim ayına göre okuma anında hesaplanır (assets/academic-pricing.js).
+ * Tek seferlik ürünler (kitap, yazılı, kamp, özel ders, koçluk, start)
+ * işaretlenmez; fiyatları hiç değişmez.
+ */
 const PRODUCTS = {
-  lgs: { id: 'lgs', name: 'LGS Hazırlık', price: 120000 },
-  yks: { id: 'yks', name: 'YKS TYT-AYT Hazırlık', price: 119000 },
-  ortaokul: { id: 'ortaokul', name: '5-6-7. Sınıf VIP Paketi', price: 98000 },
-  lise: { id: 'lise', name: '9-10-11. Sınıf Programı', price: 112000 },
-  ilkokul: { id: 'ilkokul', name: '3-4. Sınıf Programı', price: 84000 },
+  lgs: { id: 'lgs', dynamicAcademicPricing: true, name: 'LGS Hazırlık', price: 120000 },
+  yks: { id: 'yks', dynamicAcademicPricing: true, name: 'YKS TYT-AYT Hazırlık', price: 119000 },
+  ortaokul: { id: 'ortaokul', dynamicAcademicPricing: true, name: '5-6-7. Sınıf VIP Paketi', price: 98000 },
+  lise: { id: 'lise', dynamicAcademicPricing: true, name: '9-10-11. Sınıf Programı', price: 112000 },
+  ilkokul: { id: 'ilkokul', dynamicAcademicPricing: true, name: '3-4. Sınıf Programı', price: 84000 },
   yksMatGeo: { id: 'yksMatGeo', name: 'YKS Matematik & Geometri VIP Grup', price: 44900 },
-  brans1: { id: 'brans1', name: 'VIP Branş Dersleri — 1 Branş', price: 25000, branchCount: 1 },
-  brans2: { id: 'brans2', name: 'VIP Branş Dersleri — 2 Branş', price: 40000, branchCount: 2 },
-  brans3: { id: 'brans3', name: 'VIP Branş Dersleri — 3 Branş', price: 50000, branchCount: 3 },
+  brans1: { id: 'brans1', dynamicAcademicPricing: true, name: 'VIP Branş Dersleri — 1 Branş', price: 25000, branchCount: 1 },
+  brans2: { id: 'brans2', dynamicAcademicPricing: true, name: 'VIP Branş Dersleri — 2 Branş', price: 40000, branchCount: 2 },
+  brans3: { id: 'brans3', dynamicAcademicPricing: true, name: 'VIP Branş Dersleri — 3 Branş', price: 50000, branchCount: 3 },
   kamplar: { id: 'kamplar', name: 'Yaz Kampları', price: 5000 },
   kamp9Hazirlik: { id: 'kamp9Hazirlik', name: '9. Sınıfa Hazırlık Kampı', price: 5000 },
   kampLgs: { id: 'kampLgs', name: 'LGS Yaz Kampı', price: 24000 },
@@ -38,7 +47,18 @@ function withBranches(product, rawBranches) {
   return { ...product, branches: picked, name: product.name + ' (' + picked.join(', ') + ')' };
 }
 
-function resolveLineItems(items) {
+/**
+ * Sepet satirlari.
+ *
+ * Tutar HER ZAMAN sunucudaki katalogdan ve sunucudaki tarihten hesaplanir;
+ * istemciden yalniz urun kimligi, adet ve brans secimi alinir. Boylece
+ * ekranda gorunen ile odemeye giden tutar ayrisamaz ve istemci fiyati
+ * degistirerek daha az odeyemez.
+ *
+ * @param {Array} items istemciden gelen sepet
+ * @param {Date} [now] yalniz testlerde tarih sabitlemek icin
+ */
+function resolveLineItems(items, now) {
   if (!Array.isArray(items) || !items.length) {
     throw new Error('Sepet boş.');
   }
@@ -46,15 +66,17 @@ function resolveLineItems(items) {
   return items.map((item) => {
     const base = PRODUCTS[item.id];
     if (!base) throw new Error('Geçersiz ürün: ' + item.id);
-    const product = withBranches(base, item.branches);
+    const withBr = withBranches(base, item.branches);
+    const currentPrice = academicPricing.productPrice(withBr, now);
+    const product = { ...withBr, price: currentPrice };
     // Branş paketi öğrenci başına tek adet
     const qty = product.branchCount ? 1 : Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));
     return {
       product,
       qty,
-      unitAmount: Math.round(product.price * 100),
+      unitAmount: Math.round(currentPrice * 100),
     };
   });
 }
 
-module.exports = { PRODUCTS, BRANS_BRANCHES, resolveLineItems };
+module.exports = { PRODUCTS, BRANS_BRANCHES, resolveLineItems, academicPricing };

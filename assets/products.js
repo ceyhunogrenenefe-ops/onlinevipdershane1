@@ -2,6 +2,7 @@
   var PRODUCTS = {
     lgs: {
       id: 'lgs',
+      dynamicAcademicPricing: true,
       name: 'LGS Hazırlık',
       subtitle: '8. Sınıf · Yıllık program',
       price: 120000,
@@ -12,6 +13,7 @@
     },
     yks: {
       id: 'yks',
+      dynamicAcademicPricing: true,
       name: 'YKS TYT-AYT Hazırlık',
       subtitle: 'Üniversite · Yıllık program',
       price: 119000,
@@ -22,6 +24,7 @@
     },
     ortaokul: {
       id: 'ortaokul',
+      dynamicAcademicPricing: true,
       name: '5-6-7. Sınıf VIP Paketi',
       subtitle: 'Ortaokul · Yıllık program',
       price: 98000,
@@ -32,6 +35,7 @@
     },
     lise: {
       id: 'lise',
+      dynamicAcademicPricing: true,
       name: '9-10-11. Sınıf Programı',
       subtitle: 'Lise · Yıllık program',
       price: 112000,
@@ -42,6 +46,7 @@
     },
     ilkokul: {
       id: 'ilkokul',
+      dynamicAcademicPricing: true,
       name: '3-4. Sınıf Programı',
       subtitle: 'İlkokul · Yıllık program',
       price: 84000,
@@ -71,6 +76,7 @@
     },
     brans1: {
       id: 'brans1',
+      dynamicAcademicPricing: true,
       name: 'VIP Branş Dersleri — 1 Branş',
       subtitle: '10 aylık eğitim programı · 1 branş',
       price: 25000,
@@ -81,6 +87,7 @@
     },
     brans2: {
       id: 'brans2',
+      dynamicAcademicPricing: true,
       name: 'VIP Branş Dersleri — 2 Branş',
       subtitle: '10 aylık eğitim programı · 2 branş',
       price: 40000,
@@ -91,6 +98,7 @@
     },
     brans3: {
       id: 'brans3',
+      dynamicAcademicPricing: true,
       name: 'VIP Branş Dersleri — 3 Branş',
       subtitle: '10 aylık eğitim programı · 3 branş',
       price: 50000,
@@ -276,20 +284,54 @@
     return PRODUCTS[id] || null;
   }
 
+  /** Eğitim dönemi fiyat motoru — sunucuyla aynı dosya. */
+  function academicPricing() {
+    return (typeof global !== 'undefined' && global.VIP_AcademicPricing) || null;
+  }
+
+  /**
+   * Ürünün BUGÜNKÜ fiyatı.
+   *
+   * Dönemlik paketlerde katalogdaki fiyat Eylül'deki tam dönem bedelidir;
+   * kalan aya göre düşen güncel bedel burada hesaplanır. Sepet, özet ve
+   * ödeme aynı değeri kullansın diye tek giriş noktası budur.
+   */
+  function getCurrentPrice(idOrProduct) {
+    var p = typeof idOrProduct === 'string' ? PRODUCTS[idOrProduct] : idOrProduct;
+    if (!p) return 0;
+    var engine = academicPricing();
+    // Motor yüklenmediyse katalog fiyatına düşülür; ekran boş kalmaz
+    if (!engine) return p.price;
+    return engine.productPrice(p, new Date());
+  }
+
   function getEducationPricing(id) {
     var p = PRODUCTS[id];
     if (!p || !p.educationMonths) return null;
     var months = p.educationMonths;
     var roundTo = p.monthlyRoundTo || 1;
-    var monthly = Math.round(p.price / months / roundTo) * roundTo;
+    var engine = academicPricing();
+    var term = engine && p.dynamicAcademicPricing ? engine.priceFor(p.price, new Date()) : null;
+
+    // Dönemlik pakette aylık bedel yıl boyunca sabit kalır; değişen yalnız
+    // kalan ay sayısı ve dolayısıyla toplam
+    var monthly = term ? term.monthly : Math.round(p.price / months / roundTo) * roundTo;
+    var total = term ? term.total : p.price;
+    var remaining = term ? term.remaining : months;
+
     return {
       months: months,
       monthly: monthly,
-      exactSplit: monthly * months === p.price,
-      total: p.price,
+      remaining: remaining,
+      // Dönem ilerlediyse "kalan ay" ifadesi gösterilir
+      partialTerm: Boolean(term && term.discounted),
+      offSeason: Boolean(term && term.offSeason),
+      exactSplit: monthly * remaining === total,
+      total: total,
+      basePrice: p.price,
       listPrice: p.listPrice || null,
       monthlyFormatted: formatPrice(monthly),
-      totalFormatted: formatPrice(p.price),
+      totalFormatted: formatPrice(total),
       listFormatted: p.listPrice ? formatPrice(p.listPrice) : null,
     };
   }
@@ -331,7 +373,12 @@
 
   function renderEducationPricingHtml(pricing, compact) {
     var html = '<div class="price-edu' + (compact ? ' price-edu--compact' : '') + '">';
-    html += '<span class="price-edu-badge">' + pricing.months + ' Aylık Kapsamlı Program</span>';
+    html +=
+      '<span class="price-edu-badge">' +
+      (pricing.partialTerm
+        ? 'Kalan ' + pricing.remaining + ' Ay · Dönem İçi Kayıt'
+        : pricing.months + ' Aylık Kapsamlı Program') +
+      '</span>';
 
     if (pricing.listFormatted) {
       var pct = educationDiscountPct(pricing.listPrice, pricing.total);
@@ -346,14 +393,15 @@
     html +=
       '<div class="price-edu-sub">' +
       (pricing.exactSplit === false
-        ? pricing.months + ' aylık ödeme planı'
-        : pricing.months + ' Ay × ' + pricing.monthlyFormatted) +
+        ? pricing.remaining + ' aylık ödeme planı'
+        : pricing.remaining + ' Ay × ' + pricing.monthlyFormatted) +
       '</div>';
+    // Dönem başladıysa toplam, kalan aya göre düşer; başlık bunu açıkça söylesin
     html +=
       '<div class="price-edu-total">' +
-      pricing.months +
-      ' Aylık Toplam Eğitim Bedeli: ' +
-      pricing.totalFormatted +
+      (pricing.partialTerm
+        ? 'Güncel Dönem Ücreti (kalan ' + pricing.remaining + ' ay): ' + pricing.totalFormatted
+        : pricing.months + ' Aylık Toplam Eğitim Bedeli: ' + pricing.totalFormatted) +
       '</div>';
     html += '</div>';
     return html;
@@ -408,6 +456,7 @@
   global.VIP_PRODUCTS = PRODUCTS;
   global.VIP_getProduct = getProduct;
   global.VIP_getEducationPricing = getEducationPricing;
+  global.VIP_getCurrentPrice = getCurrentPrice;
   global.VIP_getProductByPath = getProductByPath;
   global.VIP_getRelatedProducts = getRelatedProducts;
   global.VIP_formatPrice = formatPrice;
