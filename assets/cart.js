@@ -1,6 +1,21 @@
 (function () {
   var STORAGE_KEY = 'ovd_cart_v1';
 
+  /**
+   * Sepette gosterilen fiyat.
+   *
+   * Donemlik paketlerde katalog fiyati Eylul'deki tam donem bedelidir; kalan
+   * aya gore dusen guncel bedel products.js uzerinden gelir. Sunucu da
+   * odemede ayni hesabi yapar, iki taraf ayrismaz.
+   */
+  function currentPrice(product) {
+    if (!product) return 0;
+    if (typeof window.VIP_getCurrentPrice === 'function') {
+      return window.VIP_getCurrentPrice(product);
+    }
+    return product.price || 0;
+  }
+
   function assetBase() {
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
@@ -45,7 +60,7 @@
     return items.reduce(function (sum, item) {
       var product = window.VIP_getProduct(item.id);
       if (!product) return sum;
-      return sum + product.price * (item.qty || 1);
+      return sum + currentPrice(product) * (item.qty || 1);
     }, 0);
   }
 
@@ -309,7 +324,7 @@
       items.forEach(function (item) {
         var p = window.VIP_getProduct && window.VIP_getProduct(item.id);
         if (!p) return;
-        var line = p.price * (item.qty || 1);
+        var line = currentPrice(p) * (item.qty || 1);
         html += '<article class="cart-item" data-id="' + escHtml(p.id) + '">';
         html += '<div class="cart-item-info">';
         html += '<div class="cart-item-name">' + escHtml(p.name) + '</div>';
@@ -353,7 +368,7 @@
           html += '<p>' + escHtml(p.subtitle) + '</p>';
           html += '<div class="cart-related-footer">';
           html +=
-            '<span class="cart-related-price">' + window.VIP_formatPrice(p.price) + '</span>';
+            '<span class="cart-related-price">' + window.VIP_formatPrice(currentPrice(p)) + '</span>';
           html += '<div class="cart-related-actions">';
           html +=
             '<a class="btn-related-detail" href="' +

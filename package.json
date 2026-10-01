@@ -2,7 +2,7 @@
   "name": "onlinevipdershane1",
   "private": true,
   "scripts": {
-    "test": "node scripts/test-assessment.js",
+    "test": "node scripts/test-assessment.js && node scripts/test-academic-pricing.js",
     "campaigns:refresh": "node scripts/fetch-bank-campaigns.js"
   },
   "dependencies": {
