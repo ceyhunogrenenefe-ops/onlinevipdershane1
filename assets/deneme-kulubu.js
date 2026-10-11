@@ -37,7 +37,7 @@
       return {
         slug: p.slug, level: p.level, group: p.group, groupLabel: p.groupLabel,
         title: p.title, short: p.short, desc: p.desc, featured: !!p.featured,
-        denemeSayisi: p.denemeSayisi, normalPrice: pr.normal, price: pr.current,
+        image: p.image, denemeSayisi: p.denemeSayisi, normalPrice: pr.normal, price: pr.current,
         discounted: pr.discounted, discountPercent: pr.percent,
         url: '/deneme-kulubu/' + p.slug
       };
@@ -87,13 +87,15 @@
     if (!host) return;
     var list = packagesNow();
     host.innerHTML = list.map(function (p) {
+      var img = p.image ? '<div class="dk-card-img"><img src="/' + esc(p.image) + '" alt="' + esc(p.short) + ' Deneme Kulübü" loading="lazy" width="400" height="220"></div>' : '';
       return '<article class="dk-card' + (p.featured ? ' dk-card--featured' : '') + '">'
+        + img
         + '<div class="dk-card-top"><span class="dk-chip">' + esc(p.groupLabel) + '</span></div>'
         + '<h3>' + esc(p.short) + '</h3>'
         + countLabel(p)
         + '<p>' + esc(p.desc) + '</p>'
         + priceHtml(p)
-        + '<a class="dk-btn dk-btn--primary dk-btn--wide" href="/sepet.html?program=' + esc(productId(p.slug)) + '">Hemen Al</a>'
+        + '<a class="dk-btn dk-btn--primary dk-btn--wide dk-buy" data-urun="' + esc(productId(p.slug)) + '" href="/sepet.html?program=' + esc(productId(p.slug)) + '">Hemen Al</a>'
         + '<a class="dk-btn dk-btn--navy dk-btn--wide" href="' + esc(p.url) + '">İncele</a>'
         + '</article>';
     }).join('');
@@ -184,13 +186,31 @@
       });
   }
 
+  /**
+   * Takvim sekmeleri. Varsayilan sekme, TAKVIMI OLAN ilk kademedir: ilk sekme
+   * 3. sinif oldugu ve onun takvimi henuz girilmedigi icin bolum bos aciliyor
+   * ve ziyaretci "takvim yok" saniyordu. Sayilar panelden gelince dogru
+   * sekme secilir.
+   */
+  function defaultLevel(list) {
+    for (var i = 0; i < list.length; i += 1) {
+      if (state.counts[list[i].level] > 0) return list[i].level;
+    }
+    // Sayim henuz gelmediyse takvimi bilinen kademeden basla
+    for (var j = 0; j < list.length; j += 1) {
+      if (list[j].denemeSayisi) return list[j].level;
+    }
+    return list[0] && list[0].level;
+  }
+
   function initTabs() {
     var host = el('dkTabs');
     if (!host) return;
     var list = packagesNow();
-    host.innerHTML = list.map(function (p, i) {
+    var secili = defaultLevel(list);
+    host.innerHTML = list.map(function (p) {
       return '<button type="button" class="dk-tab" role="tab" data-level="' + esc(p.level) + '"'
-        + ' aria-selected="' + (i === 0 ? 'true' : 'false') + '">' + esc(p.short) + '</button>';
+        + ' aria-selected="' + (p.level === secili ? 'true' : 'false') + '">' + esc(p.short) + '</button>';
     }).join('');
     host.addEventListener('click', function (e) {
       var btn = e.target.closest('.dk-tab');
@@ -199,7 +219,7 @@
       btn.setAttribute('aria-selected', 'true');
       loadCalendar(btn.getAttribute('data-level'));
     });
-    loadCalendar(list[0] && list[0].level);
+    loadCalendar(secili);
   }
 
   /** Reklamdan gelen ziyaretçinin kaynağı forma taşınır */
@@ -211,6 +231,41 @@
       utm_campaign: q.get('utm_campaign') || '',
       utm_content: q.get('utm_content') || ''
     };
+  }
+
+  /**
+   * "Hemen Al": once sepete ekler, SONRA sepet sayfasina gider.
+   *
+   * Eskiden yalnizca /sepet.html?program=... adresine gidiliyordu ve ekleme
+   * orada yapiliyordu; araya giren bir yonlendirme sorgu parametresini
+   * dusurdugunde sepet sessizce bos kaliyor, kullanici "butona bastim bir sey
+   * olmadi" diyordu. Artik ekleme tiklama aninda bu sayfada yapilir; adresteki
+   * parametre yalnizca yedektir. Sepet API'si yuklenmediyse eski davranisa
+   * donulur, akis hic kirilmaz.
+   */
+  function initBuy() {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('.dk-buy') : null;
+      if (!a) return;
+      var urun = a.getAttribute('data-urun');
+      var cart = window.OVD_CART;
+      if (!urun || !cart || typeof cart.add !== 'function') return; // href yedegi calisir
+      e.preventDefault();
+      try {
+        cart.add(urun, 1);
+        location.href = a.getAttribute('href');
+      } catch (err) {
+        // Sepete yazilamadi (ornegin depolama kapali) — kullaniciya soyle
+        var msg = el('dkFormMsg');
+        if (msg) {
+          msg.className = 'dk-msg dk-msg--err';
+          msg.textContent = 'Sepete eklenemedi. Tarayici depolaman kapali olabilir; WhatsApp’tan yazarsaniz kaydinizi biz olusturalim.';
+          msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          alert('Sepete eklenemedi. Lutfen tekrar deneyin ya da WhatsApp’tan yazin.');
+        }
+      }
+    });
   }
 
   function initForm() {
@@ -285,6 +340,23 @@
     renderDetailPrice();
     initTabs();
     initForm();
+    initBuy();
+
+    /**
+     * Butun kademelerin gercek deneme sayisi tek istekte alinir; kartlarda
+     * paket vaadi yerine sistemdeki sayi gorunur ve takvim sekmesi dolu
+     * kademede acilir.
+     */
+    fetch(PANEL + '/api/public-exam-calendar')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.counts) return;
+        state.counts = j.counts;
+        renderCards();
+        renderDetailPrice();
+        if (el('dkTabs')) initTabs();
+      })
+      .catch(function () { /* sayim olmadan da calisir */ });
 
     // Fiyatın doğrusu sunucudan; kampanya bitmişse indirim burada düşer
     fetch('/api/deneme-kulubu-config')

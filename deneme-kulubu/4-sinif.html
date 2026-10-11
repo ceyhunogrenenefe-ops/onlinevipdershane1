@@ -12,7 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/icons.css">
 <link rel="stylesheet" href="../assets/nav-logo.css">
-<link rel="stylesheet" href="../assets/deneme-kulubu.css?v=1">
+<link rel="stylesheet" href="../assets/cart.css?v=4">
+<link rel="stylesheet" href="../assets/deneme-kulubu.css?v=2">
 <style>
 :root{--navy:#1a3fad;--navy2:#0f2a7a;--navy3:#0a1a4e;--accent:#e8232a;--accent2:#c8191f;--gold:#f5c542;--light:#f5f5f7;--border:#e5e5e7;--text:#1a1f36;--muted:#6e6e73;--shadow:0 4px 24px rgba(26,63,173,.08);}
 *{box-sizing:border-box;}
@@ -55,8 +56,12 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
     <p style="font-weight:800;color:var(--gold);margin:0;" id="dkDetailCount"></p>
     <div class="dk-detail-price" id="dkDetailPrice" data-slug="4-sinif"></div>
     <div class="dk-deadline" style="color:#ffd9a8;" id="dkDetailDeadline"></div>
+    <div class="dk-hero-img" style="max-width:560px;">
+      <img src="/assets/img/programlar/ilkokul.jpg" alt="4. Sınıf Deneme Kulübü" width="560" height="315" loading="eager">
+    </div>
     <div class="dk-cta-row" style="margin-top:18px;">
-      <a class="dk-btn dk-btn--primary" href="/sepet.html?program=deneme4">Kredi Kartıyla Hemen Al</a>
+      <a class="dk-btn dk-btn--primary dk-buy" data-urun="deneme4" href="/sepet.html?program=deneme4">Kredi Kartıyla Hemen Al</a>
+      <a class="dk-btn dk-btn--ghost dk-buy" data-urun="deneme4" href="/sepet.html?program=deneme4">Sepete Ekle</a>
       <a class="dk-btn dk-btn--ghost" href="#kayit">Önce Bilgi Alayım</a>
       <a class="dk-btn dk-btn--ghost" href="#takvim">Takvimi Gör</a>
     </div>
@@ -143,7 +148,9 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
 </footer>
 
 <script>document.getElementById('dkYear').textContent=new Date().getFullYear();</script>
-<script src="../assets/deneme-kulubu-data.js?v=1"></script>
-<script src="../assets/deneme-kulubu.js?v=1"></script>
+<script src="../assets/deneme-kulubu-data.js?v=2"></script>
+<script src="../assets/products.js?v=20261011a"></script>
+<script src="../assets/cart.js?v=20261011a"></script>
+<script src="../assets/deneme-kulubu.js?v=2"></script>
 </body>
 </html>

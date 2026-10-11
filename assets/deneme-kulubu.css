@@ -37,6 +37,10 @@
 .dk-card{background:#fff;border:1px solid var(--border,#e5e5e7);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:.18s;position:relative;}
 .dk-card:hover{box-shadow:0 10px 30px rgba(26,63,173,.12);transform:translateY(-2px);}
 .dk-card--featured{border-color:var(--navy,#1a3fad);box-shadow:0 8px 28px rgba(26,63,173,.14);}
+.dk-card-img{margin:-20px -20px 4px;border-radius:16px 16px 0 0;overflow:hidden;aspect-ratio:16/9;background:#eef2ff;}
+.dk-card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.dk-hero-img{border-radius:16px;overflow:hidden;margin-top:18px;box-shadow:0 10px 36px rgba(0,0,0,.28);}
+.dk-hero-img img{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover;}
 .dk-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .dk-chip{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:4px 9px;border-radius:999px;background:#eef2ff;color:var(--navy2,#0f2a7a);}
 .dk-card h3{margin:0;font-size:19px;font-family:'Bricolage Grotesque',system-ui,sans-serif;color:var(--navy3,#0a1a4e);}
