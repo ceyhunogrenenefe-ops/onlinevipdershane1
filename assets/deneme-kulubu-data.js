@@ -33,61 +33,61 @@
    */
   var PACKAGES = [
     {
-      slug: '3-sinif', image: 'assets/img/programlar/ilkokul.jpg', level: '3', group: 'ilkokul', groupLabel: 'İlkokul',
+      slug: '3-sinif', image: 'assets/img/deneme/ilkokul-card.jpg', level: '3', group: 'ilkokul', groupLabel: 'İlkokul',
       title: '3. Sınıf Deneme Kulübü', short: '3. Sınıf',
       denemeSayisi: null, normalPrice: 6000,
       desc: 'Sınav alışkanlığını erken kazandıran, kaygı yaratmayan düzenli deneme programı.'
     },
     {
-      slug: '4-sinif', image: 'assets/img/programlar/ilkokul.jpg', level: '4', group: 'ilkokul', groupLabel: 'İlkokul',
+      slug: '4-sinif', image: 'assets/img/deneme/ilkokul-card.jpg', level: '4', group: 'ilkokul', groupLabel: 'İlkokul',
       title: '4. Sınıf Deneme Kulübü', short: '4. Sınıf',
       denemeSayisi: null, normalPrice: 6000,
       desc: 'Temel derslerde eksikleri erkenden gösteren, gelişimi takip edilebilir deneme seti.'
     },
     {
-      slug: '5-sinif', image: 'assets/img/programlar/ortaokul.jpg', level: '5', group: 'ortaokul', groupLabel: 'Ortaokul',
+      slug: '5-sinif', image: 'assets/img/deneme/ortaokul-card.jpg', level: '5', group: 'ortaokul', groupLabel: 'Ortaokul',
       title: '5. Sınıf Deneme Kulübü', short: '5. Sınıf',
       denemeSayisi: 21, normalPrice: 10000,
       desc: 'Ortaokula geçişte düzenli deneme disiplini ve ders bazlı net takibi.'
     },
     {
-      slug: '6-sinif', image: 'assets/img/programlar/ortaokul.jpg', level: '6', group: 'ortaokul', groupLabel: 'Ortaokul',
+      slug: '6-sinif', image: 'assets/img/deneme/ortaokul-card.jpg', level: '6', group: 'ortaokul', groupLabel: 'Ortaokul',
       title: '6. Sınıf Deneme Kulübü', short: '6. Sınıf',
       denemeSayisi: 21, normalPrice: 10000,
       desc: 'Soru çözme hızını ve doğruluğunu artıran, analizle desteklenen deneme programı.'
     },
     {
-      slug: '7-sinif', image: 'assets/img/programlar/ortaokul.jpg', level: '7', group: 'ortaokul', groupLabel: 'Ortaokul',
+      slug: '7-sinif', image: 'assets/img/deneme/ortaokul-card.jpg', level: '7', group: 'ortaokul', groupLabel: 'Ortaokul',
       title: '7. Sınıf Deneme Kulübü', short: '7. Sınıf',
       denemeSayisi: 21, normalPrice: 10000,
       desc: 'LGS formatına alışmayı sağlayan, kayıp puan analizli deneme seti.'
     },
     {
-      slug: 'lgs', image: 'assets/img/programlar/lgs.jpg', level: 'lgs', group: 'lgs', groupLabel: 'LGS',
+      slug: 'lgs', image: 'assets/img/deneme/lgs-card.jpg', level: 'lgs', group: 'lgs', groupLabel: 'LGS',
       title: 'LGS Deneme Kulübü', short: 'LGS (8. Sınıf)',
       denemeSayisi: 55, normalPrice: 16500, featured: true,
       desc: 'Sınav yılı için tam program: düzenli deneme takibi, canlı gözetim, net analizi ve gelişim raporları.'
     },
     {
-      slug: '9-sinif', image: 'assets/img/programlar/lise.jpg', level: '9', group: 'lise', groupLabel: 'Lise',
+      slug: '9-sinif', image: 'assets/img/deneme/lise-card.jpg', level: '9', group: 'lise', groupLabel: 'Lise',
       title: '9. Sınıf Deneme Kulübü', short: '9. Sınıf',
       denemeSayisi: 18, normalPrice: 11000,
       desc: 'Liseye güçlü başlangıç: okul müfredatına paralel denemeler ve TYT temeli.'
     },
     {
-      slug: '10-sinif', image: 'assets/img/programlar/lise.jpg', level: '10', group: 'lise', groupLabel: 'Lise',
+      slug: '10-sinif', image: 'assets/img/deneme/lise-card.jpg', level: '10', group: 'lise', groupLabel: 'Lise',
       title: '10. Sınıf Deneme Kulübü', short: '10. Sınıf',
       denemeSayisi: 18, normalPrice: 11000,
       desc: 'Alan seçimine giderken eksikleri gösteren, gelişimi ölçülebilir deneme programı.'
     },
     {
-      slug: '11-sinif', image: 'assets/img/programlar/lise.jpg', level: '11', group: 'lise', groupLabel: 'Lise',
+      slug: '11-sinif', image: 'assets/img/deneme/lise-card.jpg', level: '11', group: 'lise', groupLabel: 'Lise',
       title: '11. Sınıf Deneme Kulübü', short: '11. Sınıf',
       denemeSayisi: 27, normalPrice: 11000,
       desc: 'TYT ve AYT dengesini kuran, net takibiyle desteklenen yoğun deneme seti.'
     },
     {
-      slug: 'yks', image: 'assets/img/programlar/kamplar.jpg', level: 'yks', group: 'yks', groupLabel: 'YKS',
+      slug: 'yks', image: 'assets/img/deneme/yks-card.jpg', level: 'yks', group: 'yks', groupLabel: 'YKS',
       title: 'YKS Deneme Kulübü', short: 'YKS (12 / Mezun)',
       denemeSayisi: 54, normalPrice: 16500, featured: true,
       desc: 'TYT ve AYT denemelerini kapsayan tam program; kayıp puan, net ve gelişim analizi.'

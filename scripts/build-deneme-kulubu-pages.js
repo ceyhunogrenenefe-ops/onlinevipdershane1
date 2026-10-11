@@ -44,7 +44,7 @@ function page(pkg) {
 <meta name="description" content="${esc(seoDescription(pkg))}">
 <meta property="og:title" content="${esc(pkg.title)} — Online VIP Dershane">
 <meta property="og:description" content="${esc(pkg.desc)}">
-<meta property="og:image" content="https://onlinevipdershane.com/assets/img/ovd-logo.png">
+<meta property="og:image" content="https://onlinevipdershane.com/${pkg.image}">
 <link rel="canonical" href="${url}">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/icons.css">
