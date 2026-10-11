@@ -734,6 +734,22 @@
   ],
   "rewrites": [
     {
+      "source": "/deneme-kulubu",
+      "destination": "/deneme-kulubu.html"
+    },
+    {
+      "source": "/deneme-kulubu/",
+      "destination": "/deneme-kulubu.html"
+    },
+    {
+      "source": "/deneme-kulubu/:slug",
+      "destination": "/deneme-kulubu/:slug.html"
+    },
+    {
+      "source": "/deneme-kulubu/:slug/",
+      "destination": "/deneme-kulubu/:slug.html"
+    },
+    {
       "source": "/ozel-ders/ogretmen/:slug",
       "destination": "/ozel-ders-ogretmen.html?slug=:slug"
     },
