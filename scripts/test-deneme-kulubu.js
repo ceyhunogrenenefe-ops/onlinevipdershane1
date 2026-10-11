@@ -81,4 +81,30 @@ assert.strictEqual(dk.byLevel('8'), null, '8 degil lgs kullanilir');
 
 assert.strictEqual(dk.formatTl(16500), '16.500 ₺');
 
+
+/** Odeme: sepete giden tutar sitede gosterilen tutarla ayni olmali */
+var prod = require('../api/_lib/products.js');
+var EKIM_D = new Date('2026-10-15T12:00:00+03:00');
+var KASIM_D = new Date('2026-11-05T12:00:00+03:00');
+
+dk.PACKAGES.forEach(function (pkg) {
+  var id = prod.denemeProductId(pkg);
+  assert.ok(prod.PRODUCTS[id], pkg.slug + ' katalogda yok: ' + id);
+  assert.strictEqual(prod.PRODUCTS[id].price, pkg.normalPrice, id + ' katalog normal fiyat');
+
+  var ekim = prod.resolveLineItems([{ id: id, qty: 1 }], EKIM_D)[0];
+  assert.strictEqual(ekim.unitAmount, dk.priceFor(pkg, EKIM_D.getTime()).current * 100,
+    id + ' ekimde odenecek tutar kampanyali olmali');
+
+  var kasim = prod.resolveLineItems([{ id: id, qty: 1 }], KASIM_D)[0];
+  assert.strictEqual(kasim.unitAmount, pkg.normalPrice * 100,
+    id + ' kampanya bitince normal fiyat');
+});
+
+// Deneme disi urunler etkilenmemeli
+assert.strictEqual(prod.resolveLineItems([{ id: 'kitap', qty: 1 }], EKIM_D)[0].unitAmount,
+  prod.PRODUCTS.kitap.price * 100, 'kitap fiyati degismemeli');
+
+console.log('deneme kulubu odeme testleri ok');
+
 console.log('deneme kulubu tests ok (' + dk.PACKAGES.length + ' paket)');

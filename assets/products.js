@@ -171,6 +171,86 @@
       period: 'program',
       slug: 'programlar/yazili.html',
     },
+    deneme3: {
+      id: 'deneme3',
+      name: '3. Sınıf Deneme Kulübü',
+      subtitle: 'Canlı gözetimli deneme · 2026-2027',
+      price: 6000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/3-sinif.html',
+    },
+    deneme4: {
+      id: 'deneme4',
+      name: '4. Sınıf Deneme Kulübü',
+      subtitle: 'Canlı gözetimli deneme · 2026-2027',
+      price: 6000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/4-sinif.html',
+    },
+    deneme5: {
+      id: 'deneme5',
+      name: '5. Sınıf Deneme Kulübü',
+      subtitle: '21 deneme · canlı gözetimli',
+      price: 10000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/5-sinif.html',
+    },
+    deneme6: {
+      id: 'deneme6',
+      name: '6. Sınıf Deneme Kulübü',
+      subtitle: '21 deneme · canlı gözetimli',
+      price: 10000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/6-sinif.html',
+    },
+    deneme7: {
+      id: 'deneme7',
+      name: '7. Sınıf Deneme Kulübü',
+      subtitle: '21 deneme · canlı gözetimli',
+      price: 10000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/7-sinif.html',
+    },
+    denemeLgs: {
+      id: 'denemeLgs',
+      name: 'LGS Deneme Kulübü',
+      subtitle: '55 deneme · canlı gözetimli',
+      price: 16500,
+      period: 'sezon',
+      slug: 'deneme-kulubu/lgs.html',
+    },
+    deneme9: {
+      id: 'deneme9',
+      name: '9. Sınıf Deneme Kulübü',
+      subtitle: '18 deneme · canlı gözetimli',
+      price: 11000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/9-sinif.html',
+    },
+    deneme10: {
+      id: 'deneme10',
+      name: '10. Sınıf Deneme Kulübü',
+      subtitle: '18 deneme · canlı gözetimli',
+      price: 11000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/10-sinif.html',
+    },
+    deneme11: {
+      id: 'deneme11',
+      name: '11. Sınıf Deneme Kulübü',
+      subtitle: '27 deneme · canlı gözetimli',
+      price: 11000,
+      period: 'sezon',
+      slug: 'deneme-kulubu/11-sinif.html',
+    },
+    denemeYks: {
+      id: 'denemeYks',
+      name: 'YKS Deneme Kulübü',
+      subtitle: '54 deneme · TYT ve AYT',
+      price: 16500,
+      period: 'sezon',
+      slug: 'deneme-kulubu/yks.html',
+    },
     kitap: {
       id: 'kitap',
       name: 'Kitap Atölyesi',
@@ -296,9 +376,25 @@
    * kalan aya göre düşen güncel bedel burada hesaplanır. Sepet, özet ve
    * ödeme aynı değeri kullansın diye tek giriş noktası budur.
    */
+  /** Deneme Kulübü paketinin kampanyalı fiyatı; modül yoksa katalog fiyatı. */
+  function denemePrice(product) {
+    var dk = (typeof window !== 'undefined' && window.VIP_DenemeKulubu) || null;
+    if (!dk || !product || String(product.id).indexOf('deneme') !== 0) return null;
+    for (var i = 0; i < dk.PACKAGES.length; i += 1) {
+      var pkg = dk.PACKAGES[i];
+      var slug = String(pkg.slug);
+      var id = slug === 'lgs' ? 'denemeLgs' : slug === 'yks' ? 'denemeYks' : 'deneme' + slug.replace('-sinif', '');
+      if (id === product.id) return dk.priceFor(pkg, Date.now()).current;
+    }
+    return null;
+  }
+
   function getCurrentPrice(idOrProduct) {
     var p = typeof idOrProduct === 'string' ? PRODUCTS[idOrProduct] : idOrProduct;
     if (!p) return 0;
+    // Deneme Kulübü kendi kampanyasını kullanır; sepette sunucuyla aynı tutar görünsün
+    var dkPrice = denemePrice(p);
+    if (dkPrice !== null) return dkPrice;
     var engine = academicPricing();
     // Motor yüklenmediyse katalog fiyatına düşülür; ekran boş kalmaz
     if (!engine) return p.price;

@@ -16,6 +16,14 @@ const dk = require('../assets/deneme-kulubu-data.js');
 
 const OUT_DIR = path.join(__dirname, '..', 'deneme-kulubu');
 
+/** Paket slug'i -> katalog urun kimligi; api/_lib/products.js ile ayni kural. */
+function productId(pkg) {
+  const s = String(pkg.slug);
+  if (s === 'lgs') return 'denemeLgs';
+  if (s === 'yks') return 'denemeYks';
+  return 'deneme' + s.replace('-sinif', '');
+}
+
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
@@ -85,7 +93,8 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
     <div class="dk-detail-price" id="dkDetailPrice" data-slug="${esc(pkg.slug)}"></div>
     <div class="dk-deadline" style="color:#ffd9a8;" id="dkDetailDeadline"></div>
     <div class="dk-cta-row" style="margin-top:18px;">
-      <a class="dk-btn dk-btn--primary" href="#kayit">Kayıt Ol</a>
+      <a class="dk-btn dk-btn--primary" href="/sepet.html?program=${productId(pkg)}">Kredi Kartıyla Hemen Al</a>
+      <a class="dk-btn dk-btn--ghost" href="#kayit">Önce Bilgi Alayım</a>
       <a class="dk-btn dk-btn--ghost" href="#takvim">Takvimi Gör</a>
     </div>
   </div>
@@ -156,7 +165,7 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
           <li>Gönderim planını paylaşalım</li>
           <li>Analiz karnesini örnekle gösterelim</li>
         </ul>
-        <a class="dk-wa" href="https://wa.me/905013962424?text=${encodeURIComponent('Merhaba, ' + pkg.title + ' hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">WhatsApp'tan yazın</a>
+        <a class="dk-wa" href="https://wa.me/908503034014?text=${encodeURIComponent('Merhaba, ' + pkg.title + ' hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">WhatsApp'tan yazın</a>
       </aside>
     </div>
     <p style="text-align:center;margin-top:26px;"><a href="/deneme-kulubu" style="color:var(--navy);font-weight:700;">← Bütün sınıfları gör</a></p>

@@ -49,6 +49,14 @@
     return data.campaignActiveAt(Date.now()) ? data.CAMPAIGN : null;
   }
 
+  /** Paket slug'i -> katalog urun kimligi; sunucudaki kuralla ayni. */
+  function productId(slug) {
+    var s = String(slug);
+    if (s === 'lgs') return 'denemeLgs';
+    if (s === 'yks') return 'denemeYks';
+    return 'deneme' + s.replace('-sinif', '');
+  }
+
   function priceHtml(p) {
     var c = campaignNow();
     var out = '<div class="dk-price">';
@@ -85,6 +93,7 @@
         + countLabel(p)
         + '<p>' + esc(p.desc) + '</p>'
         + priceHtml(p)
+        + '<a class="dk-btn dk-btn--primary dk-btn--wide" href="/sepet.html?program=' + esc(productId(p.slug)) + '">Hemen Al</a>'
         + '<a class="dk-btn dk-btn--navy dk-btn--wide" href="' + esc(p.url) + '">İncele</a>'
         + '</article>';
     }).join('');
