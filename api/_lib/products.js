@@ -1,4 +1,5 @@
 const academicPricing = require('../../assets/academic-pricing.js');
+const denemeKulubu = require('../../assets/deneme-kulubu-data.js');
 
 /**
  * Fiyatlar Eylül'deki TAM DÖNEM bedelidir ve sabit kalır.
@@ -24,6 +25,17 @@ const PRODUCTS = {
   kamp910: { id: 'kamp910', name: "9'dan 10'a Geçenler Yaz Kampı", price: 24000 },
   kampMaarifTyt: { id: 'kampMaarifTyt', name: 'Maarif Model TYT Yaz Kampı', price: 24000 },
   kampTyt: { id: 'kampTyt', name: "11'den 12'ye TYT Yaz Kampı", price: 24000 },
+  // Deneme Kulubu: donemlik fiyatlama yok; indirim Ekim kampanyasindan gelir
+  deneme3: { id: 'deneme3', name: '3. Sınıf Deneme Kulübü', price: 6000 },
+  deneme4: { id: 'deneme4', name: '4. Sınıf Deneme Kulübü', price: 6000 },
+  deneme5: { id: 'deneme5', name: '5. Sınıf Deneme Kulübü', price: 10000 },
+  deneme6: { id: 'deneme6', name: '6. Sınıf Deneme Kulübü', price: 10000 },
+  deneme7: { id: 'deneme7', name: '7. Sınıf Deneme Kulübü', price: 10000 },
+  denemeLgs: { id: 'denemeLgs', name: 'LGS Deneme Kulübü', price: 16500 },
+  deneme9: { id: 'deneme9', name: '9. Sınıf Deneme Kulübü', price: 11000 },
+  deneme10: { id: 'deneme10', name: '10. Sınıf Deneme Kulübü', price: 11000 },
+  deneme11: { id: 'deneme11', name: '11. Sınıf Deneme Kulübü', price: 11000 },
+  denemeYks: { id: 'denemeYks', name: 'YKS Deneme Kulübü', price: 16500 },
   yazili: { id: 'yazili', name: 'Yazılıya Hazırlık', price: 2500 },
   kitap: { id: 'kitap', name: 'Kitap Atölyesi', price: 12000 },
   start: { id: 'start', name: 'VIP Start Paketi', price: 28000 },
@@ -58,6 +70,20 @@ function withBranches(product, rawBranches) {
  * @param {Array} items istemciden gelen sepet
  * @param {Date} [now] yalniz testlerde tarih sabitlemek icin
  */
+/** Paket slug'i -> katalog urun kimligi (3-sinif -> deneme3, lgs -> denemeLgs). */
+function denemeProductId(pkg) {
+  const s = String(pkg.slug || '');
+  if (s === 'lgs') return 'denemeLgs';
+  if (s === 'yks') return 'denemeYks';
+  return 'deneme' + s.replace('-sinif', '');
+}
+
+function nowMs(now) {
+  if (now instanceof Date) return now.getTime();
+  const t = Date.parse(String(now || ''));
+  return isFinite(t) ? t : Date.now();
+}
+
 function resolveLineItems(items, now) {
   if (!Array.isArray(items) || !items.length) {
     throw new Error('Sepet boş.');
@@ -67,7 +93,16 @@ function resolveLineItems(items, now) {
     const base = PRODUCTS[item.id];
     if (!base) throw new Error('Geçersiz ürün: ' + item.id);
     const withBr = withBranches(base, item.branches);
-    const currentPrice = academicPricing.productPrice(withBr, now);
+    /**
+     * Deneme Kulubu paketlerinde odenecek tutar kampanyaya baglidir; sitede
+     * gosterilen indirimli fiyatla odeme tutari ayrismasin diye ayni
+     * hesaplayici (deneme-kulubu-data.js) burada da kullanilir. Kampanya
+     * bitince tutar kendiliginden normal fiyata doner.
+     */
+    const denemePkg = denemeKulubu.PACKAGES.find((p) => denemeProductId(p) === withBr.id);
+    const currentPrice = denemePkg
+      ? denemeKulubu.priceFor(denemePkg, nowMs(now)).current
+      : academicPricing.productPrice(withBr, now);
     const product = { ...withBr, price: currentPrice };
     // Branş paketi öğrenci başına tek adet
     const qty = product.branchCount ? 1 : Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));
@@ -79,4 +114,4 @@ function resolveLineItems(items, now) {
   });
 }
 
-module.exports = { PRODUCTS, BRANS_BRANCHES, resolveLineItems, academicPricing };
+module.exports = { PRODUCTS, BRANS_BRANCHES, resolveLineItems, academicPricing, denemeProductId };
