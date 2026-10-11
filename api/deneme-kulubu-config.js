@@ -36,6 +36,7 @@ module.exports = async function handler(req, res) {
       short: p.short,
       desc: p.desc,
       featured: Boolean(p.featured),
+      image: p.image || null,
       denemeSayisi: p.denemeSayisi,
       normalPrice: price.normal,
       price: price.current,
