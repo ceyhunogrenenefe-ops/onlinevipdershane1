@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Deneme Kulübü — Canlı Gözetimli Denemeler ve Analiz | Online VIP Dershane</title>
+<meta name="description" content="3. sınıftan YKS'ye kadar canlı gözetimli deneme sınavları, düzenli takvim ve dijital analiz karnesi. 2026–2027 Deneme Kulübünde %50 Ekim indirimi.">
+<meta property="og:title" content="Online VIP Dershane Deneme Kulübü">
+<meta property="og:description" content="Sadece deneme çözmeyin, gelişiminizi takip edin. Canlı gözetimli sınavlar ve ayrıntılı analiz karnesi.">
+<meta property="og:image" content="https://onlinevipdershane.com/assets/img/ovd-logo.png">
+<link rel="canonical" href="https://onlinevipdershane.com/deneme-kulubu">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/icons.css">
+<link rel="stylesheet" href="assets/nav-logo.css">
+<link rel="stylesheet" href="assets/deneme-kulubu.css?v=1">
+<style>
+:root{--navy:#1a3fad;--navy2:#0f2a7a;--navy3:#0a1a4e;--accent:#e8232a;--accent2:#c8191f;--gold:#f5c542;--light:#f5f5f7;--border:#e5e5e7;--text:#1a1f36;--muted:#6e6e73;--shadow:0 4px 24px rgba(26,63,173,.08);}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Nunito',system-ui,-apple-system,sans-serif;color:var(--text);background:#fff;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+.dk-nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+.dk-nav-in{max-width:1200px;margin:0 auto;padding:0 5%;display:flex;align-items:center;gap:14px;height:68px;}
+.dk-nav-in img{height:50px;width:auto;object-fit:contain;}
+.dk-nav-mid{flex:1;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
+.dk-nav-mid a{font-size:14px;font-weight:600;color:var(--muted);padding:7px 12px;border-radius:9px;text-decoration:none;}
+.dk-nav-mid a.on{color:var(--navy);font-weight:800;background:#f0f5ff;}
+.dk-nav-cta{padding:9px 16px;border-radius:10px;font-size:13px;font-weight:800;background:var(--accent);color:#fff;white-space:nowrap;text-decoration:none;}
+@media(max-width:760px){.dk-nav-mid{display:none;}}
+footer.dk-foot{background:var(--navy3);color:rgba(255,255,255,.82);padding:34px 0;margin-top:0;}
+footer.dk-foot .dk-wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;}
+footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
+</style>
+</head>
+<body>
+
+<nav class="dk-nav">
+  <div class="dk-nav-in">
+    <a href="/"><img src="assets/img/ovd-logo.png" alt="Online VIP Dershane"></a>
+    <div class="dk-nav-mid">
+      <a href="/">Ana Sayfa</a>
+      <a href="/deneme-kulubu" class="on">Deneme Kulübü</a>
+      <a href="/kitap-atolyesi.html">Kitap Atölyesi</a>
+      <a href="/iletisim.html">İletişim</a>
+    </div>
+    <a class="dk-nav-cta" href="#kayit">Kayıt Ol</a>
+  </div>
+</nav>
+
+<!-- 1. Hero -->
+<header class="dk-hero">
+  <div class="dk-wrap dk-hero-in">
+    <div>
+      <span class="dk-badge">🎯 3. Sınıftan YKS'ye · Türkiye'nin her yerinden</span>
+      <h1>SADECE DENEME ÇÖZMEYİN,<br>GELİŞİMİNİZİ TAKİP EDİN!</h1>
+      <p>Online VIP Dershane Deneme Kulübü ile Türkiye'nin her yerinden canlı gözetimli denemelere katılın. Sonuçlarınızı analiz edin, eksiklerinizi görün ve başarınızı adım adım geliştirin.</p>
+      <div class="dk-cta-row">
+        <a class="dk-btn dk-btn--primary" href="#paketler">Sınıfına Uygun Paketi İncele</a>
+        <a class="dk-btn dk-btn--ghost" href="#takvim">Deneme Takvimini Gör</a>
+      </div>
+      <div class="dk-campaign" id="dkCampaign"></div>
+    </div>
+    <aside class="dk-hero-card">
+      <h3>Kulüpte neler var?</h3>
+      <div class="dk-mini">
+        <div><b>10</b><span>sınıf kademesi</span></div>
+        <div><b>Canlı</b><span>gözetimli sınav</span></div>
+        <div><b>Dijital</b><span>analiz karnesi</span></div>
+        <div><b>Haftalık</b><span>düzenli takvim</span></div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<!-- 2. Sınıf seçimi -->
+<section class="dk-sec" id="paketler">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Sınıfını seç, kulübüne katıl</h2>
+    <p class="dk-lead">Her kademenin kendi deneme takvimi, yayın listesi ve analiz düzeni var. Kartlardaki deneme sayıları sistemimizdeki güncel takvimden gelir.</p>
+    <div class="dk-grid" id="dkCards"></div>
+  </div>
+</section>
+
+<!-- 3. Neden -->
+<section class="dk-sec dk-sec--alt">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Neden Online VIP Deneme Kulübü?</h2>
+    <p class="dk-lead">Deneme kitapçığı herkeste var. Fark, sınavın nasıl yapıldığında ve sonrasında ne olduğunda.</p>
+    <div class="dk-feats">
+      <div class="dk-feat"><b>Canlı gözetimli sınavlar</b><span>Öğrenci belirlenen gün ve saatte oturuma katılır, gözetmenler katılımı takip eder. Gerçek sınav disiplini evde kurulur.</span></div>
+      <div class="dk-feat"><b>Düzenli deneme disiplini</b><span>Takvim baştan bellidir. Öğrenci ne zaman hangi denemeyi çözeceğini bilir, veli süreci takip eder.</span></div>
+      <div class="dk-feat"><b>Ayrıntılı analiz karnesi</b><span>Ders bazlı doğru, yanlış, boş ve net; konu bazlı eksikler ve önceki denemelerle karşılaştırma.</span></div>
+      <div class="dk-feat"><b>Akademik gelişim takibi</b><span>Tek bir sınav değil, sezon boyunca gelişim eğrisi. Hangi derste ilerlediği, nerede duraksadığı görünür.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Nasıl çalışır -->
+<section class="dk-sec">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Deneme Kulübü nasıl çalışıyor?</h2>
+    <p class="dk-lead">Kayıttan analiz karnesine kadar altı adım.</p>
+    <div class="dk-steps">
+      <div class="dk-step"><h4>Sınıfını Seç</h4><p>Öğrenci kendisine uygun deneme kulübünü seçer.</p></div>
+      <div class="dk-step"><h4>Kaydını Tamamla</h4><p>Paket seçimi yapılır ve kayıt işlemi tamamlanır.</p></div>
+      <div class="dk-step"><h4>Denemelerini Teslim Al</h4><p>Deneme kitapçıkları belirlenen gönderim planına göre öğrenciye ulaştırılır.</p></div>
+      <div class="dk-step"><h4>Canlı Gözetimli Sınava Katıl</h4><p>Öğrenci belirlenen gün ve saatte canlı oturuma katılır; gözetmenler katılımı takip eder. Bu bir ders değil, eş zamanlı gözetimli sınavdır.</p></div>
+      <div class="dk-step"><h4>Cevaplarını Sisteme Gir</h4><p>Sınav cevapları dijital sınav sistemine kaydedilir.</p></div>
+      <div class="dk-step"><h4>Analiz Karneni İncele</h4><p>Sonuç, ders bazlı analiz ve gelişim durumu panel üzerinden takip edilir.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Analiz karnesi -->
+<section class="dk-sec dk-sec--alt">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Dijital Analiz Karnesi</h2>
+    <p class="dk-lead">Her denemeden sonra öğrenci ve veli, sonucu rakamla değil <strong>sebebiyle</strong> görür.</p>
+    <div class="dk-karne">
+      <div class="dk-karne-head">
+        <b>Örnek Analiz Karnesi</b>
+        <span>Temsilî görünüm — gerçek öğrenci bilgisi içermez</span>
+      </div>
+      <div class="dk-bars">
+        <div class="dk-bar-row"><span>Türkçe</span><div class="dk-bar"><i style="width:82%"></i></div><span class="dk-bar-val">16,5</span></div>
+        <div class="dk-bar-row"><span>Matematik</span><div class="dk-bar"><i style="width:64%"></i></div><span class="dk-bar-val">12,8</span></div>
+        <div class="dk-bar-row"><span>Fen Bilimleri</span><div class="dk-bar"><i style="width:75%"></i></div><span class="dk-bar-val">15,0</span></div>
+        <div class="dk-bar-row"><span>Sosyal</span><div class="dk-bar"><i style="width:90%"></i></div><span class="dk-bar-val">9,0</span></div>
+      </div>
+      <p class="dk-karne-note">Karnede ayrıca: ders bazlı doğru / yanlış / boş sayıları, toplam net, önceki denemelerle karşılaştırma, akademik gelişim grafiği, konu bazlı eksikler ve geçmiş deneme sonuçlarının tamamı yer alır.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Takvim -->
+<section class="dk-sec" id="takvim">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Deneme takvimleri</h2>
+    <p class="dk-lead">Takvim kurumumuzun eğitim sisteminden canlı okunur; tarih değiştiğinde burası da güncellenir.</p>
+    <div class="dk-tabs" id="dkTabs" role="tablist"></div>
+    <div id="dkCalendar"></div>
+  </div>
+</section>
+
+<!-- 7. SSS -->
+<section class="dk-sec dk-sec--alt">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Sıkça sorulan sorular</h2>
+    <div class="dk-faq">
+      <details><summary>Canlı gözetimli sınav ne demek?</summary><p>Öğrenci belirlenen gün ve saatte çevrim içi bir oturuma katılır ve denemeyi herkesle aynı anda çözer. Gözetmenler katılımı takip eder. Bu bir ders anlatımı değildir; amaç gerçek sınav disiplinini evde kurmaktır.</p></details>
+      <details><summary>Denemeler bana nasıl ulaşacak?</summary><p>Deneme kitapçıkları belirlenen gönderim planına göre adresinize ulaştırılır. Kayıt sonrası gönderim takvimi sizinle paylaşılır.</p></details>
+      <details><summary>Sınava giremezsem ne oluyor?</summary><p>Denemeyi kendi zamanınızda çözüp cevaplarınızı sisteme girebilirsiniz; analiz karneniz yine oluşur. Takvimde telafi tarihi tanımlıysa o oturuma da katılabilirsiniz.</p></details>
+      <details><summary>Analiz karnesini kim görebiliyor?</summary><p>Öğrenci ve velisi kendi panelinden görür. Kurum dışına hiçbir öğrenci verisi paylaşılmaz.</p></details>
+      <details><summary>Kampanya ne zaman bitiyor?</summary><p>%50 Ekim indirimi 31 Ekim 2026 saat 23.59'a (Türkiye saati) kadar geçerlidir. Süre dolduğunda fiyatlar normal seviyesine döner.</p></details>
+      <details><summary>Online VIP Dershane öğrencisi değilim, katılabilir miyim?</summary><p>Evet. Deneme Kulübü'ne Türkiye'nin her yerinden, kurumumuzun diğer programlarına kayıtlı olmadan da katılabilirsiniz.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Kayıt -->
+<section class="dk-sec" id="kayit">
+  <div class="dk-wrap">
+    <h2 class="dk-h2">Kayıt ve iletişim</h2>
+    <p class="dk-lead">Formu doldurun, size uygun saatte arayalım ve sınıfına en uygun paketi birlikte belirleyelim.</p>
+    <div class="dk-form-grid">
+      <form class="dk-form" id="dkForm" novalidate>
+        <div class="dk-field">
+          <label for="dkVeli">Veli adı soyadı</label>
+          <input id="dkVeli" name="veli" type="text" autocomplete="name" required placeholder="Ad Soyad">
+        </div>
+        <div class="dk-field">
+          <label for="dkTel">Telefon numarası</label>
+          <input id="dkTel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" required placeholder="05XX XXX XX XX">
+        </div>
+        <div class="dk-field">
+          <label for="dkPaket">Öğrencinin sınıfı / ilgilenilen paket</label>
+          <select id="dkPaket" name="paket" required></select>
+        </div>
+        <div class="dk-field">
+          <label for="dkAranma">Tercih edilen aranma zamanı</label>
+          <select id="dkAranma" name="aranma">
+            <option>Fark etmez</option>
+            <option>Sabah (09-12)</option>
+            <option>Öğleden sonra (12-17)</option>
+            <option>Akşam (17-21)</option>
+          </select>
+        </div>
+        <div class="dk-field">
+          <label for="dkNot">Eklemek istedikleriniz <span style="font-weight:400;color:#6e6e73">(isteğe bağlı)</span></label>
+          <textarea id="dkNot" name="not" placeholder="Varsa sorularınız"></textarea>
+        </div>
+        <label class="dk-check">
+          <input type="checkbox" name="kvkk" required>
+          <span>Kişisel verilerimin, başvurumun değerlendirilmesi ve tarafımla iletişime geçilmesi amacıyla işlenmesine onay veriyorum. <a href="/gizlilik.html" target="_blank" rel="noopener">Aydınlatma metni</a></span>
+        </label>
+        <button type="submit" class="dk-btn dk-btn--primary dk-btn--wide">Başvurumu Gönder</button>
+        <div class="dk-msg" id="dkFormMsg" role="status" aria-live="polite"></div>
+      </form>
+      <aside class="dk-side">
+        <h3>Hemen konuşalım</h3>
+        <ul>
+          <li>Sınıfına uygun paketi birlikte seçelim</li>
+          <li>Takvimi ve gönderim planını anlatalım</li>
+          <li>Analiz karnesini örnekle gösterelim</li>
+        </ul>
+        <a class="dk-wa" href="https://wa.me/905013962424?text=Merhaba%2C%20Deneme%20Kul%C3%BCb%C3%BC%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">WhatsApp'tan yazın</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer class="dk-foot">
+  <div class="dk-wrap">
+    <span>© <span id="dkYear"></span> Online VIP Dershane · Olduğunuz yerden, olmak istediğiniz yere.</span>
+    <span><a href="/">Ana Sayfa</a> · <a href="/iletisim.html">İletişim</a> · <a href="/gizlilik.html">Gizlilik</a></span>
+  </div>
+</footer>
+
+<script>document.getElementById('dkYear').textContent=new Date().getFullYear();</script>
+<script src="assets/deneme-kulubu-data.js?v=1"></script>
+<script src="assets/deneme-kulubu.js?v=1"></script>
+</body>
+</html>
