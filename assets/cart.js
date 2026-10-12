@@ -183,6 +183,16 @@
   function makeEducationLink(productId, className) {
     var link = document.createElement('a');
     link.className = 'btn-education-al' + (className ? ' ' + className : '');
+    // Birden fazla kademe/paket secenegi olan urunlerde dogrudan sepete atmak yanlis
+    // tutar ekliyor (kartta "3.000TL'den" yazarken sepete 3.500TL dusuyordu);
+    // bu urunlerde ziyaretciyi kendi fiyat bolumune gonderiyoruz.
+    var p = window.VIP_getProduct(productId);
+    if (p && p.chooseOnPage) {
+      link.href = pageBase() + p.chooseOnPage;
+      link.innerHTML = 'İncele ve Seç';
+      link.addEventListener('click', function (e) { e.stopPropagation(); });
+      return link;
+    }
     link.href = pageBase() + 'sepet.html?program=' + productId;
     link.innerHTML = '🛒 Eğitim Al';
     link.addEventListener('click', function (e) {

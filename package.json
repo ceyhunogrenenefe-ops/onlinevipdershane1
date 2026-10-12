@@ -2,7 +2,7 @@
   "name": "onlinevipdershane1",
   "private": true,
   "scripts": {
-    "test": "node scripts/test-assessment.js && node scripts/test-academic-pricing.js && node scripts/test-deneme-kulubu.js",
+    "test": "node scripts/test-assessment.js && node scripts/test-academic-pricing.js && node scripts/test-deneme-kulubu.js && node scripts/test-yazili-kampi.js",
     "campaigns:refresh": "node scripts/fetch-bank-campaigns.js",
     "deneme:build": "node scripts/build-deneme-kulubu-pages.js"
   },

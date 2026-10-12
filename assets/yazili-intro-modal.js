@@ -37,7 +37,7 @@
       '<div class="prog-video-preview prog-video-preview--popup">' +
       '<div class="prog-video-preview-label">▶ Tanıtım Videosu</div>' +
       '<h3>Yazılıya hazırlık kampında neler yapıyoruz, öğrenmek ister misin?</h3>' +
-      '<p>3 etaplık yazılı hazırlık programımızı kısa videoda izleyin; branş bazlı tekrar, soru çözümü ve koçluk desteğini keşfedin.</p>' +
+      '<p>3 haftalık yazılı hazırlık kampımızı kısa videoda izleyin; branş bazlı tekrar, soru çözümü ve koçluk desteğini keşfedin.</p>' +
       '<button type="button" class="prog-video-preview-card" data-kamp-watch aria-label="Yazılıya hazırlık kampı tanıtım videosunu izle">' +
       '<div class="prog-video-preview-thumb">' +
       '<img src="' + POSTER_URL + '" alt="Yazılıya hazırlık kampı tanıtım videosu önizlemesi" loading="lazy" width="280" height="498">' +
