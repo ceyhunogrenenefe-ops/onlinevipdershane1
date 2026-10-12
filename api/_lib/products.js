@@ -36,7 +36,12 @@ const PRODUCTS = {
   deneme10: { id: 'deneme10', name: '10. Sınıf Deneme Kulübü', price: 11000 },
   deneme11: { id: 'deneme11', name: '11. Sınıf Deneme Kulübü', price: 11000 },
   denemeYks: { id: 'denemeYks', name: 'YKS Deneme Kulübü', price: 16500 },
-  yazili: { id: 'yazili', name: 'Yazılıya Hazırlık', price: 2500 },
+  // Yazılıya Hazırlık Kampı. 'yazili' id'si eski sepetlerde duruyor olabilir;
+  // kaldırılırsa resolveLineItems 'Geçersiz ürün' atar, o yüzden lise tek dönem olarak korunuyor.
+  yazili: { id: 'yazili', name: 'Yazılıya Hazırlık Kampı — Lise (9-10-11)', price: 3500 },
+  yaziliOrtaokul: { id: 'yaziliOrtaokul', name: 'Yazılıya Hazırlık Kampı — Ortaokul (5-6-7-8)', price: 3000 },
+  yaziliLisePaket: { id: 'yaziliLisePaket', name: 'Yazılıya Hazırlık Kampı — Lise · 4 Dönem Paketi', price: 11990 },
+  yaziliOrtaokulPaket: { id: 'yaziliOrtaokulPaket', name: 'Yazılıya Hazırlık Kampı — Ortaokul · 4 Dönem Paketi', price: 9990 },
   kitap: { id: 'kitap', name: 'Kitap Atölyesi', price: 12000 },
   start: { id: 'start', name: 'VIP Start Paketi', price: 28000 },
   kocluk: { id: 'kocluk', name: 'Yıllık Premium Eğitim Koçluğu', price: 39900 },
