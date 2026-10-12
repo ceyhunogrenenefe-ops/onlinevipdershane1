@@ -1075,6 +1075,31 @@ function toggleArticle(id, btn) {
   var open = el.classList.toggle('open');
   btn.textContent = open ? '← Kapat' : 'Devamını Oku →';
 }
+
+/**
+ * Tek bir yaziyi paylasmak icin: /blog.html#yazi-id
+ * Hash desteklenmedigi surece link kapali bir karta dusuyordu; ziyaretci
+ * yaziyi gormek icin ayrica "Devamini Oku"ya basmak zorunda kaliyordu.
+ */
+function openArticleFromHash() {
+  var id = (location.hash || '').replace(/^#/, '');
+  if (!id) return;
+  var card = document.getElementById(id);
+  var full = document.getElementById('full-' + id);
+  if (!card || !full) return;
+  if (!full.classList.contains('open')) {
+    var btn = card.querySelector('.read-more');
+    if (btn) toggleArticle(id, btn);
+    else full.classList.add('open');
+  }
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.addEventListener('hashchange', openArticleFromHash);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', openArticleFromHash);
+} else {
+  openArticleFromHash();
+}
 </script>
 
 <footer class="footer">
