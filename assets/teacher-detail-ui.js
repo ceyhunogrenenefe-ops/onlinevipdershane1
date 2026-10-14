@@ -428,6 +428,18 @@
           '</div>' +
           '<a href="#reviewsSection" class="mt-4 flex w-full items-center justify-center rounded-xl border border-navy px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Yorumları Oku</a>' +
           '<a href="#availSection" class="mt-2 flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Müsait Saatleri Gör</a>' +
+          // Ucret panelden gelir; ogretmenin kendi ucreti yoksa kurum
+          // varsayilani gosterilir. Ikisi de yoksa fiyat yazilmaz.
+          (t.private_lesson_fee_tl != null
+            ? '<div class="mt-3 rounded-xl border border-navy/15 bg-navy/5 px-4 py-3 text-center" data-test="ogretmen-ucret-detay">' +
+              '<p class="text-[11px] font-bold uppercase tracking-wide text-mute">' +
+              escapeHtml(String(t.private_lesson_duration_min || 40)) +
+              ' dakikalık birebir özel ders</p>' +
+              '<p class="mt-0.5 text-2xl font-extrabold text-navy">' +
+              escapeHtml(Number(t.private_lesson_fee_tl).toLocaleString('tr-TR')) +
+              ' TL <span class="text-sm font-bold text-mute">/ ders</span></p>' +
+              '</div>'
+            : '<div class="mt-3 rounded-xl border border-slate-200 bg-soft px-4 py-3 text-center text-sm font-semibold text-mute" data-test="ogretmen-ucret-detay">Ücret için iletişime geçin</div>') +
           '<a href="' + buy + '" class="mt-2 flex w-full items-center justify-center rounded-xl bg-accent px-4 py-3.5 text-sm font-bold text-white shadow-lift hover:bg-accent-2">Özel Ders Al</a>' +
           '<a href="/ozel-ders.html#ogretmenler" class="mt-2 flex w-full items-center justify-center rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-navy hover:bg-soft">Tüm öğretmenler</a>' +
         '</aside>' +
