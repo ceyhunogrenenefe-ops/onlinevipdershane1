@@ -94,12 +94,15 @@
       })
       .join('');
 
+    // Tasarruf, listedeki TEK DERS fiyatina gore hesaplanir; 1100 sabiti
+    // ogretmen bazli fiyatlamada yanlis yuzde gosteriyordu.
+    var tekDers = (cardHtml._tekDers > 0 ? cardHtml._tekDers : 1100);
     var savings =
-      pkg.unitPrice < 1100
+      pkg.unitPrice < tekDers
         ? '<p class="mt-1 text-xs font-bold text-emerald-600">Ders başı ' +
           formatPrice(pkg.unitPrice) +
           ' · %' +
-          Math.round((1 - pkg.unitPrice / 1100) * 100) +
+          Math.round((1 - pkg.unitPrice / tekDers) * 100) +
           ' tasarruf</p>'
         : '';
 
@@ -145,6 +148,11 @@
   }
 
   function renderGrid(el, packages) {
+    // Tek ders paketinin guncel fiyati: tasarruf yuzdesi buna gore
+    try {
+      var tek = (packages || []).filter(function (x) { return x.lessons === 1; })[0];
+      cardHtml._tekDers = tek ? tek.unitPrice : 1100;
+    } catch (_) { cardHtml._tekDers = 1100; }
     if (!el) return;
     el.innerHTML = packages.map(cardHtml).join('');
   }
@@ -156,7 +164,8 @@
     if (!global.VIP_getProduct(packageId)) {
       throw new Error('Geçersiz paket.');
     }
-    global.OVD_CART.write([{ id: packageId, qty: 1 }]);
+    // Slug sepete yazilir; TUTAR sunucuda bu slug'in ucretiyle hesaplanir
+    global.OVD_CART.write([{ id: packageId, qty: 1, teacher: teacher || undefined }]);
     if (teacher) {
       try {
         sessionStorage.setItem('ovd_premium_teacher', teacher);
@@ -196,6 +205,41 @@
       var data = await res.json();
       if (data.ok && data.packages && data.packages.length) packages = data.packages;
     } catch (_) {}
+
+    /**
+     * Ogretmen secilerek gelindiyse paket fiyatlari O OGRETMENIN ucretine
+     * gore gosterilir. Indirim ORANI korunur: ucreti 1100 olan ogretmende
+     * fiyatlar bugunkuyle birebir ayni kalir.
+     * Gosterim bilgidir; odenecek tutari sunucu yeniden hesaplar.
+     */
+    var ogretmenAdi = '';
+    if (teacher) {
+      try {
+        var tr = await fetch('/api/public-teachers?slug=' + encodeURIComponent(teacher));
+        var tj = await tr.json();
+        var t = tj && tj.teacher ? tj.teacher : null;
+        var ucret = t && t.private_lesson_fee_tl != null ? Number(t.private_lesson_fee_tl) : null;
+        ogretmenAdi = (t && t.name) || '';
+        if (ucret > 0) {
+          packages = packages.map(function (pkg) {
+            var oran = pkg.unitPrice / 1100;
+            var birim = Math.round(ucret * oran);
+            return Object.assign({}, pkg, { unitPrice: birim, price: birim * pkg.lessons });
+          });
+          var bilgi = document.getElementById('premiumTeacherNote');
+          if (bilgi) {
+            bilgi.textContent =
+              (ogretmenAdi || 'Seçilen öğretmen') +
+              ' · ' +
+              (t.private_lesson_duration_min || 40) +
+              ' dakikalık ders ' +
+              formatPrice(ucret) +
+              ' — paket fiyatları bu ücrete göre hesaplandı.';
+            bilgi.hidden = false;
+          }
+        }
+      } catch (_) {}
+    }
 
     renderGrid(grid, packages);
     bindClicks(grid, teacher);

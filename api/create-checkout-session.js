@@ -1,4 +1,5 @@
 const Stripe = require('stripe');
+const { sepetOgretmenUcretleri } = require('./_lib/ogretmen-ucret-getir.js');
 const { resolveLineItems } = require('./_lib/products');
 
 function getOrigin(req) {
@@ -44,7 +45,10 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Geçerli bir telefon numarası girin.' });
     }
 
-    const resolved = resolveLineItems(body.items);
+    // Ucret istemciden GELMEZ: sepet yalniz ogretmen slug'ini tasir,
+    // tutar panelden okunan ucretle sunucuda hesaplanir.
+    const ogretmenUcretleri = await sepetOgretmenUcretleri(body.items);
+    const resolved = resolveLineItems(body.items, undefined, { ogretmenUcretleri });
     const origin = getOrigin(req);
     const stripe = new Stripe(secret, { apiVersion: '2024-06-20' });
 

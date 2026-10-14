@@ -89,7 +89,13 @@ function nowMs(now) {
   return isFinite(t) ? t : Date.now();
 }
 
-function resolveLineItems(items, now) {
+const { ozelDersPaketFiyati, ozelDersPaketiMi } = require('./ozel-ders-paket-fiyat.js');
+
+/**
+ * @param {object} [ctx] ctx.ogretmenUcretleri: { slug: ucretTL }
+ *        Ucret ISTEMCIDEN gelmez; cagiran panelden okuyup verir.
+ */
+function resolveLineItems(items, now, ctx) {
   if (!Array.isArray(items) || !items.length) {
     throw new Error('Sepet boş.');
   }
@@ -108,13 +114,27 @@ function resolveLineItems(items, now) {
     const currentPrice = denemePkg
       ? denemeKulubu.priceFor(denemePkg, nowMs(now)).current
       : academicPricing.productPrice(withBr, now);
-    const product = { ...withBr, price: currentPrice };
+    /**
+     * Ozel ders paketi bir ogretmene baglanmissa tutar O OGRETMENIN
+     * ucretine gore hesaplanir. Sepet yalniz slug tasir; ucret sunucuda
+     * okunur, boylece tarayicida fiyat degistirilemez.
+     */
+    let finalPrice = currentPrice;
+    let ogretmenSlug = String(item.teacher || '').trim() || null;
+    if (ogretmenSlug && ozelDersPaketiMi(withBr.id)) {
+      const ucret = ctx && ctx.ogretmenUcretleri ? ctx.ogretmenUcretleri[ogretmenSlug] : null;
+      const hesap = ozelDersPaketFiyati(withBr.id, ucret);
+      if (hesap) finalPrice = hesap.price;
+    } else {
+      ogretmenSlug = null;
+    }
+    const product = { ...withBr, price: finalPrice, teacher: ogretmenSlug };
     // Branş paketi öğrenci başına tek adet
     const qty = product.branchCount ? 1 : Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));
     return {
       product,
       qty,
-      unitAmount: Math.round(currentPrice * 100),
+      unitAmount: Math.round(finalPrice * 100),
     };
   });
 }
