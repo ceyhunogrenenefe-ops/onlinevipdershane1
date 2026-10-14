@@ -1,4 +1,5 @@
 const { resolveLineItems } = require('./_lib/products');
+const { sepetOgretmenUcretleri } = require('./_lib/ogretmen-ucret-getir.js');
 const {
   ziraatConfig,
   buildHostingPaymentForm,
@@ -103,7 +104,10 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Geçerli bir telefon numarası girin.' });
     }
 
-    const resolved = resolveLineItems(body.items);
+    // Ucret istemciden GELMEZ: sepet yalniz ogretmen slug'ini tasir,
+    // tutar panelden okunan ucretle sunucuda hesaplanir.
+    const ogretmenUcretleri = await sepetOgretmenUcretleri(body.items);
+    const resolved = resolveLineItems(body.items, undefined, { ogretmenUcretleri });
     const paymentAmount = resolved.reduce((sum, row) => sum + row.unitAmount * row.qty, 0);
     if (paymentAmount < 100) {
       return res.status(400).json({ error: 'Ödeme tutarı geçersiz.' });
