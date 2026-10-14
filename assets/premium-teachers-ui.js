@@ -102,7 +102,12 @@
             : null,
       live: t.online_lessons !== false,
       available: t.accepting_students !== false,
-      price: null,
+      // Ucret panelden gelir; yoksa kurum varsayilani, o da yoksa null.
+      // Daha once burada sabit null vardi ve fiyat filtresi hic calismiyordu.
+      price: t.private_lesson_fee_tl != null ? Number(t.private_lesson_fee_tl) : null,
+      priceDuration: Number(t.private_lesson_duration_min) || 40,
+      priceLabel: t.private_lesson_fee_label || '',
+      priceSource: t.private_lesson_fee_source || 'none',
       grades: Array.isArray(t.grade_levels) ? t.grade_levels.slice() : [],
       photo: isUsablePhoto(rawPhoto) ? rawPhoto : '',
       photoPos: 'center 20%',
@@ -311,6 +316,16 @@
                   '</dd></div>') +
               '<div class="rounded-xl bg-soft px-2 py-2"><dt class="text-[10px] font-bold uppercase tracking-wide text-mute">Ders</dt><dd class="mt-0.5 text-sm font-extrabold text-ink">' + lessonsTxt + '</dd></div>' +
             '</dl>' +
+            (t.price != null
+              ? '<div class="mt-3 rounded-xl border border-navy/15 bg-navy/5 px-3 py-2" data-test="ogretmen-ucret">' +
+                '<p class="text-[11px] font-bold uppercase tracking-wide text-mute">' +
+                escapeHtml(String(t.priceDuration || 40)) +
+                ' dakikalık birebir özel ders</p>' +
+                '<p class="text-lg font-extrabold text-navy">' +
+                escapeHtml(Number(t.price).toLocaleString('tr-TR')) +
+                ' TL <span class="text-xs font-bold text-mute">/ ders</span></p>' +
+                '</div>'
+              : '') +
             (hasReviews
               ? '<a href="' +
                 reviewsHref +
@@ -771,7 +786,11 @@
           video: t.video || base.video || '',
           rating: t.rating != null ? t.rating : base.rating,
           total_reviews: t.total_reviews != null ? t.total_reviews : base.total_reviews,
-          lessons: t.lessons != null ? t.lessons : base.lessons
+          lessons: t.lessons != null ? t.lessons : base.lessons,
+          price: t.price != null ? t.price : base.price != null ? base.price : null,
+          priceDuration: t.priceDuration || base.priceDuration || 40,
+          priceLabel: t.priceLabel || base.priceLabel || '',
+          priceSource: t.priceSource || base.priceSource || 'none'
         });
       });
       return Object.keys(bySlug).map(function (k) { return bySlug[k]; });
