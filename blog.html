@@ -325,6 +325,12 @@ button{font-family:'Nunito',sans-serif;cursor:pointer;}
 /* Full article */
 .full-article{display:none;padding:28px;border-top:1px solid var(--border);font-size:14.5px;line-height:1.85;color:#2a3350;}
 .full-article.open{display:block;}
+.share-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.share-label{font-size:12px;font-weight:700;color:var(--muted);}
+.share-btn{font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:var(--light);color:var(--navy);cursor:pointer;line-height:1.4;}
+.share-btn:hover{border-color:var(--navy);}
+.share-wa{background:#25d366;border-color:#25d366;color:#fff;}
+.share-wa:hover{background:#1eb955;border-color:#1eb955;}
 .oyss-gallery{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:14px;-webkit-overflow-scrolling:touch;}
 .oyss-gallery img{flex:0 0 min(78%,340px);height:auto;border-radius:12px;border:1px solid var(--border);scroll-snap-align:start;}
 .full-article h3{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:var(--navy);margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border);}
@@ -1201,8 +1207,16 @@ function toggleArticle(id, btn) {
  * Hash desteklenmedigi surece link kapali bir karta dusuyordu; ziyaretci
  * yaziyi gormek icin ayrica "Devamini Oku"ya basmak zorunda kaliyordu.
  */
+function currentPostId() {
+  var h = (location.hash || '').replace(/^#/, '');
+  if (h) return h;
+  if (window.__BLOG_POST_ID) return window.__BLOG_POST_ID;
+  var m = location.pathname.match(/^\/blog\/([a-z0-9-]+)\/?$/);
+  return m ? m[1] : '';
+}
+
 function openArticleFromHash() {
-  var id = (location.hash || '').replace(/^#/, '');
+  var id = currentPostId();
   if (!id) return;
   var card = document.getElementById(id);
   var full = document.getElementById('full-' + id);
@@ -1214,11 +1228,53 @@ function openArticleFromHash() {
   }
   card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+/* Her yaziya paylasim satiri: /blog/<id> linki WhatsApp ve sosyal medyada
+   kendi baslik + gorseliyle onizlenir (api/blog-post.js). */
+function addShareBars() {
+  var cards = document.querySelectorAll('article.article-card[id]');
+  for (var i = 0; i < cards.length; i++) {
+    (function (card) {
+      var id = card.id;
+      var footer = card.querySelector('.article-footer');
+      if (!footer || card.querySelector('.share-bar')) return;
+      var titleEl = card.querySelector('.article-title');
+      var title = titleEl ? titleEl.textContent.trim() : 'Online VIP Dershane Blog';
+      var url = 'https://onlinevipdershane.com/blog/' + id;
+      var bar = document.createElement('div');
+      bar.className = 'share-bar';
+      bar.innerHTML =
+        '<span class="share-label">Paylaş:</span>' +
+        '<a class="share-btn share-wa" target="_blank" rel="noopener" href="https://wa.me/?text=' +
+          encodeURIComponent(title + '\n' + url) + '">WhatsApp</a>' +
+        '<button type="button" class="share-btn share-copy">Linki kopyala</button>';
+      var copyBtn = bar.querySelector('.share-copy');
+      if (navigator.share) {
+        var more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'share-btn';
+        more.textContent = 'Diğer…';
+        more.onclick = function () { navigator.share({ title: title, url: url }).catch(function () {}); };
+        bar.appendChild(more);
+      }
+      copyBtn.onclick = function () {
+        var done = function () { copyBtn.textContent = 'Kopyalandı ✓'; setTimeout(function () { copyBtn.textContent = 'Linki kopyala'; }, 2000); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(done, function () { window.prompt('Linki kopyalayın:', url); });
+        } else {
+          window.prompt('Linki kopyalayın:', url);
+        }
+      };
+      footer.parentNode.insertBefore(bar, footer.nextSibling);
+    })(cards[i]);
+  }
+}
+
+function initBlog() { addShareBars(); openArticleFromHash(); }
 window.addEventListener('hashchange', openArticleFromHash);
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', openArticleFromHash);
+  document.addEventListener('DOMContentLoaded', initBlog);
 } else {
-  openArticleFromHash();
+  initBlog();
 }
 </script>
 

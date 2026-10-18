@@ -438,11 +438,6 @@
       "permanent": true
     },
     {
-      "source": "/blog/:slug*",
-      "destination": "/blog.html",
-      "permanent": true
-    },
-    {
       "source": "/haber/:slug*",
       "destination": "/blog.html",
       "permanent": true
@@ -734,6 +729,14 @@
   ],
   "rewrites": [
     {
+      "source": "/blog/:slug([a-z0-9-]+)",
+      "destination": "/api/blog-post?slug=:slug"
+    },
+    {
+      "source": "/blog/:slug([a-z0-9-]+)/",
+      "destination": "/api/blog-post?slug=:slug"
+    },
+    {
       "source": "/deneme-kulubu",
       "destination": "/deneme-kulubu.html"
     },
@@ -765,5 +768,10 @@
       "source": "/odeme/kitap/",
       "destination": "/odeme-kitap.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/blog-post.js": {
+      "includeFiles": "blog.html"
+    }
+  }
 }
