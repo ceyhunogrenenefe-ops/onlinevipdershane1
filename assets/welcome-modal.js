@@ -5,6 +5,7 @@
   function logoPrefix() {
     var path = location.pathname.replace(/\\/g, '/');
     if (path.indexOf('/programlar/') !== -1) return '../';
+    if (path.indexOf('/blog/') === 0) return '/';
     return '';
   }
 
@@ -13,6 +14,11 @@
   }
 
   function shouldShow() {
+    // Paylasilan bir blog yazisinin linkiyle gelen ziyaretci once yaziyi gorsun
+    if (window.__BLOG_POST_ID || /^\/blog\/[a-z0-9-]+\/?$/.test(location.pathname) ||
+        (/\/blog\.html$/.test(location.pathname) && location.hash)) {
+      return false;
+    }
     // Deneme dersi linkiyle gelen ziyaretçide deneme formu açılır; karşılama penceresi çakışmasın
     if (/^#deneme(-dersi(-formu)?)?$/i.test(location.hash || '') || /(^|[?&])deneme=1(&|$)/.test(location.search || '')) {
       return false;
