@@ -1,12 +1,12 @@
 (function (global) {
   var VIDEOS = {
     intro: {
-      id: 'P4kRnS3Kscc',
+      id: 'Xwm1hzD0kJk',
       title: 'Online VIP Dershane Nasıl Çalışır?',
       desc: 'Canlı dersler, VIP gruplar, koçluk sistemi ve 7/24 destek — dershanemizin işleyişini kısaca tanıyın.',
       category: 'intro',
       portrait: true,
-      date: '14 Ocak 2026',
+      date: '27 Ekim 2026',
     },
     samples: [
       {
