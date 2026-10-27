@@ -170,7 +170,7 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
           <li>Gönderim planını paylaşalım</li>
           <li>Analiz karnesini örnekle gösterelim</li>
         </ul>
-        <a class="dk-wa" href="https://wa.me/908503034014?text=${encodeURIComponent('Merhaba, ' + pkg.title + ' hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">WhatsApp'tan yazın</a>
+        <a class="dk-wa" href="https://wa.me/905061877494?text=${encodeURIComponent('Merhaba, ' + pkg.title + ' hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">WhatsApp'tan yazın</a>
       </aside>
     </div>
     <p style="text-align:center;margin-top:26px;"><a href="/deneme-kulubu" style="color:var(--navy);font-weight:700;">← Bütün sınıfları gör</a></p>

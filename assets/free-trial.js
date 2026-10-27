@@ -8,7 +8,7 @@
 
   var EXIT_KEY = 'ovd_ft_exit_at';
   var WA_URL =
-    'https://wa.me/908503034014?text=' +
+    'https://wa.me/905061877494?text=' +
     encodeURIComponent(
       'Merhaba, 3 günlük ücretsiz deneme dersime kaydoldum. Canlı derse erişim için yönlendirir misiniz?'
     );
