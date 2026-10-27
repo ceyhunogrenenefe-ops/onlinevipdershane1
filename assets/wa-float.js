@@ -37,7 +37,7 @@
   }
 
   var waHref =
-    'https://wa.me/908503034014?text=' +
+    'https://wa.me/905061877494?text=' +
     encodeURIComponent('Merhaba, Online VIP Dershane hakkında bilgi almak istiyorum.');
 
   var a = document.createElement('a');

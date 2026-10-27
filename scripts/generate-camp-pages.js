@@ -115,7 +115,7 @@ function campPage(camp) {
       <div class="price">24.000₺</div>
       <div class="period">9 Haftalık Kamp</div>
       <a href="../kayit.html" class="btn-kayit">📋 Hemen Kayıt Ol</a>
-      <a href="https://wa.me/908503034014?text=${waText}" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp</a>
+      <a href="https://wa.me/905061877494?text=${waText}" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp</a>
       <button class="btn-share" onclick="copyURL('${canonical}')">🔗 Linki Paylaş</button>
     </div>
   </div>
@@ -134,7 +134,7 @@ function campPage(camp) {
         <h3>🎁 Ücretsiz Başlayın</h3>
         <p>Tanışma dersini alın. Ödeme yapmadan sistemi deneyin.</p>
         <a href="../iletisim.html" class="btn-kayit" style="margin-bottom:10px;">📋 Ücretsiz Tanışma</a>
-        <a href="https://wa.me/908503034014?text=${waText}" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp'tan Sor</a>
+        <a href="https://wa.me/905061877494?text=${waText}" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp'tan Sor</a>
         <a href="kamplar.html" class="back-link">← Tüm Yaz Kampları</a>
       </div>
     </div>
