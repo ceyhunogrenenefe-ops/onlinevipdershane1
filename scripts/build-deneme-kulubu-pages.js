@@ -68,6 +68,10 @@ footer.dk-foot{background:var(--navy3);color:rgba(255,255,255,.82);padding:34px 
 footer.dk-foot .dk-wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;}
 footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
 </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17235832134"></script>
+<script src="../assets/analytics-config.js"></script>
+<script src="../assets/gtag-init.js"></script>
 </head>
 <body>
 
@@ -189,6 +193,7 @@ footer.dk-foot a{color:#fff;text-decoration:none;font-size:14px;}
 <script src="../assets/products.js?v=20261011a"></script>
 <script src="../assets/cart.js?v=20261011a"></script>
 <script src="../assets/deneme-kulubu.js?v=2"></script>
+<script src="../assets/perf-analytics.js" defer></script>
 </body>
 </html>
 `;
