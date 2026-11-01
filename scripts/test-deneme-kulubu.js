@@ -2,7 +2,8 @@ var assert = require('assert');
 var dk = require('../assets/deneme-kulubu-data.js');
 
 var EKIM = Date.parse('2026-10-15T12:00:00+03:00');
-var KASIM = Date.parse('2026-11-01T00:00:01+03:00');
+var KASIM = Date.parse('2026-11-15T12:00:00+03:00');
+var ARALIK = Date.parse('2026-12-01T00:00:01+03:00');
 var EYLUL = Date.parse('2026-09-30T23:59:59+03:00');
 
 /** Kurumun verdiği fiyatlar — normal / %50 kampanyalı */
@@ -32,12 +33,16 @@ Object.keys(BEKLENEN).forEach(function (slug) {
   assert.strictEqual(k.current, indirimli, slug + ' kampanyali fiyat');
   assert.strictEqual(k.discounted, true, slug + ' ekimde indirimli olmali');
   assert.strictEqual(k.percent, 50, slug + ' indirim orani');
+
+  var ks = dk.priceFor(pkg, KASIM);
+  assert.strictEqual(ks.current, indirimli, slug + ' kasimda da kampanyali fiyat');
+  assert.strictEqual(ks.discounted, true, slug + ' kasimda indirimli olmali');
 });
 
 // Kampanya bitince indirim kalkar, normal fiyat gosterilir
 Object.keys(BEKLENEN).forEach(function (slug) {
   var pkg = dk.bySlug(slug);
-  [KASIM, EYLUL].forEach(function (t) {
+  [ARALIK, EYLUL].forEach(function (t) {
     var p = dk.priceFor(pkg, t);
     assert.strictEqual(p.discounted, false, slug + ' kampanya disi indirimsiz');
     assert.strictEqual(p.current, p.normal, slug + ' kampanya disi normal fiyat');
@@ -46,8 +51,9 @@ Object.keys(BEKLENEN).forEach(function (slug) {
 });
 
 // Son saniye dahil, bir saniye sonrasi haric
-assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-10-31T23:59:59+03:00')), true, 'son saniye dahil');
-assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-11-01T00:00:00+03:00')), false, 'bitisten sonra');
+assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-11-30T23:59:59+03:00')), true, 'son saniye dahil');
+assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-11-01T00:00:00+03:00')), true, 'kasim basi dahil');
+assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-12-01T00:00:00+03:00')), false, 'bitisten sonra');
 assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-10-01T00:00:00+03:00')), true, 'baslangic dahil');
 assert.strictEqual(dk.campaignActiveAt(Date.parse('2026-09-30T23:59:59+03:00')), false, 'baslangictan once');
 
@@ -85,7 +91,7 @@ assert.strictEqual(dk.formatTl(16500), '16.500 ₺');
 /** Odeme: sepete giden tutar sitede gosterilen tutarla ayni olmali */
 var prod = require('../api/_lib/products.js');
 var EKIM_D = new Date('2026-10-15T12:00:00+03:00');
-var KASIM_D = new Date('2026-11-05T12:00:00+03:00');
+var ARALIK_D = new Date('2026-12-05T12:00:00+03:00');
 
 dk.PACKAGES.forEach(function (pkg) {
   var id = prod.denemeProductId(pkg);
@@ -96,8 +102,8 @@ dk.PACKAGES.forEach(function (pkg) {
   assert.strictEqual(ekim.unitAmount, dk.priceFor(pkg, EKIM_D.getTime()).current * 100,
     id + ' ekimde odenecek tutar kampanyali olmali');
 
-  var kasim = prod.resolveLineItems([{ id: id, qty: 1 }], KASIM_D)[0];
-  assert.strictEqual(kasim.unitAmount, pkg.normalPrice * 100,
+  var aralik = prod.resolveLineItems([{ id: id, qty: 1 }], ARALIK_D)[0];
+  assert.strictEqual(aralik.unitAmount, pkg.normalPrice * 100,
     id + ' kampanya bitince normal fiyat');
 });
 
