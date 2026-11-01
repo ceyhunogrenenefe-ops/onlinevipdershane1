@@ -16,15 +16,15 @@
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.VIP_DenemeKulubu = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
-  /** Ekim kampanyası — Türkiye saati 31 Ekim 2026 23:59:59 */
+  /** %50 kampanya — Ekim'de başladı, Kasım boyunca uzatıldı: Türkiye saati 30 Kasım 2026 23:59:59 */
   var CAMPAIGN = {
-    id: 'ekim-2026',
-    label: '%50 Ekim Kampanyası',
+    id: 'kasim-2026',
+    label: '%50 Kasım Kampanyası',
     shortLabel: '%50 İndirim',
     discountPercent: 50,
     startsAt: '2026-10-01T00:00:00+03:00',
-    endsAt: '2026-10-31T23:59:59+03:00',
-    deadlineText: "31 Ekim'e kadar"
+    endsAt: '2026-11-30T23:59:59+03:00',
+    deadlineText: "30 Kasım'a kadar"
   };
 
   /**

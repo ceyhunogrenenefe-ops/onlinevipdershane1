@@ -25,7 +25,7 @@ const PRODUCTS = {
   kamp910: { id: 'kamp910', name: "9'dan 10'a Geçenler Yaz Kampı", price: 24000 },
   kampMaarifTyt: { id: 'kampMaarifTyt', name: 'Maarif Model TYT Yaz Kampı', price: 24000 },
   kampTyt: { id: 'kampTyt', name: "11'den 12'ye TYT Yaz Kampı", price: 24000 },
-  // Deneme Kulubu: donemlik fiyatlama yok; indirim Ekim kampanyasindan gelir
+  // Deneme Kulubu: donemlik fiyatlama yok; indirim %50 Kasim kampanyasindan gelir (deneme-kulubu-data.js)
   deneme3: { id: 'deneme3', name: '3. Sınıf Deneme Kulübü', price: 6000 },
   deneme4: { id: 'deneme4', name: '4. Sınıf Deneme Kulübü', price: 6000 },
   deneme5: { id: 'deneme5', name: '5. Sınıf Deneme Kulübü', price: 10000 },
