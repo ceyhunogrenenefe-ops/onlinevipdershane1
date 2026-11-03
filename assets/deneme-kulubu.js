@@ -93,6 +93,8 @@
         + '<div class="dk-card-top"><span class="dk-chip">' + esc(p.groupLabel) + '</span></div>'
         + '<h3>' + esc(p.short) + '</h3>'
         + countLabel(p)
+        + '<a class="dk-cal-link" data-level="' + esc(p.level) + '" href="/deneme-kulubu/' + esc(p.slug) + '#takvim">'
+        + '📅 Deneme takvimi ve yayınlar</a>'
         + '<p>' + esc(p.desc) + '</p>'
         + priceHtml(p)
         + '<a class="dk-btn dk-btn--primary dk-btn--wide dk-buy" data-urun="' + esc(productId(p.slug)) + '" href="/sepet.html?program=' + esc(productId(p.slug)) + '">Hemen Al</a>'
@@ -203,23 +205,74 @@
     return list[0] && list[0].level;
   }
 
+  /** Sekmeyi seç ve o kademenin takvimini aç */
+  function selectTab(level) {
+    var host = el('dkTabs');
+    if (!host || !level) return false;
+    var found = false;
+    host.querySelectorAll('.dk-tab').forEach(function (b) {
+      var on = b.getAttribute('data-level') === level;
+      if (on) found = true;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (found) loadCalendar(level);
+    return found;
+  }
+
+  /** Paylaşılan bağlantı: /deneme-kulubu?takvim=lgs#takvim */
+  function levelFromUrl() {
+    try {
+      return new URLSearchParams(location.search).get('takvim') || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  var tabsBound = false;
+
   function initTabs() {
     var host = el('dkTabs');
     if (!host) return;
     var list = packagesNow();
-    var secili = defaultLevel(list);
+    var istenen = state.userLevel || levelFromUrl();
+    var secili = list.some(function (p) { return p.level === istenen; }) ? istenen : defaultLevel(list);
     host.innerHTML = list.map(function (p) {
       return '<button type="button" class="dk-tab" role="tab" data-level="' + esc(p.level) + '"'
         + ' aria-selected="' + (p.level === secili ? 'true' : 'false') + '">' + esc(p.short) + '</button>';
     }).join('');
-    host.addEventListener('click', function (e) {
-      var btn = e.target.closest('.dk-tab');
-      if (!btn) return;
-      host.querySelectorAll('.dk-tab').forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
-      btn.setAttribute('aria-selected', 'true');
-      loadCalendar(btn.getAttribute('data-level'));
-    });
+    if (!tabsBound) {
+      tabsBound = true;
+      host.addEventListener('click', function (e) {
+        var btn = e.target.closest('.dk-tab');
+        if (!btn) return;
+        state.userLevel = btn.getAttribute('data-level');
+        selectTab(state.userLevel);
+      });
+    }
     loadCalendar(secili);
+  }
+
+  /**
+   * Karttaki "Deneme takvimi ve yayınlar" bağlantısı: takvim sekmeleri bu
+   * sayfadaysa o kademeyi seçip takvime kaydırır; değilse kademenin kendi
+   * sayfasındaki takvime gider (bağlantının normal davranışı).
+   */
+  function initCalendarLinks() {
+    var cards = el('dkCards');
+    if (!cards) return;
+    cards.addEventListener('click', function (e) {
+      var a = e.target.closest('.dk-cal-link');
+      if (!a || !el('dkTabs')) return;
+      var level = a.getAttribute('data-level');
+      e.preventDefault();
+      state.userLevel = level;
+      selectTab(level);
+      var sec = document.getElementById('takvim');
+      if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try {
+        history.replaceState(null, '', '?takvim=' + encodeURIComponent(level) + '#takvim');
+      } catch (err) { /* yoksay */ }
+    });
   }
 
   /** Reklamdan gelen ziyaretçinin kaynağı forma taşınır */
@@ -339,6 +392,7 @@
     renderCards();
     renderDetailPrice();
     initTabs();
+    initCalendarLinks();
     initForm();
     initBuy();
 
