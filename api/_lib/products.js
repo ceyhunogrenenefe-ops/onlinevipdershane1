@@ -39,6 +39,7 @@ const PRODUCTS = {
   // Yazılıya Hazırlık Kampı. 'yazili' id'si eski sepetlerde duruyor olabilir;
   // kaldırılırsa resolveLineItems 'Geçersiz ürün' atar, o yüzden lise tek dönem olarak korunuyor.
   yazili: { id: 'yazili', name: 'Yazılıya Hazırlık Kampı — Lise (9-10-11)', price: 3500 },
+  paragrafKampi: { id: 'paragrafKampi', name: 'Paragraf Kampı (LGS · YKS) — 8 Ders Saati', price: 3500 },
   yaziliOrtaokul: { id: 'yaziliOrtaokul', name: 'Yazılıya Hazırlık Kampı — Ortaokul (5-6-7-8)', price: 3000 },
   yaziliLisePaket: { id: 'yaziliLisePaket', name: 'Yazılıya Hazırlık Kampı — Lise · 4 Dönem Paketi', price: 11990 },
   yaziliOrtaokulPaket: { id: 'yaziliOrtaokulPaket', name: 'Yazılıya Hazırlık Kampı — Ortaokul · 4 Dönem Paketi', price: 9990 },
