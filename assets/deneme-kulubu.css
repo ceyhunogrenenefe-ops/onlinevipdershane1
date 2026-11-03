@@ -46,6 +46,8 @@
 .dk-card h3{margin:0;font-size:19px;font-family:'Bricolage Grotesque',system-ui,sans-serif;color:var(--navy3,#0a1a4e);}
 .dk-card p{margin:0;font-size:14px;line-height:1.55;color:var(--muted,#6e6e73);flex:1;}
 .dk-count{font-size:13px;font-weight:700;color:var(--navy,#1a3fad);}
+.dk-cal-link{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy,#1a3fad);text-decoration:underline;text-underline-offset:3px;padding:2px 0;}
+.dk-cal-link:hover{color:var(--accent2,#c8191f);}
 .dk-price{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;}
 .dk-price-old{text-decoration:line-through;color:#9a9aa0;font-size:15px;}
 .dk-price-new{font-size:27px;font-weight:800;color:var(--navy3,#0a1a4e);font-family:'Bricolage Grotesque',system-ui,sans-serif;}
@@ -141,3 +143,6 @@
   .dk-bar-row{grid-template-columns:82px 1fr 46px;font-size:13px;}
   .dk-btn{width:100%;}
 }
+
+/* Kart bağlantısıyla takvime kayınca başlık sabit menünün altında kalmasın */
+#takvim{scroll-margin-top:84px;}
