@@ -73,6 +73,11 @@
       "permanent": true
     },
     {
+      "source": "/paragraf-kampi.html",
+      "destination": "/programlar/paragraf-kampi.html",
+      "permanent": true
+    },
+    {
       "source": "/kitap.html",
       "destination": "/programlar/kitap.html",
       "permanent": true

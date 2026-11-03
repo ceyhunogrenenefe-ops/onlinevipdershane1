@@ -245,6 +245,7 @@
       'kamp-maarif-tyt.html': 'kampMaarifTyt',
       'kamp-tyt.html': 'kampTyt',
       'yazili.html': 'yazili',
+      'paragraf-kampi.html': 'paragrafKampi',
       'kitap.html': 'kitap',
       'kitap-atolyesi.html': 'kitap',
       'start.html': 'start',
