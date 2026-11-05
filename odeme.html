@@ -48,6 +48,10 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
 .pay-method input{accent-color:var(--navy);}
 .pay-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px;}
 .pay-badges span{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:var(--light);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:520px){.row2{grid-template-columns:1fr;}}
+.ship-box{margin:4px 0 14px;padding:14px;border:1px solid #fcd34d;border-radius:12px;background:#fffbeb;}
+.ship-box h3{font-size:13px;font-weight:800;margin-bottom:10px;color:#92400e;}
 </style>
   <link rel="stylesheet" href="assets/welcome-modal.css">
   <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
@@ -109,7 +113,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p class="lead" id="pay-lead">Veli bilgilerinizi girin; güvenli ödeme ekranına yönlendirileceksiniz.</p>
   <div class="grid" id="checkout-grid">
     <form class="card" id="checkout-form">
-      <h2>Veli Bilgileri</h2>
+      <h2>Veli / Teslimat Bilgileri</h2>
       <div class="error" id="form-error"></div>
       <div class="field">
         <label for="parentName">Veli Adı Soyadı *</label>
@@ -123,6 +127,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <label for="email">E-posta *</label>
         <input id="email" name="email" required type="email" autocomplete="email" placeholder="ornek@email.com">
         <small>Ödeme makbuzu bu adrese gönderilir.</small>
+      </div>
+      <div id="ship-fields" class="ship-box" style="display:none">
+        <h3>📦 Teslimat adresi (Deneme Kulübü / kargo) *</h3>
+        <div class="field">
+          <label for="addressLine1">Açık adres *</label>
+          <input id="addressLine1" name="addressLine1" autocomplete="street-address" placeholder="Mahalle, cadde, kapı no">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="district">İlçe *</label>
+            <input id="district" name="district" autocomplete="address-level2" placeholder="İlçe">
+          </div>
+          <div class="field">
+            <label for="city">İl *</label>
+            <input id="city" name="city" autocomplete="address-level1" placeholder="İl">
+          </div>
+        </div>
       </div>
       <div class="field">
         <label for="studentInfo">Öğrenci Bilgisi (isteğe bağlı)</label>
@@ -185,6 +206,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var provider='none';
   var selectedTeacherSlug='';
 
+  function haystackNeedsShipping(text){
+    var hay=String(text||'').toLowerCase();
+    return hay.indexOf('deneme')>=0 || hay.indexOf('kulüb')>=0 || hay.indexOf('kulub')>=0
+      || hay.indexOf('kitap')>=0 || hay.indexOf('kargo')>=0 || hay.indexOf('magaza')>=0;
+  }
+
+  function productNeedsShipping(product, itemId){
+    var id=String(itemId||'').toLowerCase();
+    if(id.indexOf('deneme')===0) return true;
+    if(!product) return haystackNeedsShipping(id);
+    if(String(product.id||'').toLowerCase().indexOf('deneme')===0) return true;
+    return haystackNeedsShipping(product.name||'') || haystackNeedsShipping(id);
+  }
+
+  function needsShipping(){
+    return OVD_CART.read().some(function(item){
+      return productNeedsShipping(VIP_getProduct(item.id), item.id);
+    });
+  }
+
+  function syncShipFields(){
+    var box=document.getElementById('ship-fields');
+    if(!box) return;
+    var show=needsShipping();
+    box.style.display=show?'block':'none';
+    document.getElementById('addressLine1').required=show;
+    document.getElementById('district').required=show;
+    document.getElementById('city').required=show;
+    if(show){
+      var lead=document.getElementById('pay-lead');
+      if(lead) lead.textContent='Deneme Kulübü ve kargo ürünleri için teslimat adresi zorunludur. Veli bilgilerinizi girin; ardından güvenli ödemeye geçin.';
+    }
+  }
+
+  function addressPayload(){
+    return {
+      address_line1:document.getElementById('addressLine1').value.trim(),
+      district:document.getElementById('district').value.trim(),
+      city:document.getElementById('city').value.trim()
+    };
+  }
+
+  function assertShipping(){
+    if(!needsShipping()) return true;
+    var addr=addressPayload();
+    if(!addr.address_line1 || !addr.district || !addr.city){
+      showError('Deneme Kulübü ve kargo ürünleri için açık adres, ilçe ve il zorunludur.');
+      return false;
+    }
+    return true;
+  }
+
   function ensurePackageFromQuery(){
     var paket=new URLSearchParams(location.search).get('paket')||'';
     var teacher=new URLSearchParams(location.search).get('ogretmen')||'';
@@ -232,6 +305,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(OVD_CART.total())+'</strong></div>';
     box.innerHTML=html;
+    syncShipFields();
   }
 
   function showError(msg){
@@ -241,12 +315,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function customerPayload(){
+    var addr=addressPayload();
+    var studentInfo=document.getElementById('studentInfo').value.trim();
+    if(needsShipping() && addr.address_line1){
+      var line=[addr.address_line1, addr.district, addr.city].filter(Boolean).join(', ');
+      studentInfo=[studentInfo, 'Teslimat: '+line].filter(Boolean).join(' · ');
+    }
     return {
       parentName:document.getElementById('parentName').value.trim(),
       phone:document.getElementById('phone').value.trim(),
       email:document.getElementById('email').value.trim(),
-      studentInfo:document.getElementById('studentInfo').value.trim(),
-      teacherSlug:selectedTeacherSlug||''
+      studentInfo:studentInfo,
+      teacherSlug:selectedTeacherSlug||'',
+      address:addr,
+      address_line1:addr.address_line1,
+      district:addr.district,
+      city:addr.city
     };
   }
 
@@ -325,6 +409,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   document.addEventListener('DOMContentLoaded',async function(){
     ensurePackageFromQuery();
     renderSummary();
+    syncShipFields();
     try{
       var cfg=await fetch('/api/payment-provider').then(function(r){return r.json();});
       provider=cfg.provider||'none';
@@ -385,6 +470,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       btn.disabled=true;
       btn.textContent='Yönlendiriliyor...';
       try{
+        if(!assertShipping()){
+          btn.disabled=false;
+          btn.textContent='🔒 Kredi Kartı ile Öde';
+          return;
+        }
         var p=selectedProvider();
         if(p==='garanti') await startGaranti(btn);
         else if(p==='ziraat') await startZiraat(btn);
