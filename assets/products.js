@@ -410,7 +410,7 @@
     yazili: ['kitap', 'lgs', 'ortaokul', 'lise'],
     paragrafKampi: ['lgs', 'yks', 'yazili'],
     araTatilMatematik: ['araTatilParagraf', 'lgs', 'ortaokul'],
-    araTatilParagraf: ['araTatilMatematik', 'lgs', 'paragrafKampi'],
+    araTatilParagraf: ['araTatilMatematik', 'lgs', 'yazili'],
     yaziliOrtaokul: ['ortaokul', 'lgs', 'kitap'],
     yaziliLisePaket: ['lise', 'kitap', 'kocluk'],
     yaziliOrtaokulPaket: ['ortaokul', 'lgs', 'kitap'],
