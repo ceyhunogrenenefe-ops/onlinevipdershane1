@@ -40,6 +40,9 @@ const PRODUCTS = {
   // kaldırılırsa resolveLineItems 'Geçersiz ürün' atar, o yüzden lise tek dönem olarak korunuyor.
   yazili: { id: 'yazili', name: 'Yazılıya Hazırlık Kampı — Lise (9-10-11)', price: 3500 },
   paragrafKampi: { id: 'paragrafKampi', name: 'Paragraf Kampı (LGS · YKS) — 8 Ders Saati', price: 3500 },
+  // Kasım 2026 ara tatil kampları (tek seferlik, sabit fiyat)
+  araTatilMatematik: { id: 'araTatilMatematik', name: 'Ara Tatil Matematik Kampı — 17-21 Kasım · 10 Ders', price: 5000 },
+  araTatilParagraf: { id: 'araTatilParagraf', name: 'Ara Tatil Paragraf Teknikleri Kampı — 17-20 Kasım · 7-8. Sınıf', price: 5000 },
   yaziliOrtaokul: { id: 'yaziliOrtaokul', name: 'Yazılıya Hazırlık Kampı — Ortaokul (5-6-7-8)', price: 3000 },
   yaziliLisePaket: { id: 'yaziliLisePaket', name: 'Yazılıya Hazırlık Kampı — Lise · 4 Dönem Paketi', price: 11990 },
   yaziliOrtaokulPaket: { id: 'yaziliOrtaokulPaket', name: 'Yazılıya Hazırlık Kampı — Ortaokul · 4 Dönem Paketi', price: 9990 },

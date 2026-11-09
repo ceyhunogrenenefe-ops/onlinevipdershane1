@@ -73,6 +73,16 @@
       "permanent": true
     },
     {
+      "source": "/ara-tatil-kamplari.html",
+      "destination": "/programlar/ara-tatil-kamplari.html",
+      "permanent": true
+    },
+    {
+      "source": "/ara-tatil",
+      "destination": "/programlar/ara-tatil-kamplari.html",
+      "permanent": false
+    },
+    {
       "source": "/paragraf-kampi.html",
       "destination": "/programlar/paragraf-kampi.html",
       "permanent": true
