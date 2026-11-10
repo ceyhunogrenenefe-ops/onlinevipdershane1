@@ -132,6 +132,14 @@ function resolveLineItems(items, now, ctx) {
     } else {
       ogretmenSlug = null;
     }
+    /**
+     * Kupon tutarı sunucuda doğrulandıktan sonra gelir. İstemci yalnızca
+     * kodu gönderir; burada fiyat haritası yoksa katalog fiyatı kalır.
+     */
+    if (ctx && ctx.coupon && ctx.coupon.prices && ctx.coupon.prices[withBr.id] != null) {
+      const couponPrice = Number(ctx.coupon.prices[withBr.id]);
+      if (Number.isFinite(couponPrice) && couponPrice > 0) finalPrice = couponPrice;
+    }
     const product = { ...withBr, price: finalPrice, teacher: ogretmenSlug };
     // Branş paketi öğrenci başına tek adet
     const qty = product.branchCount ? 1 : Math.max(1, Math.min(5, parseInt(item.qty, 10) || 1));

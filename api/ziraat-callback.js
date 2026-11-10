@@ -6,6 +6,7 @@ const {
 } = require('./_lib/ziraat');
 const { createKommoLead } = require('./_lib/kommo');
 const { isCommercePaymentRef, notifyCommerceOrderPaid, extractCommercePaymentRef } = require('./_lib/commerce-panel');
+const { confirmCoupon, releaseCoupon } = require('./_lib/checkout-amount');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
@@ -238,6 +239,7 @@ module.exports = async function handler(req, res) {
         notifyPaidOrder({ merchantOid: orderId, totalAmount: amountKurus }).catch((err) =>
           console.error('ziraat-callback notify', err)
         );
+        confirmCoupon(orderId).catch((err) => console.warn('ziraat-callback coupon', err));
         notifyPanelPaid({ merchantOid: orderId, totalAmount: amountKurus }).catch((err) =>
           console.warn('ziraat-callback panel', err)
         );
@@ -246,6 +248,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).send(redirectHtml(okUrl));
     }
 
+    releaseCoupon(orderId).catch((err) => console.warn('ziraat-callback coupon release', err));
     console.log(
       'ziraat-callback: fail',
       orderId,

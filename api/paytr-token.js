@@ -1,5 +1,4 @@
-const { resolveLineItems } = require('./_lib/products');
-const { sepetOgretmenUcretleri } = require('./_lib/ogretmen-ucret-getir.js');
+const { resolveChargedItems, releaseCoupon } = require('./_lib/checkout-amount');
 const {
   paytrConfig,
   buildUserBasket,
@@ -85,6 +84,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  const couponHold = { code: '', oid: '' };
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
     const customer = body.customer || {};
@@ -106,15 +106,16 @@ module.exports = async function handler(req, res) {
 
     // Ucret istemciden GELMEZ: sepet yalniz ogretmen slug'ini tasir,
     // tutar panelden okunan ucretle sunucuda hesaplanir.
-    const ogretmenUcretleri = await sepetOgretmenUcretleri(body.items);
-    const resolved = resolveLineItems(body.items, undefined, { ogretmenUcretleri });
-    const paymentAmount = resolved.reduce((sum, row) => sum + row.unitAmount * row.qty, 0);
-    if (paymentAmount < 100) {
-      return res.status(400).json({ error: 'Ödeme tutarı geçersiz.' });
-    }
-
     const origin = getOrigin(req);
     const merchantOid = makeMerchantOid();
+    couponHold.code = String(body.coupon || body.couponCode || '').trim();
+    couponHold.oid = merchantOid;
+    const priced = await resolveChargedItems(body, merchantOid);
+    const resolved = priced.resolved;
+    const paymentAmount = priced.paymentAmount;
+    if (paymentAmount < 100) {
+      throw new Error('Ödeme tutarı geçersiz.');
+    }
     const userBasket = buildUserBasket(resolved);
     const userIp = clientIp(req);
     const paytr_token = buildPaytrToken({
@@ -160,7 +161,7 @@ module.exports = async function handler(req, res) {
 
     if (paytrJson.status !== 'success' || !paytrJson.token) {
       const reason = paytrJson.reason || paytrJson.err_msg || 'PayTR token alınamadı';
-      return res.status(400).json({ error: reason });
+      throw new Error(reason);
     }
 
     // Panele talep kaydı gönder (başarısız olsa da ödemeyi engelleme)
@@ -189,6 +190,7 @@ module.exports = async function handler(req, res) {
       },
     });
   } catch (err) {
+    if (couponHold.code && couponHold.oid) await releaseCoupon(couponHold.oid);
     console.error('paytr-token error', err);
     return res.status(400).json({ error: err.message || 'PayTR ödeme başlatılamadı.' });
   }

@@ -161,6 +161,7 @@ module.exports = {
   supabasePatch: supabasePatch,
   findByPhone: findByPhone,
   ping: ping,
+  creds: creds,
   configured: function () {
     return Boolean(creds());
   },

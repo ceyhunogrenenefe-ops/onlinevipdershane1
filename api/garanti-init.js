@@ -1,5 +1,4 @@
-const { resolveLineItems } = require('./_lib/products');
-const { sepetOgretmenUcretleri } = require('./_lib/ogretmen-ucret-getir.js');
+const { resolveChargedItems, releaseCoupon } = require('./_lib/checkout-amount');
 const {
   garantiConfig,
   buildCommonPaymentForm,
@@ -85,6 +84,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  const couponHold = { code: '', oid: '' };
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
     const customer = body.customer || {};
@@ -107,15 +107,16 @@ module.exports = async function handler(req, res) {
 
     // Ucret istemciden GELMEZ: sepet yalniz ogretmen slug'ini tasir,
     // tutar panelden okunan ucretle sunucuda hesaplanir.
-    const ogretmenUcretleri = await sepetOgretmenUcretleri(body.items);
-    const resolved = resolveLineItems(body.items, undefined, { ogretmenUcretleri });
-    const paymentAmount = resolved.reduce((sum, row) => sum + row.unitAmount * row.qty, 0);
-    if (paymentAmount < 100) {
-      return res.status(400).json({ error: 'Ödeme tutarı geçersiz.' });
-    }
-
     const origin = getOrigin(req);
     const orderId = makeOrderId();
+    couponHold.code = String(body.coupon || body.couponCode || '').trim();
+    couponHold.oid = orderId;
+    const priced = await resolveChargedItems(body, orderId);
+    const resolved = priced.resolved;
+    const paymentAmount = priced.paymentAmount;
+    if (paymentAmount < 100) {
+      throw new Error('Ödeme tutarı geçersiz.');
+    }
     const userIp = clientIp(req);
     const callbackUrl = `${origin}/api/garanti-callback?oid=${encodeURIComponent(orderId)}`;
 
@@ -184,6 +185,7 @@ module.exports = async function handler(req, res) {
       },
     });
   } catch (err) {
+    if (couponHold.code && couponHold.oid) await releaseCoupon(couponHold.oid);
     console.error('garanti-init error', err);
     return res.status(400).json({ error: err.message || 'Garanti ödeme başlatılamadı.' });
   }

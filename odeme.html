@@ -52,6 +52,16 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,36px);m
 @media(max-width:520px){.row2{grid-template-columns:1fr;}}
 .ship-box{margin:4px 0 14px;padding:14px;border:1px solid #fcd34d;border-radius:12px;background:#fffbeb;}
 .ship-box h3{font-size:13px;font-weight:800;margin-bottom:10px;color:#92400e;}
+.coupon-box{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.coupon-box label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;}
+.coupon-row{display:flex;gap:8px;}
+.coupon-row input{flex:1;min-width:0;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:14px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;}
+.coupon-row input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,63,173,.12);}
+.coupon-row button{padding:0 16px;border:none;border-radius:10px;background:var(--navy);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer;}
+.coupon-note{margin-top:8px;font-size:12px;font-weight:700;color:var(--muted);}
+.coupon-note.ok{color:#047857;}
+.coupon-note.bad{color:#b91c1c;}
+.order-old{text-decoration:line-through;color:#8e8e93;font-weight:700;margin-right:6px;}
 </style>
   <link rel="stylesheet" href="assets/welcome-modal.css">
   <meta name="google-site-verification" content="3zMZ-JrvFsPWEUs_bzeFJOH-kmWIVfx9A-Ibq21w-Rs">
@@ -188,6 +198,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </form>
     <aside class="card">
       <h2>Sipariş Özeti</h2>
+      <div class="coupon-box">
+        <label for="couponCode">Kupon kodu</label>
+        <div class="coupon-row">
+          <input id="couponCode" name="coupon" placeholder="LGSKASIM" autocomplete="off" maxlength="32" spellcheck="false">
+          <button type="button" id="coupon-apply">Uygula</button>
+        </div>
+        <p class="coupon-note" id="coupon-note">İlk 10 kişi Kasım ara tatil kampını 5.000 TL'ye alır.</p>
+      </div>
       <div id="order-summary"></div>
     </aside>
   </div>
@@ -205,6 +223,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 (function(){
   var provider='none';
   var selectedTeacherSlug='';
+  var couponQuote=null;
 
   function haystackNeedsShipping(text){
     var hay=String(text||'').toLowerCase();
@@ -289,6 +308,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   }
 
+  function couponCode(){
+    var el=document.getElementById('couponCode');
+    return el?el.value.trim():'';
+  }
+
+  function payBody(){
+    return {items:OVD_CART.read(),customer:customerPayload(),coupon:couponCode()};
+  }
+
   function renderSummary(){
     var box=document.getElementById('order-summary');
     var items=OVD_CART.read();
@@ -297,15 +325,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
     var html='';
-    items.forEach(function(item){
-      var p=VIP_getProduct(item.id);
-      if(!p)return;
-      var nm=p.name+(item.branches&&item.branches.length?' ('+item.branches.join(', ')+')':'');
-      html+='<div class="order-line"><span>'+nm+' × '+item.qty+'</span><strong>'+VIP_formatPrice(VIP_getCurrentPrice(p)*item.qty)+'</strong></div>';
-    });
-    html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(OVD_CART.total())+'</strong></div>';
+    if(couponQuote&&couponQuote.ok){
+      couponQuote.lines.forEach(function(line){
+        var price=VIP_formatPrice(line.unit*line.qty);
+        var old=line.compare?'<span class="order-old">'+VIP_formatPrice(line.compare*line.qty)+'</span>':'';
+        html+='<div class="order-line"><span>'+line.name+' × '+line.qty+'</span><strong>'+old+price+'</strong></div>';
+      });
+      html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(couponQuote.total)+'</strong></div>';
+    }else{
+      items.forEach(function(item){
+        var p=VIP_getProduct(item.id);
+        if(!p)return;
+        var nm=p.name+(item.branches&&item.branches.length?' ('+item.branches.join(', ')+')':'');
+        html+='<div class="order-line"><span>'+nm+' × '+item.qty+'</span><strong>'+VIP_formatPrice(VIP_getCurrentPrice(p)*item.qty)+'</strong></div>';
+      });
+      html+='<div class="order-total"><span>Toplam</span><strong>'+VIP_formatPrice(OVD_CART.total())+'</strong></div>';
+    }
     box.innerHTML=html;
     syncShipFields();
+  }
+
+  async function applyCoupon(){
+    var note=document.getElementById('coupon-note');
+    var code=couponCode();
+    if(!code){
+      couponQuote=null;
+      note.className='coupon-note';
+      note.textContent="İlk 10 kişi Kasım ara tatil kampını 5.000 TL'ye alır.";
+      try{ sessionStorage.removeItem('ovd_coupon'); }catch(e){}
+      renderSummary();
+      return true;
+    }
+    note.className='coupon-note';
+    note.textContent='Kod kontrol ediliyor…';
+    var res=await fetch('/api/kupon',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code:code,items:OVD_CART.read()})
+    });
+    var data=await res.json().catch(function(){ return {}; });
+    if(!res.ok||!data.ok){
+      couponQuote=null;
+      note.className='coupon-note bad';
+      note.textContent=data.error||'Kupon uygulanamadı.';
+      try{ sessionStorage.removeItem('ovd_coupon'); }catch(e){}
+      renderSummary();
+      return false;
+    }
+    couponQuote=data;
+    note.className='coupon-note ok';
+    note.textContent=data.message||'Kupon uygulandı.';
+    try{ sessionStorage.setItem('ovd_coupon', code); }catch(e){}
+    renderSummary();
+    return true;
   }
 
   function showError(msg){
@@ -360,7 +432,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/paytr-token',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+      body:JSON.stringify(payBody())
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'PayTR ödeme başlatılamadı');
@@ -372,7 +444,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/garanti-init',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+      body:JSON.stringify(payBody())
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'Garanti Bonus POS başlatılamadı');
@@ -385,7 +457,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/ziraat-init',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+      body:JSON.stringify(payBody())
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'Ziraat Sanal POS başlatılamadı');
@@ -398,7 +470,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var res=await fetch('/api/create-checkout-session',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:OVD_CART.read(),customer:customerPayload()})
+      body:JSON.stringify(payBody())
     });
     var data=await res.json();
     if(!res.ok) throw new Error(data.error||'Ödeme başlatılamadı');
@@ -410,6 +482,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     ensurePackageFromQuery();
     renderSummary();
     syncShipFields();
+    var couponBtn=document.getElementById('coupon-apply');
+    if(couponBtn) couponBtn.addEventListener('click', function(){ applyCoupon().catch(function(){}); });
+    try{
+      var saved=sessionStorage.getItem('ovd_coupon')||'';
+      if(saved){
+        document.getElementById('couponCode').value=saved;
+        applyCoupon().catch(function(){});
+      }
+    }catch(e){}
     try{
       var cfg=await fetch('/api/payment-provider').then(function(r){return r.json();});
       provider=cfg.provider||'none';
@@ -474,6 +555,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           btn.disabled=false;
           btn.textContent='🔒 Kredi Kartı ile Öde';
           return;
+        }
+        if(couponCode()){
+          var couponOk=await applyCoupon();
+          if(!couponOk){
+            btn.disabled=false;
+            btn.textContent='🔒 Kredi Kartı ile Öde';
+            return;
+          }
         }
         var p=selectedProvider();
         if(p==='garanti') await startGaranti(btn);

@@ -17,6 +17,8 @@ var html = fs.readFileSync(path.join(__dirname, '..', 'programlar', 'ara-tatil-k
 });
 
 assert.ok(html.indexOf('7.500 &#8378;') !== -1, 'satis tutari sayfada gorunmuyor');
+assert.ok(html.indexOf('LGSKASIM') !== -1, 'ilk 10 kisi kupon kodu sayfada yok');
+assert.ok(html.indexOf('5.000') !== -1, 'kuponlu fiyat sayfada yok');
 assert.ok(html.indexOf('10.000 &#8378;') !== -1, 'ustu cizili liste fiyati yok');
 assert.ok(html.indexOf('17–21 Kasım') !== -1, 'matematik tarihi yok');
 assert.ok(html.indexOf('17-18-19-20 Kasım') !== -1, 'paragraf tarihi yok');

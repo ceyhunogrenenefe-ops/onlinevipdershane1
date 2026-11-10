@@ -1,6 +1,5 @@
 const Stripe = require('stripe');
-const { sepetOgretmenUcretleri } = require('./_lib/ogretmen-ucret-getir.js');
-const { resolveLineItems } = require('./_lib/products');
+const { resolveChargedItems, releaseCoupon } = require('./_lib/checkout-amount');
 
 function getOrigin(req) {
   if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/$/, '');
@@ -27,6 +26,7 @@ module.exports = async function handler(req, res) {
     });
   }
 
+  const couponHold = { code: '', oid: '' };
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
     const customer = body.customer || {};
@@ -47,9 +47,12 @@ module.exports = async function handler(req, res) {
 
     // Ucret istemciden GELMEZ: sepet yalniz ogretmen slug'ini tasir,
     // tutar panelden okunan ucretle sunucuda hesaplanir.
-    const ogretmenUcretleri = await sepetOgretmenUcretleri(body.items);
-    const resolved = resolveLineItems(body.items, undefined, { ogretmenUcretleri });
     const origin = getOrigin(req);
+    const merchantOid = 'vip' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    couponHold.code = String(body.coupon || body.couponCode || '').trim();
+    couponHold.oid = merchantOid;
+    const priced = await resolveChargedItems(body, merchantOid);
+    const resolved = priced.resolved;
     const stripe = new Stripe(secret, { apiVersion: '2024-06-20' });
 
     const session = await stripe.checkout.sessions.create({
@@ -75,6 +78,8 @@ module.exports = async function handler(req, res) {
         phone: phone.slice(0, 40),
         student_info: studentInfo.slice(0, 500),
         product_ids: resolved.map((r) => r.product.id).join(','),
+        coupon_oid: merchantOid,
+        coupon: couponHold.code,
       },
       phone_number_collection: { enabled: true },
       billing_address_collection: 'auto',
@@ -82,6 +87,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ url: session.url, sessionId: session.id });
   } catch (err) {
+    if (couponHold.code && couponHold.oid) await releaseCoupon(couponHold.oid);
     console.error('checkout session error', err);
     return res.status(400).json({ error: err.message || 'Ödeme oturumu oluşturulamadı.' });
   }

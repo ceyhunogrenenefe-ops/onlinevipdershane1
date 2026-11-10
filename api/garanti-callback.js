@@ -9,6 +9,7 @@ const {
 } = require('./_lib/garanti');
 const { createKommoLead } = require('./_lib/kommo');
 const { isCommercePaymentRef, notifyCommerceOrderPaid, extractCommercePaymentRef } = require('./_lib/commerce-panel');
+const { confirmCoupon, releaseCoupon } = require('./_lib/checkout-amount');
 
 const FORMSPREE_ID = process.env.FORMSPREE_FORM_ID || 'mpqnjdwd';
 
@@ -195,6 +196,7 @@ module.exports = async function handler(req, res) {
           cap.response ||
           (cap.proc ? `Provizyon yok (kod ${cap.proc})` : '3D doğrulandı ancak karttan tahsilat yapılamadı');
         console.log('garanti-callback: 3D ok but not captured', orderId, cap.proc, cap.err, cap.response);
+        releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         return res.status(200).send(
           redirectHtml(failRedirectUrl(origin, body, reason, sourceHint, orderId))
@@ -228,6 +230,7 @@ module.exports = async function handler(req, res) {
         notifyPaidOrder({ merchantOid: orderId, totalAmount: amount }).catch((err) =>
           console.error('garanti-callback notify', err)
         );
+        confirmCoupon(orderId).catch((err) => console.warn('garanti-callback coupon', err));
         notifyPanelPaid({ merchantOid: orderId, totalAmount: amount }).catch((err) =>
           console.warn('garanti-callback panel', err)
         );
@@ -242,6 +245,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).send(redirectHtml(okUrl));
     }
 
+    releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
     console.log(
       'garanti-callback: fail',
       orderId,

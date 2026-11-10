@@ -1,4 +1,5 @@
 const { paytrConfig, verifyCallbackHash } = require('./_lib/paytr');
+const { confirmCoupon, releaseCoupon } = require('./_lib/checkout-amount');
 const { createKommoLead } = require('./_lib/kommo');
 const { isCommercePaymentRef, notifyCommerceOrderPaid } = require('./_lib/commerce-panel');
 
@@ -104,12 +105,14 @@ module.exports = async function handler(req, res) {
         notifyPaidOrder({ merchantOid, totalAmount }).catch((err) =>
           console.error('paytr-callback notify', err)
         );
+        confirmCoupon(merchantOid).catch((err) => console.warn('paytr-callback coupon', err));
         notifyPanelPaid({ merchantOid, totalAmount }).catch((err) =>
           console.warn('paytr-callback panel notify', err)
         );
       }
     } else {
       console.log('paytr-callback: failed', merchantOid, status);
+      releaseCoupon(merchantOid).catch((err) => console.warn('paytr-callback coupon release', err));
     }
 
     return res.status(200).send('OK');

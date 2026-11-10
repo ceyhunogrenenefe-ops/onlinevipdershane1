@@ -2,7 +2,7 @@
   "name": "onlinevipdershane1",
   "private": true,
   "scripts": {
-    "test": "node scripts/test-assessment.js && node scripts/test-academic-pricing.js && node scripts/test-deneme-kulubu.js && node scripts/test-yazili-kampi.js && node scripts/test-paragraf-kampi.js && node scripts/test-ozel-ders-paket.js && node scripts/test-ara-tatil-kamplari.js",
+    "test": "node scripts/test-assessment.js && node scripts/test-academic-pricing.js && node scripts/test-deneme-kulubu.js && node scripts/test-yazili-kampi.js && node scripts/test-paragraf-kampi.js && node scripts/test-ozel-ders-paket.js && node scripts/test-ara-tatil-kamplari.js && node scripts/test-lgskasim.js",
     "campaigns:refresh": "node scripts/fetch-bank-campaigns.js",
     "deneme:build": "node scripts/build-deneme-kulubu-pages.js"
   },
