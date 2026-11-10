@@ -361,7 +361,15 @@
           '" data-delta="1" aria-label="Artir">+</button>';
         html += '</div>';
         }
-        html += '<div class="cart-item-price">' + window.VIP_formatPrice(line) + '</div>';
+        var priceHtml = window.VIP_formatPrice(line);
+        if (p.listPrice && p.listPrice > line) {
+          priceHtml =
+            '<span style="text-decoration:line-through;color:#8e8e93;font-weight:600;font-size:12px;margin-right:6px;">' +
+            window.VIP_formatPrice(p.listPrice) +
+            '</span>' +
+            priceHtml;
+        }
+        html += '<div class="cart-item-price">' + priceHtml + '</div>';
         html += '</article>';
       });
 
