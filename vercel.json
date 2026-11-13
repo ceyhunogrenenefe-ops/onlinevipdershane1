@@ -83,6 +83,16 @@
       "permanent": false
     },
     {
+      "source": "/bulten",
+      "destination": "/blog/ara-tatil-bulteni-2026",
+      "permanent": false
+    },
+    {
+      "source": "/bulten/",
+      "destination": "/blog/ara-tatil-bulteni-2026",
+      "permanent": false
+    },
+    {
       "source": "/paragraf-kampi.html",
       "destination": "/programlar/paragraf-kampi.html",
       "permanent": true
