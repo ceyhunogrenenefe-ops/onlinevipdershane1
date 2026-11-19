@@ -1,21 +1,15 @@
+const { deliverToPanel, deliverCommercePaid } = require('./_lib/panel-notify');
 const { paytrConfig, verifyCallbackHash } = require('./_lib/paytr');
 const { confirmCoupon, releaseCoupon } = require('./_lib/checkout-amount');
 const { createKommoLead } = require('./_lib/kommo');
 const { isCommercePaymentRef, notifyCommerceOrderPaid } = require('./_lib/commerce-panel');
 
 async function notifyPanelPaid({ merchantOid, totalAmount }) {
-  const url = process.env.KOCLUK_PANEL_URL;
-  const secret = process.env.OZEL_DERS_WEBHOOK_SECRET;
-  if (!url || !secret) return;
-  await fetch(`${url.replace(/\/$/, '')}/api/ozel-ders-talepleri?op=webhook`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-webhook-secret': secret },
-    body: JSON.stringify({
-      event: 'order_paid',
-      merchant_oid: merchantOid,
-      amount_kurus: Number(totalAmount) || null,
-      source: 'onlinevipdershane.com',
-    }),
+  return deliverToPanel('order_paid', {
+    event: 'order_paid',
+    merchant_oid: merchantOid,
+    amount_kurus: Number(totalAmount) || null,
+    source: 'onlinevipdershane.com',
   });
 }
 
@@ -91,28 +85,24 @@ module.exports = async function handler(req, res) {
     if (status === 'success') {
       console.log('paytr-callback: success', merchantOid, totalAmount);
       if (isCommercePaymentRef(merchantOid)) {
-        try {
-          await notifyCommerceOrderPaid({
-            merchantOid,
-            totalAmount,
-            provider: 'paytr',
-          });
-        } catch (err) {
-          console.error('paytr-callback commerce', err);
-          return res.status(500).send('ERR');
-        }
+        const delivered = await deliverCommercePaid(notifyCommerceOrderPaid, {
+          merchantOid,
+          totalAmount,
+          provider: 'paytr',
+        });
+        // ERR dönersek PayTR bildirimi sonra tekrar gönderir.
+        if (!delivered.ok) return res.status(500).send('ERR');
       } else {
-        notifyPaidOrder({ merchantOid, totalAmount }).catch((err) =>
-          console.error('paytr-callback notify', err)
-        );
-        confirmCoupon(merchantOid).catch((err) => console.warn('paytr-callback coupon', err));
-        notifyPanelPaid({ merchantOid, totalAmount }).catch((err) =>
-          console.warn('paytr-callback panel notify', err)
-        );
+        // Hepsi cevaptan ÖNCE beklenir; Vercel cevaptan sonra fonksiyonu dondurur.
+        await Promise.allSettled([
+          notifyPanelPaid({ merchantOid, totalAmount }),
+          notifyPaidOrder({ merchantOid, totalAmount }),
+          confirmCoupon(merchantOid),
+        ]);
       }
     } else {
       console.log('paytr-callback: failed', merchantOid, status);
-      releaseCoupon(merchantOid).catch((err) => console.warn('paytr-callback coupon release', err));
+      await releaseCoupon(merchantOid).catch((err) => console.warn('paytr-callback coupon release', err));
     }
 
     return res.status(200).send('OK');

@@ -1,3 +1,4 @@
+const { deliverToPanel, deliverCommercePaid } = require('./_lib/panel-notify');
 const {
   ziraatConfig,
   verifyCallbackHash,
@@ -60,19 +61,12 @@ function safeCallbackLog(body) {
 }
 
 async function notifyPanelPaid({ merchantOid, totalAmount }) {
-  const url = process.env.KOCLUK_PANEL_URL;
-  const secret = process.env.OZEL_DERS_WEBHOOK_SECRET;
-  if (!url || !secret) return;
-  await fetch(`${url.replace(/\/$/, '')}/api/ozel-ders-talepleri?op=webhook`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-webhook-secret': secret },
-    body: JSON.stringify({
-      event: 'order_paid',
-      merchant_oid: merchantOid,
-      amount_kurus: Number(totalAmount) || null,
-      source: 'onlinevipdershane.com',
-      payment_provider: 'ziraat',
-    }),
+  return deliverToPanel('order_paid', {
+    event: 'order_paid',
+    merchant_oid: merchantOid,
+    amount_kurus: Number(totalAmount) || null,
+    source: 'onlinevipdershane.com',
+    payment_provider: 'ziraat',
   });
 }
 
@@ -212,15 +206,13 @@ module.exports = async function handler(req, res) {
       console.log('ziraat-callback: success', orderId, amountKurus);
       const commerceRef = orderId || queryOid || bodyOid;
       if (isCommercePaymentRef(commerceRef) || sourceHint === 'kitap') {
-        try {
-          await notifyCommerceOrderPaid({
-            merchantOid: commerceRef,
-            totalAmount: amountKurus,
-            provider: 'ziraat',
-            force: sourceHint === 'kitap',
-          });
-        } catch (err) {
-          console.error('ziraat-callback commerce', err);
+        const delivered = await deliverCommercePaid(notifyCommerceOrderPaid, {
+          merchantOid: commerceRef,
+          totalAmount: amountKurus,
+          provider: 'ziraat',
+          force: sourceHint === 'kitap',
+        });
+        if (!delivered.ok) {
           res.setHeader('Content-Type', 'text/html; charset=utf-8');
           return res
             .status(500)
@@ -236,19 +228,18 @@ module.exports = async function handler(req, res) {
             );
         }
       } else {
-        notifyPaidOrder({ merchantOid: orderId, totalAmount: amountKurus }).catch((err) =>
-          console.error('ziraat-callback notify', err)
-        );
-        confirmCoupon(orderId).catch((err) => console.warn('ziraat-callback coupon', err));
-        notifyPanelPaid({ merchantOid: orderId, totalAmount: amountKurus }).catch((err) =>
-          console.warn('ziraat-callback panel', err)
-        );
+        // Hepsi yönlendirmeden ÖNCE beklenir; Vercel cevaptan sonra fonksiyonu dondurur.
+        await Promise.allSettled([
+          notifyPanelPaid({ merchantOid: orderId, totalAmount: amountKurus }),
+          notifyPaidOrder({ merchantOid: orderId, totalAmount: amountKurus }),
+          confirmCoupon(orderId),
+        ]);
       }
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       return res.status(200).send(redirectHtml(okUrl));
     }
 
-    releaseCoupon(orderId).catch((err) => console.warn('ziraat-callback coupon release', err));
+    await releaseCoupon(orderId).catch((err) => console.warn('ziraat-callback coupon release', err));
     console.log(
       'ziraat-callback: fail',
       orderId,
