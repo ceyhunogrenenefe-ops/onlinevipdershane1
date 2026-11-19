@@ -1,3 +1,4 @@
+const { deliverToPanel, deliverCommercePaid } = require('./_lib/panel-notify');
 const {
   garantiConfig,
   verifyCallbackHash,
@@ -54,19 +55,12 @@ function mdStatusHint(md) {
 }
 
 async function notifyPanelPaid({ merchantOid, totalAmount }) {
-  const url = process.env.KOCLUK_PANEL_URL;
-  const secret = process.env.OZEL_DERS_WEBHOOK_SECRET;
-  if (!url || !secret) return;
-  await fetch(`${url.replace(/\/$/, '')}/api/ozel-ders-talepleri?op=webhook`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-webhook-secret': secret },
-    body: JSON.stringify({
-      event: 'order_paid',
-      merchant_oid: merchantOid,
-      amount_kurus: Number(totalAmount) || null,
-      source: 'onlinevipdershane.com',
-      payment_provider: 'garanti',
-    }),
+  return deliverToPanel('order_paid', {
+    event: 'order_paid',
+    merchant_oid: merchantOid,
+    amount_kurus: Number(totalAmount) || null,
+    source: 'onlinevipdershane.com',
+    payment_provider: 'garanti',
   });
 }
 
@@ -196,7 +190,7 @@ module.exports = async function handler(req, res) {
           cap.response ||
           (cap.proc ? `Provizyon yok (kod ${cap.proc})` : '3D doğrulandı ancak karttan tahsilat yapılamadı');
         console.log('garanti-callback: 3D ok but not captured', orderId, cap.proc, cap.err, cap.response);
-        releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
+        await releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         return res.status(200).send(
           redirectHtml(failRedirectUrl(origin, body, reason, sourceHint, orderId))
@@ -216,24 +210,20 @@ module.exports = async function handler(req, res) {
       console.log('garanti-callback: success', orderId, amount, hashOk ? 'hash:ok' : hasCallbackHash(body) ? 'hash:mismatch-accepted' : 'hash:absent');
       const commerceRef = orderId || queryOid || bodyOid;
       if (isCommercePaymentRef(commerceRef) || sourceHint === 'kitap') {
-        try {
-          await notifyCommerceOrderPaid({
-            merchantOid: commerceRef,
-            totalAmount: amount,
-            provider: 'garanti',
-            force: sourceHint === 'kitap',
-          });
-        } catch (err) {
-          console.error('garanti-callback commerce', err);
-        }
+        // Para çekildi: sipariş panele düşene kadar tekrar dene, olmazsa ekibe uyarı at.
+        await deliverCommercePaid(notifyCommerceOrderPaid, {
+          merchantOid: commerceRef,
+          totalAmount: amount,
+          provider: 'garanti',
+          force: sourceHint === 'kitap',
+        });
       } else {
-        notifyPaidOrder({ merchantOid: orderId, totalAmount: amount }).catch((err) =>
-          console.error('garanti-callback notify', err)
-        );
-        confirmCoupon(orderId).catch((err) => console.warn('garanti-callback coupon', err));
-        notifyPanelPaid({ merchantOid: orderId, totalAmount: amount }).catch((err) =>
-          console.warn('garanti-callback panel', err)
-        );
+        // Hepsi yönlendirmeden ÖNCE beklenir; Vercel cevaptan sonra fonksiyonu dondurur.
+        await Promise.allSettled([
+          notifyPanelPaid({ merchantOid: orderId, totalAmount: amount }),
+          notifyPaidOrder({ merchantOid: orderId, totalAmount: amount }),
+          confirmCoupon(orderId),
+        ]);
       }
       const okParams = new URLSearchParams();
       okParams.set('provider', 'garanti');
@@ -245,7 +235,7 @@ module.exports = async function handler(req, res) {
       return res.status(200).send(redirectHtml(okUrl));
     }
 
-    releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
+    await releaseCoupon(orderId).catch((err) => console.warn('garanti-callback coupon release', err));
     console.log(
       'garanti-callback: fail',
       orderId,

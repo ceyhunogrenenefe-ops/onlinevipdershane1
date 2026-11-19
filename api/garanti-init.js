@@ -1,3 +1,4 @@
+const { deliverToPanel } = require('./_lib/panel-notify');
 const { resolveChargedItems, releaseCoupon } = require('./_lib/checkout-amount');
 const {
   garantiConfig,
@@ -26,9 +27,6 @@ async function notifyPanelLead({
   packageTitle,
   amountKurus,
 }) {
-  const url = process.env.KOCLUK_PANEL_URL;
-  const secret = process.env.OZEL_DERS_WEBHOOK_SECRET;
-  if (!url || !secret) return;
 
   let slug = normalizeTeacherSlug(teacherSlug);
   if (!slug) {
@@ -38,23 +36,19 @@ async function notifyPanelLead({
 
   const packageId = productIds ? productIds.split(',')[0] : null;
 
-  await fetch(`${url.replace(/\/$/, '')}/api/ozel-ders-talepleri?op=webhook`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-webhook-secret': secret },
-    body: JSON.stringify({
-      event: 'order_created',
-      merchant_oid: merchantOid,
-      parent_name: parentName,
-      phone,
-      email,
-      student_info: studentInfo,
-      teacher_slug: slug,
-      package_id: packageId,
-      package_title: packageTitle,
-      amount_kurus: amountKurus,
-      source: 'onlinevipdershane.com',
-      payment_provider: 'garanti',
-    }),
+  return deliverToPanel('order_created', {
+    event: 'order_created',
+    merchant_oid: merchantOid,
+    parent_name: parentName,
+    phone,
+    email,
+    student_info: studentInfo,
+    teacher_slug: slug,
+    package_id: packageId,
+    package_title: packageTitle,
+    amount_kurus: amountKurus,
+    source: 'onlinevipdershane.com',
+    payment_provider: 'garanti',
   });
 }
 
@@ -157,7 +151,8 @@ module.exports = async function handler(req, res) {
       })
     );
 
-    notifyPanelLead({
+    // Ödeme sayfasına geçmeden ÖNCE panele yazılır (await şart, bkz. _lib/panel-notify.js)
+    await notifyPanelLead({
       merchantOid: orderId,
       parentName,
       phone,
@@ -167,7 +162,7 @@ module.exports = async function handler(req, res) {
       productIds: resolved.map((r) => r.product.id).join(','),
       packageTitle: resolved.map((r) => r.product.name).join(', '),
       amountKurus: paymentAmount,
-    }).catch((err) => console.warn('[garanti-init] panel lead notify failed', err));
+    });
 
     return res.status(200).json({
       provider: 'garanti',
